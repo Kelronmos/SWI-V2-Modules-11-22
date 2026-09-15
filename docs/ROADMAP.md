@@ -2,25 +2,32 @@
 
 See `docs/UPGRADE_AND_PROGRESSIVE_INTEGRATION_MANUAL.md`.
 
-## Upstream
+## Constitutional rule
 
-V1 Foundation Seal 5 still **NOT READY** — does not force V2 to copy Modules 00–10 into every engine.
+> A readiness percentage may authorize investigation or integration preparation, but it can **never** override a failed critical dependency or integrity gate.
 
-## V2 sequence
+Advance when the required **dependency boundary** is validated — not when every repo shares the same module numbers.
+
+## Locked direction
 
 ```text
-M11 boundary evidence
-  → Kernel evidence
-  → M12 (alone) → freeze
-  → M13 …
+V1 Foundation Evidence → M11 → Kernel → M12+ (sequential)
+                              ↘ CRTG design (parallel)
 ```
 
-Trust/CRTG: design track in parallel; do not claim sender authentication until CRTG exists.
+Engines/adapters: their contracts only.
 
-## Not required for “22+” planning
+## Priority 2 — M11 + Kernel boundary
 
-Every adapter at 100% · production CA · every engine migrated
+- invalid evidence → HALT  
+- valid evidence → AdmittedInput  
+- failed admission cannot reach downstream  
+- then **freeze**
 
-## Required before claiming integration
+## Priority 3 — CRTG design (no rush)
 
-Evidence for the **specific** dependency that module needs.
+TaskEnvelope · canonical serialization · cert profile · trust policy · key lifecycle · revocation · replay/expiry · failure codes · adversarial test plan.
+
+## Not doing
+
+Bulk M13–M22 · claiming authentication without CRTG · percentage overrides integrity
