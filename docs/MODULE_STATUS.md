@@ -1,8 +1,11 @@
-# Module Status — Volume 2
+# V2 Module Status
 
-| Module | Status |
-|--------|--------|
-| Kernel | IMPLEMENTED (minimal) · TESTED |
-| 11 | IMPLEMENTED · TESTED (fixtures) · not sealed |
-| 12 | DESIGN PENDING · type gate only |
-| 13–22 | DESIGN PENDING / PROPOSED |
+| Component | Status |
+|-----------|--------|
+| V2 Kernel | IMPLEMENTED / TESTED / NOT SEALED |
+| M11 | FIXTURE-TESTED / NOT SEALED |
+| CRTG | **PROPOSED / DESIGN PENDING** |
+| M12–22 | PROPOSED / DESIGN PENDING |
+
+**Gates:** M11 seal requires real V1 Foundation Evidence Contract after V1 Seal 5.  
+**Cross-repo certificates:** not implemented — see `CROSS_REPOSITORY_TRUST_SPECIFICATION.md`.
