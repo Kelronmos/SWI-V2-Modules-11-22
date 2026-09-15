@@ -1,34 +1,37 @@
 # Cross-Repository Travel (V2)
 
-**Handoff is the evidence envelope, not Module 10 and not `import swi_core`.**
+## Status (locked)
+
+| Gate | State |
+|------|--------|
+| Local serialized travel → M11 | **PROVEN** (`a58e5b2`+) |
+| Live two-checkout with real V1 producer | **PENDING** |
+| CRTG | DESIGN PENDING |
+| M11 SEAL | NOT READY |
+
+## Rule
+
+> V1 produces a versioned evidence contract. V2 consumes the **serialized** contract independently of the V1 implementation.
+
+**Do not** depend on `import` of SWI-V1. M10 is not the handoff.
 
 ```text
-Serialized FoundationEvidenceEnvelope (JSON)
-        → parse / field check
-        → M11
-        → AdmittedInput
-        → Kernel
+JSON / bytes
+  → M11 (schema + integrity + status)
+  → AdmittedInput
+  → Kernel
 ```
 
-## Zero-base
-
-No V1 Python dependency. No shared Trainer memory. No ambient singletons.
+Rejection must not reach M12+.
 
 ## Provenance
 
-Do not mutate admitted V1 evidence in place. Derive **new** V2 records (admission, trust, task state) and keep them distinct.
+Do not mutate V1 evidence in place. Create **derived** V2 state and keep it distinct.
 
 ## Integrity
 
-Same five fields as V1. `created_at` optional metadata, not in digest.
+Five covered fields only; **`created_at` not in digest**.
 
-## Status
+## Next
 
-| `verification_status` | Role |
-|----------------------|------|
-| `foundation_verified_test_fixture` | Unit fixture only |
-| `v1_trainer_pipeline_completed` | V1 producer status after serialize |
-
-## Rejects (must not reach Kernel)
-
-Raw PipelineResult-shaped objects without envelope fields · bad integrity · bad version · bad status · missing fields
+Two-checkout proof · M11/Kernel isolation evidence · then controlled M12 — not bulk 13–22.
