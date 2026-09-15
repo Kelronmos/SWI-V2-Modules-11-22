@@ -5,7 +5,7 @@ Upstream: [SWI-V1-Module-1-10](https://github.com/Kelronmos/SWI-V1-Module-1-10)
 Closing phase: **prove** the boundary — do not complete 11–22 by claim.
 
 ```text
-Contract FROZEN · local travel PROVEN · two-checkout CI PENDING
+Contract FROZEN · local travel PROVEN · two-checkout CI_VERIFIED
 M11 / Kernel TESTED · NOT SEALED · M12–22 BLOCKED · CRTG DESIGN PENDING
 ```
 
