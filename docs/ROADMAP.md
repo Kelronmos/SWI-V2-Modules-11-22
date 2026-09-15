@@ -1,36 +1,26 @@
-# V2 Roadmap (aligned with V1)
+# V2 Roadmap (dependency-driven)
 
-## Phase A — V1 Foundation (upstream)
+See `docs/UPGRADE_AND_PROGRESSIVE_INTEGRATION_MANUAL.md`.
 
-Owned by SWI-V1. V2 remains blocked for seals until:
+## Upstream
 
-**FOUNDATION SEAL 5 — PASSED** on V1.
+V1 Foundation Seal 5 still **NOT READY** — does not force V2 to copy Modules 00–10 into every engine.
 
-## Phase B — Trust Boundary
-
-CRTG design freeze → implement → negative tests → CI.  
-Status today: **PROPOSED**.
-
-## Phase C — V1 → V2 admission
+## V2 sequence
 
 ```text
-Real V1 evidence export
-  → CRTG
-  → M11 (real evidence, not fixtures only)
-  → AdmittedInput
-  → V2 Kernel
+M11 boundary evidence
+  → Kernel evidence
+  → M12 (alone) → freeze
+  → M13 …
 ```
 
-## Phase D — V2 modules
+Trust/CRTG: design track in parallel; do not claim sender authentication until CRTG exists.
 
-```text
-M12 freeze → implement → test → seal → M13 → …
-```
+## Not required for “22+” planning
 
-Sequential only.
+Every adapter at 100% · production CA · every engine migrated
 
-## Current honest state
+## Required before claiming integration
 
-M11 fixtures ≠ V1 producer.  
-CRTG not coded.  
-M12–22 not implemented.
+Evidence for the **specific** dependency that module needs.
