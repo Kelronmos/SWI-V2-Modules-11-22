@@ -3,13 +3,13 @@
 | Component | Status |
 |-----------|--------|
 | Kernel | IMPLEMENTED / TESTED / **NOT SEALED** |
-| M11 Foundation Admission | IMPLEMENTED / TESTED / **NOT SEALED** |
-| Local serialized travel | **PROVEN** |
-| Live two-checkout CI | **PENDING** (workflow + scripts present) |
-| Ed25519 primitive | IMPLEMENTED / TESTED · **≠ CRTG** |
+| M11 | IMPLEMENTED / TESTED / **NOT SEALED** |
+| Local travel | PROVEN |
+| Two-checkout CI (two-job) | Workflow present · **PENDING green tip** |
 | CRTG | DESIGN PENDING |
-| M12 | PROPOSED / **BLOCKED** until M11 sealed |
-| M13–22 | DESIGN PENDING / **BLOCKED** |
+| M12–22 | **BLOCKED** |
 
-Closing manual: `docs/V2_CLOSING_AND_M11_SEAL_MANUAL.md`  
-Two-checkout plan: `docs/TWO_CHECKOUT_CI_TEST_PLAN.md`
+Execution: `docs/V2_CLOSING_EXECUTION_MANUAL.md`  
+Seal checklist: `docs/V2_CLOSING_AND_M11_SEAL_MANUAL.md`
+
+**Do not mark SEALED until two-checkout CI is CI_VERIFIED and the checklist passes.**

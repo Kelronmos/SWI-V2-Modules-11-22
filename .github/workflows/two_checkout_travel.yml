@@ -7,57 +7,98 @@ on:
   workflow_dispatch:
 
 jobs:
-  travel:
+  produce:
+    name: V1 produce evidence
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.12"]
     steps:
-      - name: Checkout V2
-        uses: actions/checkout@v4
-        with:
-          path: v2
-
-      - name: Checkout V1
+      - name: Checkout V1 only
         uses: actions/checkout@v4
         with:
           repository: Kelronmos/SWI-V1-Module-1-10
           path: v1
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install V1 deps (producer venv)
+      - name: Install V1 dependencies
         run: |
           python -m venv venv-v1
           venv-v1/bin/pip install -q -r v1/requirements.txt
 
-      - name: Install V2 deps (consumer venv)
-        run: |
-          python -m venv venv-v2
-          venv-v2/bin/pip install -q -r v2/requirements.txt
-
-      - name: Export evidence from V1
+      - name: Export real V1 evidence
         run: |
           PYTHONPATH=v1 venv-v1/bin/python v1/scripts/export_travel_evidence.py --out evidence.json
-
-      - name: Admit evidence in V2
-        run: |
-          PYTHONPATH=v2 venv-v2/bin/python v2/scripts/admit_travel_evidence.py --in evidence.json
-
-      - name: Reject tampered payload
-        run: |
-          python -c "import json;d=json.load(open('evidence.json'));d['payload']=dict(d['payload']);d['payload']['allowed']=not d['payload'].get('allowed', True);json.dump(d,open('evidence.json','w'))"
-          if PYTHONPATH=v2 venv-v2/bin/python v2/scripts/admit_travel_evidence.py --in evidence.json; then
-            echo "tampered evidence was admitted" >&2
-            exit 1
-          fi
-          echo "tamper correctly rejected"
+          echo "V1_SHA=$(git -C v1 rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "V1 commit: $(git -C v1 rev-parse HEAD)"
 
       - name: Upload evidence artifact
         uses: actions/upload-artifact@v4
         with:
-          name: foundation-evidence-py${{ matrix.python-version }}
+          name: v1-foundation-evidence
           path: evidence.json
+          retention-days: 14
+
+  admit:
+    name: V2 admit without V1 tree
+    needs: produce
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout V2 only
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install V2 dependencies only
+        run: |
+          python -m venv venv-v2
+          venv-v2/bin/pip install -q -r requirements.txt
+
+      - name: Download V1 evidence artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: v1-foundation-evidence
+          path: .
+
+      - name: Assert V1 package not importable
+        run: |
+          if venv-v2/bin/python -c "import swi_core" 2>/dev/null; then
+            echo "FAIL: swi_core (V1) is importable in V2 job" >&2
+            exit 1
+          fi
+          echo "PASS: V1 swi_core not importable"
+
+      - name: Admit valid evidence
+        run: |
+          echo "V2 commit: $(git rev-parse HEAD)"
+          PYTHONPATH=. venv-v2/bin/python scripts/admit_travel_evidence.py --in evidence.json
+
+      - name: Reject tampered payload
+        run: |
+          python -c "import json;d=json.load(open('evidence.json'));d['payload']=dict(d['payload']);d['payload']['allowed']=not d['payload'].get('allowed', True);json.dump(d,open('evidence_tampered.json','w'))"
+          if PYTHONPATH=. venv-v2/bin/python scripts/admit_travel_evidence.py --in evidence_tampered.json; then
+            echo "FAIL: tampered admitted" >&2
+            exit 1
+          fi
+          echo "PASS: tamper rejected"
+
+      - name: Reject bad integrity field
+        run: |
+          python -c "import json;d=json.load(open('evidence.json'));d['integrity_reference']='0'*64;json.dump(d,open('evidence_bad_hash.json','w'))"
+          if PYTHONPATH=. venv-v2/bin/python scripts/admit_travel_evidence.py --in evidence_bad_hash.json; then
+            echo "FAIL: bad hash admitted" >&2
+            exit 1
+          fi
+          echo "PASS: bad integrity rejected"
+
+      - name: Unit tests (V2 isolation)
+        run: |
+          PYTHONPATH=. venv-v2/bin/python -m pytest -q
