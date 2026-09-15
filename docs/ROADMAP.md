@@ -1,33 +1,27 @@
-# V2 Roadmap (dependency-driven)
+# V2 Roadmap (locked)
 
-See `docs/UPGRADE_AND_PROGRESSIVE_INTEGRATION_MANUAL.md`.
+See `docs/GOVERNANCE_LOCK.md`.
 
-## Constitutional rule
+## Constitutional
 
-> A readiness percentage may authorize investigation or integration preparation, but it can **never** override a failed critical dependency or integrity gate.
+Dependency boundaries over module-count symmetry.  
+% readiness never overrides a failed critical gate.
 
-Advance when the required **dependency boundary** is validated — not when every repo shares the same module numbers.
-
-## Locked direction
+## Priority 2 (this repo)
 
 ```text
-V1 Foundation Evidence → M11 → Kernel → M12+ (sequential)
-                              ↘ CRTG design (parallel)
+invalid evidence → HALT
+valid evidence   → AdmittedInput
+failed admission → cannot reach M12+
+→ freeze M11/Kernel boundary
 ```
 
-Engines/adapters: their contracts only.
+Then M12 alone → test → freeze → M13…
 
-## Priority 2 — M11 + Kernel boundary
+## Priority 3
 
-- invalid evidence → HALT  
-- valid evidence → AdmittedInput  
-- failed admission cannot reach downstream  
-- then **freeze**
+CRTG design only (envelope, profile, policy, lifecycle, failure codes).
 
-## Priority 3 — CRTG design (no rush)
+## Position
 
-TaskEnvelope · canonical serialization · cert profile · trust policy · key lifecycle · revocation · replay/expiry · failure codes · adversarial test plan.
-
-## Not doing
-
-Bulk M13–M22 · claiming authentication without CRTG · percentage overrides integrity
+M11 progressing · not sealed · CRTG design · **no bulk M13–22**
