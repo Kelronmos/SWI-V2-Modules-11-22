@@ -31,12 +31,12 @@ def _valid_envelope():
 
 def test_require_admitted_rejects_dict():
     with pytest.raises(ModuleKernelError):
-        require_admitted({"payload": {}})  # type: ignore[arg-type]
+        require_admitted({"payload": {}}, module="test")  # type: ignore[arg-type]
 
 
 def test_require_admitted_rejects_string():
     with pytest.raises(ModuleKernelError):
-        require_admitted("raw")  # type: ignore[arg-type]
+        require_admitted("raw", module="test")  # type: ignore[arg-type]
 
 
 def test_module12_rejects_raw_dict():
@@ -46,6 +46,6 @@ def test_module12_rejects_raw_dict():
 
 def test_module12_accepts_only_after_m11():
     admitted = admit_foundation_input(_valid_envelope())
-    require_admitted(admitted)
+    require_admitted(admitted, module="test")
     out = module12_process(admitted)
     assert out["status"] == "accepted_placeholder"
