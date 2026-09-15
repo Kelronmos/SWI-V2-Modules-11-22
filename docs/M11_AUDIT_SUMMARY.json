@@ -1,0 +1,27 @@
+{
+  "module": "M11",
+  "status": "AUDIT_PENDING",
+  "v1_sha": null,
+  "v2_sha": null,
+  "workflow": "two_checkout_travel.yml",
+  "workflow_run": null,
+  "evidence_artifact": {
+    "filename": null,
+    "sha256": null
+  },
+  "checks": {
+    "contract": "PENDING",
+    "boundary": "PENDING",
+    "real_producer": "PENDING",
+    "admission": "PENDING",
+    "kernel_isolation": "PENDING",
+    "reproducibility": "PENDING",
+    "documentation": "PENDING"
+  },
+  "python_matrix": {
+    "3.10": "PENDING",
+    "3.11": "PENDING",
+    "3.12": "PENDING"
+  },
+  "notes": "Do not set status to SEALED until every check above reads PASS with cited evidence in docs/M11_SEAL_AUDIT_WORKSHEET.md. This file is a status record, not a seal mechanism."
+}

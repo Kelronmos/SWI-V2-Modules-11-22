@@ -1,95 +1,100 @@
 # M11 Seal Audit Worksheet
 
-**Fill only from CI/test evidence. Use PASS / FAIL / NOT PROVEN only.**
+Status: **AUDIT IN PROGRESS — NOT SEALED**
 
-```text
-V2 SHA (current tip):          9e13e83753cda46f5a09e45053c3902e678f4657
-V2 SHA (last CI-verified tip): 061a47ff23705684179cb48836051c8b097e1b65
-V1 producer SHA:               be31dd733e7fba17ceddb0b142a075abcfca890a
-Workflow:                      two_checkout_travel.yml
-Run ID:                        34987307390
-CI status (audited tip):       GREEN
-Date:                          15 September 2026
-Auditor:                       formal audit per NEXT STAGE EXECUTION INSTRUCTION
-```
+This worksheet is the evidence inventory for the M11 seal decision. It must be
+understandable without relying on memory: every row needs a concrete
+artifact, file path, test name, or CI run reference — not a restated claim.
 
-## A — Contract
+Do not write `PASS` alone. Write `PASS — supported by <specific evidence>`.
+Leave a row `PENDING` until the evidence exists.
 
-| Item | Result |
-|------|--------|
-| Digest = payload, foundation_version, evidence_schema_version, evidence_id, source_reference | PASS |
-| created_at excluded | PASS |
-| Version reject unsupported | PASS |
-| Status: fixture vs v1_trainer_pipeline_completed documented | PASS |
+---
 
-**Evidence:** `swi_v2/kernel/admission.py` `compute_integrity_reference` and `admit_foundation_input`; tests in `test/test_serialized_v1_travel.py`.
+## A — Contract Freeze
 
-## B — Boundary
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| V1 Foundation Evidence Contract is frozen (schema, field set, versioning) | | | PENDING | |
+| No contract-breaking change has landed since freeze | | | PENDING | |
 
-| Item | Result |
-|------|--------|
-| V2-only checkout in admit job | PASS |
-| import swi_core fails | PASS |
-| No PYTHONPATH/sys.path to V1 | PASS |
-| M10 not handoff | PASS |
+## B — Architectural Boundary
 
-**Evidence:** Admission accepts only envelope/mapping; raw types raise; no V1 import in V2 path; enforcement requires `AdmittedInput`.
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| V2 does not import V1 code at runtime | | | PENDING | |
+| M11 consumes only serialized evidence, never a live V1 object | | | PENDING | |
 
-## C — Real producer
+## C — Real Producer
 
-| Item | Result |
-|------|--------|
-| Artifact from V1 export script | NOT PROVEN |
-| Not fixture substitution for primary proof | NOT PROVEN |
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| `export_foundation_evidence()` (or equivalent) runs against real V1 | | | PENDING | |
+| Output artifact filename recorded | e.g. `foundation_evidence.json` | | PENDING | |
+| SHA-256 of artifact recorded (generated, not hand-typed) | | | PENDING | |
 
-**Evidence note:** Unit tests use V1-*shaped* fixtures + JSON round-trip. Contracts still label the envelope PROPOSED. Historical two-checkout CI claimed real producer; tip-specific confirmation of live V1 export → artifact → V2 admit on the *current* tip is still required.
+## D — Admission Behaviour
 
-## D — Admission matrix
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| Positive test: real serialized evidence → ACCEPT → `AdmittedInput` | | | PENDING | |
+| Payload-tampered artifact (integrity ref unchanged) → REJECT | | | PENDING | |
+| Integrity-reference-tampered artifact (payload unchanged) → REJECT | | | PENDING | |
+| Malformed JSON → REJECT | | | PENDING | |
+| Missing `payload` → REJECT | | | PENDING | |
+| Missing `foundation_version` → REJECT | | | PENDING | |
+| Missing `evidence_schema_version` → REJECT | | | PENDING | |
+| Missing `evidence_id` → REJECT | | | PENDING | |
+| Missing `source_reference` → REJECT | | | PENDING | |
+| Unsupported foundation version → REJECT | | | PENDING | |
+| Unsupported evidence schema version → REJECT | | | PENDING | |
+| Unsupported verification status → REJECT | | | PENDING | |
+| Raw dict (not envelope) → REJECT | | | PENDING | |
+| `PipelineResult`-shaped object → REJECT | | | PENDING | |
 
-| Case | Expected | Actual |
-|------|----------|--------|
-| Valid V1 artifact | ACCEPT | PASS |
-| Payload altered | REJECT | PASS |
-| Integrity altered | REJECT | PASS |
-| Status altered | REJECT | PASS |
-| Missing field | REJECT | PASS |
-| Malformed JSON | REJECT | PASS |
-| Bad version | REJECT | PASS |
-| Raw non-envelope | REJECT | PASS |
+## E — Kernel Isolation
 
-**Evidence:** `test/test_serialized_v1_travel.py` (including `test_malformed_json_rejected_at_boundary`).
-
-## E — Kernel isolation
-
-| Item | Result |
-|------|--------|
-| Raw dict blocked | PASS |
-| Raw string blocked | PASS |
-| Reject does not reach Kernel | PASS |
-
-**Evidence:** `require_admitted` + `test_rejection_never_reaches_module12`.
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| `AdmittedInput` → Kernel succeeds | | | PENDING | |
+| Raw dict → Kernel fails | | | PENDING | |
+| Rejected M11 input → Kernel fails | | | PENDING | |
+| V1 import unavailable inside V2 admission environment (no `PYTHONPATH`/`sys.path` manipulation) | `import swi_core` fails naturally | | PENDING | |
 
 ## F — Reproducibility
 
-| Item | Result |
-|------|--------|
-| Tip-specific CI green | NOT PROVEN (for current tip) |
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| Two-checkout CI (`two_checkout_travel.yml`) green: Job 1 produces V1 evidence, Job 2 admits with V1 not importable | | | PENDING | |
+| Passes on Python 3.10 | | | PENDING | |
+| Passes on Python 3.11 | | | PENDING | |
+| Passes on Python 3.12 | | | PENDING | |
+| Exact V1 commit SHA recorded | | | PENDING | |
+| Exact V2 commit SHA recorded | | | PENDING | |
 
-**Evidence note:** Run 34987307390 GREEN for tip `061a47f` / V1 `be31dd7`. Current tip is documentation-only; historical green does not automatically prove the new commit.
+## G — Documentation Honesty
 
-## G — Documentation
+| Requirement | Evidence | Test / file / CI reference | Result | Reviewer note |
+|---|---|---|---|---|
+| All Markdown claims containing "complete / secure / verified / sealed / production-ready / universal / safe / identity / truth / CRTG / Foundation Seal 5 / V2 complete / Modules 11–22 complete" classified as PROVEN / PARTIALLY PROVEN / DESIGN / STALE / UNSUPPORTED / CONTRADICTED | | | PENDING | |
+| No claim in README or docs exceeds what this worksheet demonstrates | | | PENDING | |
 
-| Item | Result |
-|------|--------|
-| Status files agree; no false SEALED | PASS |
+---
 
-**Evidence:** MODULE_STATUS, evidence manuals, closing manuals consistently show CI_VERIFIED + NOT SEALED. No false SEALED claims.
+## Seal Gate
 
-## Decision
+M11 may move to `SEALED` only when **all** of A–G above read `PASS` with
+cited evidence, and:
 
-```text
-[ ] ALL PASS → SEAL ELIGIBLE (then write M11_SEAL_RECORD.md)
-[x] ANY FAIL/NOT PROVEN → M11 remains NOT SEALED; blocker:
-    C — real-producer primary path still needs tip-specific confirmation
-    F — current tip has not been re-proven by two-checkout CI
-```
+- [ ] Exact V2 SHA identified
+- [ ] Exact V1 SHA identified
+- [ ] Real producer demonstrated
+- [ ] Serialized artifact identified (filename + SHA-256)
+- [ ] Tamper rejection demonstrated (both payload and integrity-reference paths)
+- [ ] Kernel isolation demonstrated
+- [ ] Two-checkout CI green across the full Python matrix
+- [ ] Documentation reconciled against evidence
+
+Until every box is checked with a cited row above, status remains
+`AUDIT_PENDING`. Do not set `SEALED` in `M11_AUDIT_SUMMARY.json` or in this
+worksheet as a shortcut to unblock M12.
