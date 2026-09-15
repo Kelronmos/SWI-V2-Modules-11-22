@@ -1,11 +1,10 @@
-# Release Gate — Module 11
+# Release Gates — V2 Foundation
 
-- [ ] V1 Foundation Contract formally released by V1
-- [ ] V1 evidence format produced by V1
-- [x] V2 admission implementation exists (proposed contract)
-- [x] raw / invalid evidence rejection tests
-- [x] valid fixture acceptance + Module 12 bypass tests
-- [ ] CI recorded on published tip
-- [ ] documentation + claim audit
+- [x] Kernel exists (minimal) + local tests
+- [x] Module 11 + negative/bypass tests (local)
+- [x] V1 contract documented as PROPOSED
+- [ ] CI green on tip recorded
+- [ ] V1 exports real evidence (blocks M11 seal)
+- [ ] M11 sealed
 
-Modules 12–22 blocked until their own specs and gates exist.
+M12–22 blocked until map freeze and M11 seal against real V1 evidence.

@@ -2,7 +2,7 @@
 
 
 class ModuleKernelError(Exception):
-    """Fail-closed kernel / admission boundary failure."""
+    """Fail-closed kernel / admission / module boundary failure."""
 
 
 class FoundationAdmissionError(ModuleKernelError):
@@ -19,3 +19,11 @@ class InvalidFoundationEvidence(FoundationAdmissionError):
 
 class IntegrityVerificationError(FoundationAdmissionError):
     """Integrity reference failed verification."""
+
+
+class StateTransitionError(ModuleKernelError):
+    """Invalid kernel or workflow state transition (e.g. execute after HALT)."""
+
+
+class ContractError(ModuleKernelError):
+    """Module or kernel contract violated."""

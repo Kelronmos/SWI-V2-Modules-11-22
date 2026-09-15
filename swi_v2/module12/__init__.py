@@ -1,15 +1,15 @@
-"""Module 12 — DESIGN PENDING / IMPLEMENTATION PENDING.
+"""Module 12 — PROPOSED / DESIGN PENDING (Evidence Normalization).
 
-Accepts only AdmittedInput from Module 11. Raw input must be rejected.
+Current code: type boundary only — requires AdmittedInput.
+Does NOT implement normalization.
 """
-from swi_v2.kernel.contracts import AdmittedInput
-from swi_v2.kernel.errors import ModuleKernelError
+from swi_v2.kernel.enforcement import require_admitted
 
 
 def process(value):
-    """Placeholder downstream entry: require AdmittedInput only."""
-    if not isinstance(value, AdmittedInput):
-        raise ModuleKernelError(
-            "module_12 rejects raw input; Module 11 admission required"
-        )
-    return {"status": "accepted_placeholder", "evidence_id": value.evidence_id}
+    admitted = require_admitted(value, module="module_12")
+    return {
+        "status": "accepted_placeholder",
+        "evidence_id": admitted.evidence_id,
+        "note": "DESIGN PENDING — not NormalizedEvidence yet",
+    }
