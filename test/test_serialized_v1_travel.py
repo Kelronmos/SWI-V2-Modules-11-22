@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
@@ -140,6 +141,22 @@ def test_raw_pipeline_result_dict_rejected():
                 "drift": {},
             }
         )
+
+
+def test_malformed_json_rejected_at_boundary(tmp_path: Path):
+    """D6: malformed serialized input must fail closed before admission.
+
+    Mirrors scripts/admit_travel_evidence.py: json.loads fails → REJECT.
+    Do not convert malformed bytes into {} or a fixture.
+    """
+    bad = tmp_path / "malformed.json"
+    bad.write_text("{not valid json", encoding="utf-8")
+    with pytest.raises(json.JSONDecodeError):
+        json.loads(bad.read_text(encoding="utf-8"))
+    # Admission never sees a parsed object when deserialize fails.
+    # If a caller somehow passes a non-mapping after a bad parse attempt:
+    with pytest.raises(FoundationAdmissionError):
+        admit_foundation_input("{not valid json")  # type: ignore[arg-type]
 
 
 def test_rejection_never_reaches_module12():
