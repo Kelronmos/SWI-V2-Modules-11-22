@@ -5,7 +5,7 @@
 | M11 | TESTED / **NOT SEALED** |
 | Kernel | TESTED / **NOT SEALED** |
 | Local travel | PROVEN |
-| Two-checkout CI | Workflow present · tip green = **PENDING verification** |
+| Two-checkout CI | **CI_VERIFIED** (tip run 34987307390 · V2 `061a47f` · V1 `be31dd7`) |
 | CRTG | DESIGN PENDING |
 | M12–22 | **BLOCKED** |
 
