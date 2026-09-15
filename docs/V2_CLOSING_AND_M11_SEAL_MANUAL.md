@@ -90,7 +90,7 @@ Bulk M12–22 · seal because unit tests pass · import V1 · M10 handoff · fix
 ```text
 Contract              FROZEN (document)
 V1 → V2 boundary      LOCAL PROVEN
-Two-checkout CI       PENDING until Actions green
+Two-checkout CI       CI_VERIFIED (tip run 34987307390 · V2 061a47f · V1 be31dd7)
 M11 admission         TESTED / NOT SEALED
 Kernel isolation      TESTED / NOT SEALED
 CRTG                  DESIGN PENDING

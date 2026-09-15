@@ -8,7 +8,7 @@
 ```text
 Contract              FROZEN
 V1 → V2 local travel  PROVEN
-Two-checkout CI       PENDING until Actions green on tip
+Two-checkout CI       CI_VERIFIED (tip run 34987307390 · V2 061a47f · V1 be31dd7)
 M11                   TESTED / NOT SEALED
 Kernel                TESTED / NOT SEALED
 CRTG                  DESIGN PENDING

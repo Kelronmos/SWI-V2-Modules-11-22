@@ -8,7 +8,7 @@
 ```text
 Contract              FROZEN
 Local V1 → V2 travel  PROVEN
-Two-checkout CI       PENDING until tip-specific green
+Two-checkout CI       CI_VERIFIED (tip run 34987307390 · V2 061a47f · V1 be31dd7)
 M11                   TESTED / NOT SEALED
 Kernel                TESTED / NOT SEALED
 CRTG                  DESIGN PENDING
@@ -23,10 +23,16 @@ Do not change the frozen contract to make a failing test pass.
 
 ## Tip-specific CI
 
-Evaluate `two_checkout_travel.yml` on the **exact** V2 tip under audit (e.g. `2b1ccb5` or later closing tip).  
-Earlier green runs do **not** prove the current tip.
+Two-checkout CI is **CI_VERIFIED** on the audited tip:
 
-Record: V2 SHA · V1 producer SHA · workflow run ID · status.
+- V2 SHA: `061a47f`
+- V1 producer SHA: `be31dd7`
+- Workflow: `two_checkout_travel.yml`
+- Run ID: `34987307390`
+- Status: green
+
+Evaluate any *future* tip the same way: earlier green runs do **not** prove a new tip.  
+Record: V2 SHA · V1 producer SHA · workflow run ID · status for every seal candidate.
 
 ## A–G audit (only PASS / FAIL / NOT PROVEN)
 
