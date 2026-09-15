@@ -5,7 +5,7 @@
 | Gate | State |
 |------|--------|
 | Local serialized travel → M11 | **PROVEN** (`a58e5b2`+) |
-| Live two-checkout with real V1 producer | **PENDING** |
+| Live two-checkout with real V1 producer | **CI_VERIFIED** (run 34987307390 · V2 `061a47f` · V1 `be31dd7`) |
 | CRTG | DESIGN PENDING |
 | M11 SEAL | NOT READY |
 
@@ -34,4 +34,4 @@ Five covered fields only; **`created_at` not in digest**.
 
 ## Next
 
-Two-checkout proof · M11/Kernel isolation evidence · then controlled M12 — not bulk 13–22.
+Complete A–G (including D6 malformed-JSON evidence) · M11 seal only if all PASS · then controlled M12 — not bulk 13–22.
