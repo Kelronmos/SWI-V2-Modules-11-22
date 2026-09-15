@@ -1,20 +1,23 @@
 # V1 Foundation Evidence Contract
 
-**STATUS:** V1 producer **IMPLEMENTED** (unsigned) · V2 accepts fixture **and** `v1_trainer_pipeline_completed`
+**Producer (V1):** IMPLEMENTED / TESTED (unsigned)  
+**Verifier (V2 M11):** accepts fixture **or** `v1_trainer_pipeline_completed` + matching integrity
 
-## Producer (V1)
+## Integrity-covered fields
 
-`swi_core/foundation_evidence.py` → `export_foundation_evidence(PipelineResult)`
+`payload` · `foundation_version` · `evidence_schema_version` · `evidence_id` · `source_reference`
 
-| Field | Value |
-|-------|--------|
-| foundation_version | `1.0-proposed` |
-| evidence_schema_version | `1.0-proposed` |
-| verification_status | `v1_trainer_pipeline_completed` |
-| integrity_reference | SHA-256 canonical JSON (shared with V2) |
+**`created_at` (if present) is NOT part of the digest.**
+
+## verification_status
+
+| Value | Role |
+|-------|------|
+| `foundation_verified_test_fixture` | Unit tests only — **not** production V1 output |
+| `v1_trainer_pipeline_completed` | V1 `export_foundation_evidence` status |
+
+Integrity ≠ authenticated origin. Origin requires future signed TaskEnvelope + CRTG.
 
 ## Still pending
 
-CRTG / signed envelope · cross-repo CI integration test · Foundation Seal 5 · M11 SEAL
-
-Fixtures with `foundation_verified_test_fixture` remain valid unit tests only.
+Real cross-repo CI integration test · CRTG · Foundation Seal 5 · M11 SEAL

@@ -1,33 +1,9 @@
-# SWI Governance Lock (V2)
+# Governance Lock (V2)
 
-**Date:** 15 September 2026  
-**Aligned with V1** `docs/GOVERNANCE_LOCK.md`
+1. Dependency boundaries over module-count symmetry.  
+2. Readiness % never overrides a failed critical gate.  
+3. Architecture frozen: Evidence → M11 → AdmittedInput → Kernel (+ CRTG design track).  
+4. No bulk M13–M22.  
+5. Fixtures ≠ V1-produced evidence.
 
-## Rules
-
-1. Advance when the required **dependency boundary** is validated — not when module numbers match V1.  
-2. A readiness **percentage never overrides** a failed critical dependency or integrity gate.
-
-## Architecture (frozen this phase)
-
-```text
-Foundation Evidence → M11 → AdmittedInput → Kernel
-                          ├── M12+ sequential only
-                          └── CRTG design (parallel)
-```
-
-Engines/adapters: **their** contracts — do not impersonate V1 00–10.
-
-## Priorities
-
-| # | Focus |
-|---|--------|
-| 1 | Upstream V1 Seal 5 path (blocker for M11 **seal**) |
-| 2 | **M11 + Kernel:** invalid → HALT; valid → AdmittedInput; no downstream on failed admission; then **freeze** |
-| 3 | CRTG **design** freeze — no implementation rush |
-
-## Non-goals
-
-Bulk M13–M22 · architecture redesign · claiming CRTG or M11 sealed without evidence
-
-**Next: prove the foundation and admission boundary, don't add another layer.**
+See `FOUNDATION_BRIDGE_AND_SEAL5_REMEDIATION_MANUAL.md`.

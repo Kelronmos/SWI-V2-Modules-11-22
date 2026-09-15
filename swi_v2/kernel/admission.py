@@ -1,4 +1,12 @@
-"""Module 11 foundation admission (deterministic, fail-closed)."""
+"""Module 11 foundation admission (deterministic, fail-closed).
+
+Admits schema + integrity + allowed verification_status.
+Does NOT establish factual truth, sender authentication, or action safety.
+
+fixture status = TEST-ONLY
+v1_trainer_pipeline_completed = V1 producer status string (still needs integrity match;
+origin authenticity requires future CRTG signatures — NOT implemented here).
+"""
 from __future__ import annotations
 
 import hashlib
@@ -19,6 +27,11 @@ from .errors import (
     UnsupportedFoundationVersion,
 )
 
+# TEST-ONLY vs V1 producer claim — both still require integrity match.
+STATUS_TEST_FIXTURE = "foundation_verified_test_fixture"
+STATUS_V1_PIPELINE = "v1_trainer_pipeline_completed"
+_ACCEPTED_STATUS = frozenset({STATUS_TEST_FIXTURE, STATUS_V1_PIPELINE})
+
 
 def compute_integrity_reference(
     payload: Any,
@@ -27,7 +40,7 @@ def compute_integrity_reference(
     evidence_id: str,
     source_reference: str,
 ) -> str:
-    """Deterministic integrity reference for the proposed contract."""
+    """Same covered fields as V1 (excludes created_at metadata)."""
     material = {
         "payload": payload,
         "foundation_version": foundation_version,
@@ -42,7 +55,6 @@ def compute_integrity_reference(
 def admit_foundation_input(
     candidate: Union[FoundationEvidenceEnvelope, Mapping[str, Any], Any],
 ) -> AdmittedInput:
-    """Admit only candidates that satisfy the V1 foundation contract."""
     if isinstance(candidate, FoundationEvidenceEnvelope):
         envelope = candidate
     elif isinstance(candidate, Mapping):
@@ -78,12 +90,7 @@ def admit_foundation_input(
             f"unsupported evidence_schema_version: {envelope.evidence_schema_version!r}"
         )
 
-    # Fixture status (unit tests) or real V1 Trainer export status.
-    _accepted_status = frozenset({
-        "foundation_verified_test_fixture",
-        "v1_trainer_pipeline_completed",
-    })
-    if envelope.verification_status not in _accepted_status:
+    if envelope.verification_status not in _ACCEPTED_STATUS:
         raise InvalidFoundationEvidence(
             f"verification_status not acceptable for current V2 build: "
             f"{envelope.verification_status!r}"
