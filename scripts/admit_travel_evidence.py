@@ -37,7 +37,7 @@ def main() -> int:
 
     try:
         admitted = admit_foundation_input(data)
-        require_admitted(admitted)
+        require_admitted(admitted, module="admit_travel_evidence")
     except ModuleKernelError as exc:
         print(f"REJECT {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
