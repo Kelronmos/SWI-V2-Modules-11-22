@@ -1,7 +1,11 @@
 # Governance Lock (V2)
 
 1. Dependency boundaries over module counts.  
-2. % readiness never overrides a critical failure.  
+2. % never overrides critical failure.  
 3. Serialized contract only — **no V1 package import**.  
-4. Local travel proven · **two-checkout pending**.  
-5. CRTG design · Seal upstream **NOT READY** · no bulk M13–22.
+4. M10 is not the handoff.  
+5. M11 seal only via closing manual checklist.  
+6. M12–22 **BLOCKED** until M11 sealed.  
+7. Ed25519 ≠ CRTG.
+
+See `V2_CLOSING_AND_M11_SEAL_MANUAL.md`.

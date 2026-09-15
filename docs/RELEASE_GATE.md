@@ -1,10 +1,25 @@
-# Release Gates — V2 Foundation
+# V2 Release Gate
 
-- [x] Kernel exists (minimal) + local tests
-- [x] Module 11 + negative/bypass tests (local)
-- [x] V1 contract documented as PROPOSED
-- [ ] CI green on tip recorded
-- [ ] V1 exports real evidence (blocks M11 seal)
-- [ ] M11 sealed
+## Foundation phase close (current)
 
-M12–22 blocked until map freeze and M11 seal against real V1 evidence.
+Not: “Modules 11–22 complete.”
+
+Yes: contract frozen · local travel proven · two-checkout CI when green · M11/Kernel seal **only** if `V2_CLOSING_AND_M11_SEAL_MANUAL.md` checklist passes.
+
+## Blockers for M11 SEAL
+
+1. Live two-checkout **CI_VERIFIED** (not local-only)  
+2. Primary proof uses **real V1 producer** artifact  
+3. Full negative matrix  
+4. Kernel isolation on reject  
+5. Docs match code  
+
+## Blockers for M12+
+
+M11 not sealed · map not frozen · CRTG not required for M12 start but must not be falsely claimed
+
+## Status line
+
+```text
+M11 NOT SEALED · TWO_CHECKOUT PENDING · CRTG DESIGN PENDING · M12–22 BLOCKED
+```
