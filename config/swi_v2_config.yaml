@@ -1,0 +1,15 @@
+# SWI Volume 2 configuration — V2-specific only
+# evidence_schema_version remains PENDING until V1 releases a real producer
+
+foundation:
+  accepted_volume: 1
+  accepted_modules: "00-10"
+  evidence_schema_version: "PENDING"
+  supported_foundation_versions:
+    - "1.0-proposed"
+  supported_evidence_schema_versions:
+    - "1.0-proposed"
+
+claims:
+  production_ready: false
+  universal_security: false
