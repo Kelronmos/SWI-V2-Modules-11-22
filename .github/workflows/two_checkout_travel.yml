@@ -1,0 +1,63 @@
+name: two-checkout-travel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  travel:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout V2
+        uses: actions/checkout@v4
+        with:
+          path: v2
+
+      - name: Checkout V1
+        uses: actions/checkout@v4
+        with:
+          repository: Kelronmos/SWI-V1-Module-1-10
+          path: v1
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install V1 deps (producer venv)
+        run: |
+          python -m venv venv-v1
+          venv-v1/bin/pip install -q -r v1/requirements.txt
+
+      - name: Install V2 deps (consumer venv)
+        run: |
+          python -m venv venv-v2
+          venv-v2/bin/pip install -q -r v2/requirements.txt
+
+      - name: Export evidence from V1
+        run: |
+          PYTHONPATH=v1 venv-v1/bin/python v1/scripts/export_travel_evidence.py --out evidence.json
+
+      - name: Admit evidence in V2
+        run: |
+          PYTHONPATH=v2 venv-v2/bin/python v2/scripts/admit_travel_evidence.py --in evidence.json
+
+      - name: Reject tampered payload
+        run: |
+          python -c "import json;d=json.load(open('evidence.json'));d['payload']=dict(d['payload']);d['payload']['allowed']=not d['payload'].get('allowed', True);json.dump(d,open('evidence.json','w'))"
+          if PYTHONPATH=v2 venv-v2/bin/python v2/scripts/admit_travel_evidence.py --in evidence.json; then
+            echo "tampered evidence was admitted" >&2
+            exit 1
+          fi
+          echo "tamper correctly rejected"
+
+      - name: Upload evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-evidence-py${{ matrix.python-version }}
+          path: evidence.json
