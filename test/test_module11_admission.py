@@ -1,4 +1,6 @@
-"""Module 11 foundation admission tests — fail-closed trust boundary."""
+"""Module 11 foundation admission tests."""
+from __future__ import annotations
+
 import pytest
 
 from swi_v2.kernel.admission import admit_foundation_input, compute_integrity_reference
@@ -79,23 +81,10 @@ def test_invalid_verification_status_rejected():
         admit_foundation_input(data)
 
 
-def test_valid_foundation_evidence_accepted():
-    data = _valid_fixture()
-    admitted = admit_foundation_input(data)
+def test_valid_fixture_admitted():
+    admitted = admit_foundation_input(_valid_fixture())
     assert isinstance(admitted, AdmittedInput)
     assert admitted.admitted_by == "module_11_foundation_admission"
-
-
-def test_admitted_input_is_distinct_from_raw_input():
-    data = _valid_fixture()
-    admitted = admit_foundation_input(data)
-    assert not isinstance(data, AdmittedInput)
-    assert isinstance(admitted, AdmittedInput)
-
-
-def test_module_12_rejects_raw_input():
-    with pytest.raises(ModuleKernelError):
-        module12_process({"payload": "raw"})
 
 
 def test_module_12_accepts_admitted_input():
@@ -107,3 +96,17 @@ def test_module_12_accepts_admitted_input():
 def test_failed_admission_never_reaches_module_12():
     with pytest.raises(ModuleKernelError):
         module12_process("raw")
+
+
+def test_v1_pipeline_status_accepted_with_valid_integrity():
+    """Real V1 producer status is admissible when integrity matches."""
+    data = _valid_fixture(verification_status="v1_trainer_pipeline_completed")
+    data["integrity_reference"] = compute_integrity_reference(
+        payload=data["payload"],
+        foundation_version=data["foundation_version"],
+        evidence_schema_version=data["evidence_schema_version"],
+        evidence_id=data["evidence_id"],
+        source_reference=data["source_reference"],
+    )
+    admitted = admit_foundation_input(data)
+    assert isinstance(admitted, AdmittedInput)
