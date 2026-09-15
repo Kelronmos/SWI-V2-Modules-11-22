@@ -67,7 +67,7 @@ def test_serialized_v1_shaped_envelope_admitted():
     admitted = admit_foundation_input(data)
     assert isinstance(admitted, AdmittedInput)
     assert admitted.evidence_id == "v1-travel-sample-001"
-    require_admitted(admitted)
+    require_admitted(admitted, module="test_travel")
     out = module12_process(admitted)
     assert out["status"] == "accepted_placeholder"
 
