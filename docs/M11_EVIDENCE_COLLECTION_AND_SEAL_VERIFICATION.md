@@ -8,7 +8,7 @@
 ```text
 Contract              FROZEN
 Local V1 → V2 travel  PROVEN
-Two-checkout CI       CI_VERIFIED (tip run 34987307390 · V2 061a47f · V1 be31dd7)
+Two-checkout CI       CI_VERIFIED
 M11                   TESTED / NOT SEALED
 Kernel                TESTED / NOT SEALED
 CRTG                  DESIGN PENDING
@@ -23,13 +23,15 @@ Do not change the frozen contract to make a failing test pass.
 
 ## Tip-specific CI
 
-Two-checkout CI is **CI_VERIFIED** on the audited tip:
+Two-checkout CI is currently CI_VERIFIED for the audited tip.
 
-- V2 SHA: `061a47f`
-- V1 producer SHA: `be31dd7`
-- Workflow: `two_checkout_travel.yml`
-- Run ID: `34987307390`
-- Status: green
+V2 SHA: `061a47ff23705684179cb48836051c8b097e1b65`
+V1 producer SHA: `be31dd733e7fba17ceddb0b142a075abcfca890a`
+Workflow run: `34987307390`
+Workflow: `two_checkout_travel.yml`
+Status: GREEN
+
+This evidence does not by itself seal M11. A–G audit completion is still required.
 
 Evaluate any *future* tip the same way: earlier green runs do **not** prove a new tip.  
 Record: V2 SHA · V1 producer SHA · workflow run ID · status for every seal candidate.
