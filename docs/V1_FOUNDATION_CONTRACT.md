@@ -1,31 +1,20 @@
 # V1 Foundation Evidence Contract
 
-**STATUS: PROPOSED / IMPLEMENTATION PENDING**
+**STATUS:** V1 producer **IMPLEMENTED** (unsigned) · V2 accepts fixture **and** `v1_trainer_pipeline_completed`
 
-V1: https://github.com/Kelronmos/SWI-V1-Module-1-10  
-V2: https://github.com/Kelronmos/SWI-V2-Modules-11-22
+## Producer (V1)
 
-## What V1 provides today
+`swi_core/foundation_evidence.py` → `export_foundation_evidence(PipelineResult)`
 
-- Modules 00–10 under `swi_core/`
-- ModuleKernel on 02, 03, 05, 06
-- Trainer fail-closed halt on kernel contract failure
-- Tests, verify.sh, CI, seal/evidence docs
+| Field | Value |
+|-------|--------|
+| foundation_version | `1.0-proposed` |
+| evidence_schema_version | `1.0-proposed` |
+| verification_status | `v1_trainer_pipeline_completed` |
+| integrity_reference | SHA-256 canonical JSON (shared with V2) |
 
-## What V1 does NOT yet provide
+## Still pending
 
-- Versioned exportable cross-repository foundation evidence object
-- Production integrity reference emitted for downstream volumes
+CRTG / signed envelope · cross-repo CI integration test · Foundation Seal 5 · M11 SEAL
 
-## Proposed envelope
-
-payload · foundation_version · evidence_schema_version · evidence_id · integrity_reference · verification_status · source_reference
-
-## Version support (V2 skeleton)
-
-| Contract | Support |
-|----------|---------|
-| 1.0-proposed | SUPPORTED (fixtures only) |
-| unknown | REJECT |
-
-V1 producer: **NOT IMPLEMENTED**. V2 verifier: **IMPLEMENTED** against fixtures only.
+Fixtures with `foundation_verified_test_fixture` remain valid unit tests only.

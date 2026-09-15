@@ -42,7 +42,7 @@ def compute_integrity_reference(
 def admit_foundation_input(
     candidate: Union[FoundationEvidenceEnvelope, Mapping[str, Any], Any],
 ) -> AdmittedInput:
-    """Admit only candidates that satisfy the PROPOSED V1 foundation contract."""
+    """Admit only candidates that satisfy the V1 foundation contract."""
     if isinstance(candidate, FoundationEvidenceEnvelope):
         envelope = candidate
     elif isinstance(candidate, Mapping):
@@ -78,7 +78,12 @@ def admit_foundation_input(
             f"unsupported evidence_schema_version: {envelope.evidence_schema_version!r}"
         )
 
-    if envelope.verification_status != "foundation_verified_test_fixture":
+    # Fixture status (unit tests) or real V1 Trainer export status.
+    _accepted_status = frozenset({
+        "foundation_verified_test_fixture",
+        "v1_trainer_pipeline_completed",
+    })
+    if envelope.verification_status not in _accepted_status:
         raise InvalidFoundationEvidence(
             f"verification_status not acceptable for current V2 build: "
             f"{envelope.verification_status!r}"
