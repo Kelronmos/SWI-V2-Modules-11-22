@@ -2,9 +2,13 @@
 
 | Component | Status |
 |-----------|--------|
-| M11 | TESTED + hardened (strict fields, opt-in ReplayGuard) / **NOT SEALED** |
+| M11 | TESTED + hardened / **NOT SEALED** |
 | Kernel | TESTED / **NOT SEALED** |
-| Two-checkout CI tip | **NOT CI_VERIFIED** until tip SUCCESS proven |
+| Tip freeze | See `docs/M11_TIP_FREEZE.md` |
+| Prior audit report | **Historical** (older SHAs) |
+| Two-checkout CI tip | **NOT CI_VERIFIED** |
 | M11_SEAL_RECORD.md | **ABSENT** |
 | M12–22 | **BLOCKED** |
 | CRTG | DESIGN PENDING |
+
+Close evidence on the frozen tip. Do not expand architecture.
