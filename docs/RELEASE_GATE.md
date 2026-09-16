@@ -1,9 +1,11 @@
 # V2 Release Gate
 
-1. Two-checkout CI tip-specific SUCCESS  
-2. A–G audit all PASS  
-3. `M11_SEAL_RECORD.md` written  
-4. Then M11 → SEALED  
-5. Only then M12 contract/implementation  
+Per `M11_FINAL_AUDIT_REPORT.md` (2026-09-16):
 
-M12–22 bulk **BLOCKED**. No auto-seal from pytest %.
+```text
+M11 NOT SEALED
+```
+
+Blockers: tip-specific two-checkout CI_VERIFIED; Python 3.10/3.11 evidence on audit path.
+
+M12 **BLOCKED** until `M11_SEAL_RECORD.md` exists after full A–G PASS.
