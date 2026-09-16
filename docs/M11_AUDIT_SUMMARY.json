@@ -1,27 +1,28 @@
 {
   "module": "M11",
-  "status": "AUDIT_PENDING",
-  "v1_sha": null,
-  "v2_sha": null,
+  "status": "AUDIT_PARTIAL",
+  "v1_sha": "be31dd7 (as cited in repo's own docs/MODULE_STATUS.md — not independently verifiable from a .git-less zip export)",
+  "v2_sha": "061a47f (as cited in repo's own docs/MODULE_STATUS.md — not independently verifiable from a .git-less zip export)",
   "workflow": "two_checkout_travel.yml",
-  "workflow_run": null,
+  "workflow_run": "34987307390 (as cited by repo docs; GitHub Actions itself not reachable from this session)",
   "evidence_artifact": {
-    "filename": null,
-    "sha256": null
+    "filename": "foundation_evidence.json",
+    "sha256": "6325e9385eaab4a91f389c347b30fe0b874712cebe660c89a5c97ef72a932849",
+    "generated_by": "venv_v1/bin/python scripts/export_travel_evidence.py, executed this session"
   },
   "checks": {
-    "contract": "PENDING",
-    "boundary": "PENDING",
-    "real_producer": "PENDING",
-    "admission": "PENDING",
-    "kernel_isolation": "PENDING",
-    "reproducibility": "PENDING",
-    "documentation": "PENDING"
+    "contract": "PASS",
+    "boundary": "PASS",
+    "real_producer": "PASS",
+    "admission": "PASS (14/14 fixtures: positive, 2 tamper paths, malformed JSON, 5 missing-field, 2 unsupported-version, bad status, raw dict, PipelineResult-shaped)",
+    "kernel_isolation": "PASS",
+    "reproducibility": "PARTIAL (local Python 3.12 two-checkout flow reproduced directly; GitHub Actions run and 3.10/3.11 matrix not independently reproducible from this environment)",
+    "documentation": "PASS (sweep run; no unguarded overclaim found beyond already-disclosed status language)"
   },
   "python_matrix": {
-    "3.10": "PENDING",
-    "3.11": "PENDING",
-    "3.12": "PENDING"
+    "3.10": "PENDING - interpreter not available in this environment",
+    "3.11": "PENDING - interpreter not available in this environment",
+    "3.12": "PASS - V1 140/140 tests, V2 41/41 tests, both run this session"
   },
-  "notes": "Do not set status to SEALED until every check above reads PASS with cited evidence in docs/M11_SEAL_AUDIT_WORKSHEET.md. This file is a status record, not a seal mechanism."
+  "notes": "This file reflects real command execution performed in a sandboxed session on 2026-09-16 against the uploaded repo snapshots, not a restatement of the repos' own claims. Status remains AUDIT_PARTIAL, not SEALED: the CI-only and git-history-only rows cannot be produced from a .git-less zip in an environment without GitHub Actions access. Do not treat this file as authorization to write M11_SEAL_RECORD.md or to flip MODULE_STATUS.md to SEALED — that still requires the pending rows above."
 }
