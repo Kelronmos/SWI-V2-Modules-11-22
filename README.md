@@ -2,17 +2,22 @@
 
 Upstream: [SWI-V1-Module-1-10](https://github.com/Kelronmos/SWI-V1-Module-1-10)
 
-Closing phase: **prove** the boundary — do not complete 11–22 by claim.
-
 ```text
-Contract FROZEN · local travel PROVEN · two-checkout CI_VERIFIED
-M11 / Kernel TESTED · NOT SEALED · M12–22 BLOCKED · CRTG DESIGN PENDING
+Serialized V1 evidence → M11 → AdmittedInput → Kernel → (M12 after M11 seal only)
 ```
 
-**Manuals:** [Closing](docs/V2_CLOSING_AND_M11_SEAL_MANUAL.md) · [Execution](docs/V2_CLOSING_EXECUTION_MANUAL.md) · [Two-checkout](docs/TWO_CHECKOUT_CI_TEST_PLAN.md)
+| State | Value |
+|-------|--------|
+| M11 / Kernel | TESTED / **NOT SEALED** |
+| Two-checkout CI | **NOT CI_VERIFIED** until tip SUCCESS proven |
+| M12–22 | **BLOCKED** |
+| CRTG | DESIGN PENDING |
+
+**Execution order:** write access → tip CI → A–G audit → seal record → M11 SEALED → M12  
+See `docs/CONTROLLED_CLOSING_M11_SEAL_M12_EXECUTION_MANUAL.md`
 
 ```bash
 pip install -r requirements.txt && python -m pytest -q
 ```
 
-CI: `two_checkout_travel.yml` — Job 1 produces V1 evidence; Job 2 admits with V1 **not** importable.
+«DO NOT CLAIM WHAT THE CODE CANNOT DEMONSTRATE.»

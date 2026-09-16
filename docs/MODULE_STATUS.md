@@ -5,11 +5,10 @@
 | M11 | TESTED / **NOT SEALED** |
 | Kernel | TESTED / **NOT SEALED** |
 | Local travel | PROVEN |
-| Two-checkout CI | **CI_VERIFIED** (tip run 34987307390 · V2 `061a47f` · V1 `be31dd7`) |
-| CRTG | DESIGN PENDING |
+| Two-checkout CI | **NOT CI_VERIFIED** until tip SUCCESS + logs captured |
+| M11_SEAL_RECORD.md | **ABSENT** |
 | M12–22 | **BLOCKED** |
+| CRTG | DESIGN PENDING |
 
-**Evidence phase:** `docs/M11_EVIDENCE_COLLECTION_AND_SEAL_VERIFICATION.md`  
-**Worksheet:** `docs/M11_SEAL_AUDIT_WORKSHEET.md`  
-
-Do not set SEALED until worksheet A–G all PASS and `M11_SEAL_RECORD.md` exists.
+Manual: `docs/CONTROLLED_CLOSING_M11_SEAL_M12_EXECUTION_MANUAL.md`  
+Audit: `docs/M11_EVIDENCE_COLLECTION_AND_SEAL_VERIFICATION.md`
