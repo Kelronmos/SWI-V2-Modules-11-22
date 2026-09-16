@@ -1,12 +1,18 @@
 """Foundation evidence structures for V2 admission.
 
-STATUS of the cross-repo contract: PROPOSED / IMPLEMENTATION PENDING on V1.
+STATUS of the cross-repo contract: V1 now provides a versioned/exportable
+foundation evidence producer (swi_core/foundation_evidence.py).
 
-V1 (SWI-V1-Module-1-10) currently provides local pipeline results, tests, and
-seal documentation. It does NOT yet emit a versioned, exportable foundation
-evidence object for cross-repository consumption. Fields below are therefore
-a PROPOSED interface that V2 can verify deterministically against fixtures
-until V1 releases a real evidence producer.
+V1 emits a FoundationEvidenceEnvelope-compatible object with:
+  payload, foundation_version, evidence_schema_version, evidence_id,
+  integrity_reference, verification_status, source_reference, created_at
+
+The integrity digest covers the defined fields while excluding created_at
+(metadata). The current foundation/schema version remains 1.0-proposed.
+
+This contract establishes deterministic schema and integrity handling.
+It does NOT establish sender authentication, factual truth, action safety,
+CRTG signatures, or Foundation Seal 5.
 """
 from __future__ import annotations
 
@@ -20,7 +26,7 @@ SUPPORTED_EVIDENCE_SCHEMA_VERSIONS = frozenset({"1.0-proposed"})
 
 @dataclass(frozen=True)
 class FoundationEvidenceEnvelope:
-    """Proposed V1→V2 evidence envelope (TEST FIXTURE / PROPOSED contract)."""
+    """V1→V2 evidence envelope (schema + integrity contract)."""
 
     payload: Any
     foundation_version: str
