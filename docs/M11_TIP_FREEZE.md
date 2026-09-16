@@ -1,46 +1,29 @@
 # M11 Tip Freeze — Next Audit Target
 
-**Date:** 16 September 2026  
-**Purpose:** Bind the *next* M11 evidence collection to exact commits. Do not treat older audit reports as tip verification.
+**Rule:** At the start of any seal audit, record **exact** `git rev-parse HEAD` for V1 and V2. Do not reuse a freeze table after `main` moves without re-recording.
 
-## Frozen targets (as of this document)
+## Reference tips (pre-doc-push baseline)
 
-| Repo | SHA | Note |
-|------|-----|------|
-| **V1** | `8b884df1a7c1a22578d2f0ee558d9a5b01b4a6a9` | Producer / freeze note; no V2 logic |
-| **V2** | `038a72a182913b4a4900e3bb020425d2b9f07c9e` | Includes hardening `67ce45e` + docs merge |
+| Repo | SHA (baseline for hardening era) |
+|------|----------------------------------|
+| V1 | `8b884df1a7c1a22578d2f0ee558d9a5b01b4a6a9` |
+| V2 | Record current `main` at audit time (hardening landed in `67ce45e`; merge `038a72a`) |
 
-If `main` moves, **re-freeze** before sealing. Do not claim “previously passed.”
+## Historical
 
-## Historical (not tip evidence)
+`M11_FINAL_AUDIT_REPORT.md` = V1 `c09253a…` / V2 `8c7a42f…` only. **Not** tip evidence after hardening.
 
-`docs/M11_FINAL_AUDIT_REPORT.md` audited:
+## Local snapshot
 
-- V1 `c09253a…`
-- V2 `8c7a42f…`
+- At `038a72a`: V2 **50 passed** (Python 3.12 host)  
+- ≠ CI_VERIFIED ≠ SEALED
 
-That report remains valid **for those SHAs only**. After `67ce45e` (strict fields + ReplayGuard), a **fresh** A–G run against the freeze table above is required.
+## Before SEALED
 
-## Local snapshot (host Python 3.12, this freeze push prep)
-
-- V2 full suite: **50 passed** at `038a72a`
-- Does **not** equal CI_VERIFIED or SEALED
-
-## Remaining mandatory before seal
-
-1. Adversarial matrix on frozen tip (incl. unexpected-field reject + ReplayGuard unit behavior)  
-2. Python **3.10 / 3.11 / 3.12** (missing interpreter = NOT PROVEN)  
-3. Tip-specific **two_checkout_travel** SUCCESS + logs + artifact hash  
-4. A–G worksheet all PASS  
-5. `M11_SEAL_RECORD.md` then status SEALED  
-
-## Explicit non-goals until seal
-
-- M12 implementation  
-- CRTG  
-- Live V1↔V2 channel  
-- Expanding ReplayGuard into distributed replay  
-- Importing V1 into V2  
+1. Adversarial matrix on **recorded** tip (incl. unexpected-field + ReplayGuard)  
+2. Python 3.10 / 3.11 / 3.12  
+3. Tip-specific `two_checkout_travel` SUCCESS + logs + artifact hash  
+4. A–G all PASS → `M11_SEAL_RECORD.md` → status SEALED  
 
 ## Status
 
@@ -49,3 +32,5 @@ M11 = TESTED + hardened / NOT SEALED
 M12–22 = BLOCKED
 CRTG = DESIGN PENDING
 ```
+
+Close evidence. Do not expand architecture.
