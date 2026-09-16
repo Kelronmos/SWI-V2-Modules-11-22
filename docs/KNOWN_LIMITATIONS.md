@@ -1,8 +1,24 @@
-# Known Limitations — Volume 2
+# V2 Known Limitations
 
-- The V1→V2 evidence handoff is an authored CI pipeline (checkout → export → upload-artifact → download-artifact → admit), not native or emergent inter-system communication.
-- V2 verifies the evidence artifact’s schema and integrity; it does not verify the identity of whatever produced it (see CRTG — PROPOSED / DESIGN PENDING, not implemented).
-- A real V1 foundation evidence producer path exists and has been exercised (local two-venv and cited two-checkout CI); unit tests may still use fixtures for negative cases. Integrity of the artifact is not the same as truth or authenticated origin.
-- Module 11 is IMPLEMENTED / TESTED and remains **NOT SEALED** until the formal A–G audit and seal record are complete.
-- Modules 12–22 are not substantively implemented (12 is a type-boundary / placeholder scaffold only).
-- No universal AI safety or production certification claims.
+## M11 admission
+
+- Validates schema, integrity digest, and allowed `verification_status` only.
+- Does **not** prove origin, identity, truth, or action safety.
+- `created_at` is optional metadata; **not** in the integrity digest.
+- Unexpected envelope fields are **rejected** (`UnexpectedFieldError`).
+- Default `admit_foundation_input` does **not** prevent replay of the same
+  `evidence_id`. Use opt-in `ReplayGuard` for in-process, in-memory replay
+  rejection only (no durable/cross-machine cache). Not CRTG.
+
+## ReplayGuard
+
+- In-process / in-memory only.
+- Not production replay defense.
+- `scripts/admit_travel_evidence.py` still calls `admit_foundation_input`
+  directly unless explicitly updated.
+
+## CRTG / Seal 5 / M12–22
+
+- CRTG: DESIGN PENDING
+- M11: TESTED / **NOT SEALED** until tip CI + full audit
+- M12–22: BLOCKED until M11 sealed

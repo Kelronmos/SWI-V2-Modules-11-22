@@ -21,6 +21,14 @@ class IntegrityVerificationError(FoundationAdmissionError):
     """Integrity reference failed verification."""
 
 
+class UnexpectedFieldError(FoundationAdmissionError):
+    """Evidence envelope contained fields outside the declared contract schema."""
+
+
+class ReplayError(FoundationAdmissionError):
+    """Evidence with an already-seen evidence_id was presented again to a guard."""
+
+
 class StateTransitionError(ModuleKernelError):
     """Invalid kernel or workflow state transition (e.g. execute after HALT)."""
 

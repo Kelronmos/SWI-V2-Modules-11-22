@@ -24,6 +24,7 @@ from .errors import (
     FoundationAdmissionError,
     IntegrityVerificationError,
     InvalidFoundationEvidence,
+    UnexpectedFieldError,
     UnsupportedFoundationVersion,
 )
 
@@ -71,6 +72,15 @@ def admit_foundation_input(
         if missing:
             raise InvalidFoundationEvidence(
                 f"missing required evidence fields: {sorted(missing)}"
+            )
+        # created_at is legitimate optional metadata from real V1 producer;
+        # excluded from integrity digest, allowed on the envelope schema.
+        known_optional = {"created_at"}
+        extra = set(candidate.keys()) - required - known_optional
+        if extra:
+            raise UnexpectedFieldError(
+                f"evidence envelope contains fields outside the declared contract: "
+                f"{sorted(extra)}"
             )
         try:
             envelope = envelope_from_mapping(candidate)
