@@ -3,12 +3,9 @@
 | Component | Status |
 |-----------|--------|
 | M11 | TESTED + hardened / **NOT SEALED** |
-| Kernel | TESTED / **NOT SEALED** |
-| Tip freeze | See `docs/M11_TIP_FREEZE.md` |
-| Prior audit report | **Historical** (older SHAs) |
-| Two-checkout CI tip | **NOT CI_VERIFIED** |
+| Closure progress | `docs/M11_CLOSURE_PROGRESS_2026-09-16.md` |
+| Checklist | `docs/M11_CLOSURE_CHECKLIST.md` |
+| Two-checkout tip CI | **NOT PROVEN** |
 | M11_SEAL_RECORD.md | **ABSENT** |
 | M12–22 | **BLOCKED** |
 | CRTG | DESIGN PENDING |
-
-Close evidence on the frozen tip. Do not expand architecture.
