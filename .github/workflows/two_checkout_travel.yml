@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Weekly current-tip travel proof (UTC).
+    # Produces real V1 evidence, admits on V2 without importing swi_core,
+    # rejects tamper/bad integrity, runs V2 suite on 3.10/3.11/3.12.
+    - cron: "0 6 * * 1"
 
 jobs:
   produce:
