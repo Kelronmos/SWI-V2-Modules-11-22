@@ -24,6 +24,8 @@ JSON / bytes
 
 Rejection must not reach M12+.
 
+**Mechanism note:** this is a CI-orchestrated artifact handoff (one job produces a file, a second job consumes it after the first has finished), not a live channel between running systems. Nothing described here implies the two repositories communicate, negotiate, or authenticate each other at runtime. See also `docs/CROSS_REPOSITORY_TRUST_SPECIFICATION.md` (PROPOSED / DESIGN PENDING — signer identity not implemented).
+
 ## Provenance
 
 Do not mutate V1 evidence in place. Create **derived** V2 state and keep it distinct.
