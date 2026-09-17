@@ -1,0 +1,70 @@
+{
+  "schema": "swi.operational-contract.v1",
+  "module": "M11",
+  "claim_id": "V47-M11-001",
+  "claim_origin": "HISTORICAL_PDF",
+  "historical_name": "Continuity Lock / context-state pinning",
+  "relationship": "EVOLVED_CONTRACT",
+  "current_contract_name": "Foundation Admission + post-admission cryptographic seal",
+  "current_status": "E4_SEALED",
+  "operational_status": "VERIFIED_AGAINST_CURRENT_V2",
+  "input": {
+    "type": "AdmittedInput",
+    "note": "Raw envelope/dict must not enter seal boundary"
+  },
+  "preconditions": [
+    "valid foundation schema / supported version",
+    "valid integrity reference",
+    "admission produced AdmittedInput"
+  ],
+  "operation": [
+    "canonicalize AdmittedInput",
+    "compute commitment",
+    "compute chain state",
+    "construct Merkle proof",
+    "sign seal state (Ed25519)"
+  ],
+  "outputs": ["seal", "commitment", "chain_hash", "merkle_root", "signature"],
+  "invariants": [
+    "raw input cannot enter seal boundary",
+    "altered payload fails verification",
+    "substituted Merkle proof fails verification",
+    "altered identity / domain fails verification",
+    "verification reconstructs seal material"
+  ],
+  "evidence": {
+    "source_paths": [
+      "swi_v2/kernel/admission.py",
+      "swi_v2/kernel/seal.py",
+      "swi_v2/kernel/ed25519_sig.py",
+      "swi_v2/kernel/merkle.py"
+    ],
+    "source_commit_seal_tip": "1d6d7dc250df80f39aa60bd8da812c9ae3efebec",
+    "v1_commit_seal_time": "e0c6a521d7965c46c18464edc5dc6fbd8f9e254c",
+    "ci_run": "35253244912",
+    "workflow": "two_checkout_travel.yml",
+    "tests": [
+      "test/test_m11_post_admission_seal.py",
+      "test/test_m11_seal_boundary_attacks.py",
+      "test/test_m11_end_to_end_seal.py"
+    ],
+    "seal_record": "docs/M11_SEAL_RECORD.md",
+    "audit_summary": "docs/M11_AUDIT_SUMMARY.json"
+  },
+  "non_claims": [
+    "factual truth of payload",
+    "CRTG / certificate chain",
+    "production HSM / key rotation",
+    "replay protection by signature alone",
+    "completion of M12-M22"
+  ],
+  "pipeline": [
+    "V1 FoundationEvidenceEnvelope",
+    "serialized evidence artifact",
+    "V2 admission (no V1 tree)",
+    "AdmittedInput",
+    "post-admission seal",
+    "independent verification",
+    "tamper rejection"
+  ]
+}
