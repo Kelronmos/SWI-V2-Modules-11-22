@@ -8,7 +8,7 @@ on:
   schedule:
     # Weekly current-tip travel proof (UTC).
     # Produces real V1 evidence, admits on V2 without importing swi_core,
-    # rejects tamper/bad integrity, runs V2 suite on 3.10/3.11/3.12.
+    # rejects tamper/bad integrity, post-admission seal, runs V2 suite on 3.10/3.11/3.12.
     - cron: "0 6 * * 1"
 
 jobs:
@@ -103,6 +103,11 @@ jobs:
             exit 1
           fi
           echo "PASS: bad integrity rejected"
+
+      - name: Post-admission seal + verify + tamper reject
+        run: |
+          echo "V2 commit: $(git rev-parse HEAD)"
+          PYTHONPATH=. venv-v2/bin/python scripts/seal_travel_evidence.py --in evidence.json
 
       - name: Unit tests (V2 isolation)
         run: |
