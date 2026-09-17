@@ -1,9 +1,10 @@
 # Authors and Legacy — SWI V2 (Modules 11–22)
 
-**Licence:** SWI Community & Legacy Licence (SWI-CLL) v1.0 — see `LICENSE`  
+**Licence:** Apache License 2.0 — see `LICENSE`  
 **Copyright:** © 2026 Keletso Ronald Mosidila / Trusts Motion
 
-This file is a **provenance record**, not a licence. Permissions are controlled by `LICENSE`.
+This file is a **provenance record**, not a licence. Permissions are controlled by `LICENSE`.  
+This record does not restrict rights granted under Apache-2.0.
 
 ---
 
@@ -11,8 +12,8 @@ This file is a **provenance record**, not a licence. Permissions are controlled 
 
 | Role | Identity |
 |------|----------|
-| Original author / copyright holder | Keletso Ronald Mosidila |
-| Organisation (project association) | Trusts Motion |
+| Original author / architect | Keletso Ronald Mosidila |
+| Organisation | Trusts Motion |
 | Primary public repositories | GitHub: Kelronmos |
 
 ---
@@ -26,20 +27,21 @@ This file is a **provenance record**, not a licence. Permissions are controlled 
 | Upstream contract | Serialized V1 foundation evidence → M11 admission (not a V1 code fork) |
 | Historical V1 peer | `Kelronmos/SWI-V1-Module-1-10` (M00–M10) |
 
-Module numbers are permanent identities. “V1” / “V2” name architectural generations and historical repository boundaries, not a claim that every module number is fully implemented or sealed.
+Module numbers are permanent identities. “V1” / “V2” name architectural generations and repository boundaries, not a claim that every module is fully implemented or sealed.
 
 ---
 
-## 3. What is original vs later contribution
+## 3. Original vs contribution vs independent work
 
 | Layer | Notes |
 |-------|--------|
-| Original SWI design intent, architecture, and project identity | Keletso Ronald Mosidila / Trusts Motion |
-| Code, tests, and docs in this repository | Authored under the same copyright unless a file states otherwise |
-| Third-party libraries | Own licences; not transferred to SWI copyright |
-| Independent implementations by others | Their copyright if genuinely independent and not copying protected expression |
+| Original SWI design, architecture, project identity | Keletso Ronald Mosidila / Trusts Motion |
+| Code, tests, docs in this repository | Under the same copyright unless a file states otherwise |
+| Third-party libraries | Own licences |
+| Independent implementations by others | Their copyright if genuinely independent |
 
-Forks do **not** transfer authorship of the original repository.
+Forks do **not** transfer authorship of the original repository.  
+Contribution credit does **not** rewrite historical authorship of the SWI architecture.
 
 ---
 
@@ -49,24 +51,26 @@ Forks do **not** transfer authorship of the original repository.
 |-----------|--------|
 | M11 continuity seal (historical) | `docs/M11_SEAL_RECORD.md` — tip `1d6d7dc…`, CI run `35253244912` |
 | Governance / trust sequence | `docs/SWI_CONTROLLED_SEQUENCE_MANUAL.md` |
-| M12 | Contract draft only; **implementation frozen** until trust gates |
+| M12 | Contract draft only; implementation gated |
 
-Do not rewrite historical seal records to invent earlier properties.
+Do not rewrite historical seal records to invent earlier properties.  
+Licence migration does **not** alter M11 seal meaning or cryptographic evidence.
 
 ---
 
 ## 5. Contributors
 
-List significant contributors here as they appear (name, period, area of work). Until filled:
+List significant contributors as they appear (name, period, area of work). Until filled:
 
 - Primary author: Keletso Ronald Mosidila
 
 ---
 
-## 6. Contact
+## 6. Collaboration note
 
-Commercial authorization and formal copyright inquiries: via the official SWI / Trusts Motion repository channels identified by the copyright holder.
+The project welcomes inspection, tests, defect reports, PRs, and independent implementations under Apache-2.0.  
+Open collaboration does not mean SWI is production-ready, certified, or independently verified merely because the licence is open.
 
 ---
 
-*Preserve this file (or equivalent notices) when redistributing substantial derivatives under SWI-CLL.*
+*Preserve this file (or equivalent notices) when redistributing substantial derivatives.*

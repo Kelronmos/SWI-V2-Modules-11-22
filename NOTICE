@@ -1,0 +1,31 @@
+SWI — Structured Workflow Intelligence (Volume 2 / Modules 11–22)
+Copyright 2026 Keletso Ronald Mosidila / Trusts Motion
+
+This product includes software developed by Keletso Ronald Mosidila / Trusts Motion
+and contributors to the SWI project.
+
+The original SWI architecture, module design, evidence discipline, and project
+identity were conceived and established by Keletso Ronald Mosidila / Trusts Motion.
+
+This repository (SWI-V2-Modules-11-22) is the continuity layer that depends on
+the V1 Foundation Evidence Contract. It is not a code fork of V1 internals.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This NOTICE file is for informational and attribution purposes only and does
+not modify the License. Trademarks, service marks, and project identity
+(including "SWI", "Structured Workflow Intelligence", and "Trusts Motion")
+are not licensed under the Apache License.
+
+Historical technical evidence (including the M11 seal record) is governed by
+the repository evidence rules and is independent of this licence change.
