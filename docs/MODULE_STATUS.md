@@ -10,8 +10,10 @@
 | Standalone verifier repo | **NOT CREATED** (next gate) |
 | Replay | **NOT IMPLEMENTED** (ReplayGuard = partial in-memory only) |
 | Foundation Seal 5 (V1) | **NOT READY** |
-| **Firefly** | **DESIGN / DEFERRED** — contracts: `SCAR_FIREFLY_CONSUME_REFUSE_CONTRACT.md`, `SCAR_FIREFLY_ADAPTER_CONTRACT.md` |
-| SCAR (V1) | **IMPLEMENTED / TESTED** — see V1 `docs/SCAR_STATUS.md` |
+| **Firefly** | **DESIGN / DEFERRED** — **NO IMPLEMENTATION AUTHORIZED** |
+| SCAR → Firefly docs | **DESIGN FROZEN** — see `docs/SCAR_FIREFLY_INDEX.md` |
+| SCAR (V1) | **IMPLEMENTED / TESTED** — V1 `docs/SCAR_STATUS.md` |
 | M13–22 | **BLOCKED** |
 
-Canonical memory-web freeze: `docs/V2_MEMORY_WEB_STATUS.md`
+Canonical memory-web freeze: `docs/V2_MEMORY_WEB_STATUS.md`  
+SCAR→Firefly entry point: `docs/SCAR_FIREFLY_INDEX.md`
