@@ -1,0 +1,49 @@
+{
+  "schema": "swi.v47.property-map.v1",
+  "module": "M11",
+  "properties": [
+    {
+      "property_id": "M11-P001",
+      "claim": "Tampered evidence rejected at admission",
+      "implementation_surface": ["swi_v2/kernel/admission.py"],
+      "test_surface": ["test/test_module11_admission.py", "test/test_m11_post_admission_seal.py"],
+      "assertion_intent": "admission rejects tampered payload / integrity failure"
+    },
+    {
+      "property_id": "M11-P002",
+      "claim": "Raw input cannot enter seal boundary",
+      "implementation_surface": ["swi_v2/kernel/seal.py", "swi_v2/kernel/admission.py"],
+      "test_surface": ["test/test_m11_seal_boundary_attacks.py"],
+      "assertion_intent": "create_seal rejects non-AdmittedInput"
+    },
+    {
+      "property_id": "M11-P003",
+      "claim": "Merkle proof substitution rejected",
+      "implementation_surface": ["swi_v2/kernel/seal.py", "swi_v2/kernel/merkle.py"],
+      "test_surface": ["test/test_m11_seal_boundary_attacks.py"],
+      "assertion_intent": "verify_seal false when proof from other evidence"
+    },
+    {
+      "property_id": "M11-P004",
+      "claim": "Domain substitution rejected",
+      "implementation_surface": ["swi_v2/kernel/seal.py"],
+      "test_surface": ["test/test_m11_seal_boundary_attacks.py"],
+      "assertion_intent": "wrong seal domain fails verification"
+    },
+    {
+      "property_id": "M11-P005",
+      "claim": "Verification reconstructs seal material",
+      "implementation_surface": ["swi_v2/kernel/seal.py"],
+      "test_surface": ["test/test_m11_post_admission_seal.py", "test/test_m11_end_to_end_seal.py"],
+      "assertion_intent": "verify reconstructs commitment/proof"
+    },
+    {
+      "property_id": "M11-P006",
+      "claim": "Factual truth of payload",
+      "implementation_surface": [],
+      "test_surface": [],
+      "assertion_intent": "EXPLICIT NON-CLAIM"
+    }
+  ],
+  "note": "Surface-level until pytest nodeids and CI step logs are independently resolved."
+}
