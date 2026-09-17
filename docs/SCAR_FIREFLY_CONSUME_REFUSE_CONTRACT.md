@@ -1,161 +1,179 @@
 # SCAR → Firefly Consume / Refuse Contract
 
-**Status:** DESIGN / PROPOSED — not implemented  
+**Status:** DESIGN PENDING — NO IMPLEMENTATION AUTHORIZED  
 **Date:** 17 September 2026  
-**Companion:** `docs/SCAR_FIREFLY_ADAPTER_CONTRACT.md` (adapter shape)  
-**SCAR source of truth:** V1 `docs/SCAR_STATUS.md` + `swi_core/scar.py`
+**Companion:** `docs/SCAR_FIREFLY_ADAPTER_CONTRACT.md`  
+**SCAR evidence:** V1 `docs/SCAR_STATUS.md` · `swi_core/scar.py`  
+**M11:** Untouched — seal and historical evidence remain as recorded
 
 ```text
-SCAR RECORD
-   │
-   ├── What Firefly MAY consume
-   ├── What Firefly MUST preserve
-   ├── What Firefly MUST reject
-   └── What Firefly MUST NEVER infer
+SCAR → Consume/Refuse Contract → Firefly design → contract tests → implementation
 ```
 
-**Central rule:** Firefly may consume *evidence about* a SCAR record; it must not *manufacture meaning* from that record.
-
-**Failure path (mandatory):**
+**Not:**
 
 ```text
-SCAR → Firefly adapter → missing / contradictory provenance
-        → REJECT or HALT → NO MEMORY AUTHORITY CREATED
+SCAR → Firefly → retroactively decide what the data meant
 ```
 
 ---
 
-## 1. Four-question seam
+## Critical distinction
 
-### 1.1 MAY consume
+| Phrase | Meaning |
+|--------|--------|
+| **MAY CONSUME ≠ TRUST** | Taking a field in does not grant trust |
+| **PRESERVE ≠ VERIFY** | Keeping a value does not re-validate the world |
+| **INTEGRITY ≠ TRUTH** | Hash/root checks local consistency, not factual truth |
+| **MEMORY ≠ AUTHORITY** | Storage does not create admission, replay, or policy power |
 
-| SCAR information | Firefly |
-|------------------|--------|
-| `scar_id` / record identity | MAY consume |
-| Text content (`title`, `description`, `trigger_context`, `failure_signature`, `recommended_response`) | MAY preserve as opaque bytes/strings |
-| `content_hash` | MAY preserve |
-| Store `integrity_root` at capture | MAY preserve as reference |
-| `scar_class`, `priority_score`, `protection_level` | MAY preserve as **metadata only** |
-| `status` | MAY preserve **without upgrade** |
-| `created_at`, `created_by`, `source_event_id`, `version` | MAY consume as provenance inputs |
-| `previous_scar_hash` | MAY preserve as chain hint (not proof of global history) |
-| `tags` | MAY preserve as opaque labels |
-| M07 `validate_integrity()` / `scar_integrity` result | MAY **record as a reported status** at capture time |
-
-### 1.2 MUST preserve
-
-| Item | Rule |
-|------|------|
-| Provenance (`created_by`, `source_event_id`, `created_at`, source repo/system) | MUST preserve; MUST NOT invent if absent |
-| Source reference (`scar_id`) | MUST preserve |
-| `content_hash` as stated | MUST preserve; MUST NOT replace with a “better” hash silently |
-| `status` label | MUST preserve; MUST NOT promote `active` → sealed/true |
-| Contract version of this consume path | MUST stamp on output |
-
-### 1.3 MUST reject
-
-| Condition | Response |
-|-----------|----------|
-| Missing `scar_id` | **REJECT** |
-| Missing `content_hash` | **REJECT** |
-| `content_hash` ≠ recomputation over V1 canonical fields | **REJECT** |
-| Missing provenance required by policy (e.g. empty `created_by` when policy requires it) | **REJECT** or **HALT** |
-| Contradictory provenance (two different `created_by` for same id without version story) | **REJECT** |
-| Payload asks adapter to set factual-true / M11-admitted / replay-match flags | **HALT** |
-| Treat SCAR output as `AdmittedInput` or M12 input | **HALT** |
-
-### 1.4 MUST NEVER infer
-
-| Inference | Rule |
-|-----------|------|
-| “This is factually true” | MUST NOT infer |
-| “This person intended X” (from text fields) | MUST NOT infer |
-| “This memory is trustworthy because it is hashed” | MUST NOT infer |
-| M11 admission | MUST NOT manufacture |
-| Replay result | MUST NOT manufacture |
-| Semantic understanding of scar text | MUST NOT silently invent |
-| Sovereign class ⇒ higher truth | MUST NOT infer |
-| Integrity root ⇒ external non-tampering | MUST NOT infer |
-| Embedding similarity ⇒ related meaning | MUST NOT infer under this contract |
+V1 SCAR is frozen as **evidence of what was stored and integrity-checked locally**, not as authority over V2 admission or truth.
 
 ---
 
-## 2. Field-by-field ambiguity audit (V1 `Scar`)
+## Four boundaries
 
-Canonical content hash fields (from `compute_content_hash`):  
+### 1. MAY CONSUME
+
+- SCAR record ID (`scar_id`)
+- content (opaque text fields)
+- content hash
+- priority metadata (`priority_score`, `scar_class`, `protection_level`)
+- integrity-root reference (store snapshot at capture)
+- source/provenance metadata (`created_by`, `created_at`, `source_event_id`, `version`)
+- M07 `scar_integrity` / `validate_integrity` **result as reported status at capture time**
+
+### 2. MUST PRESERVE
+
+- original identity/reference (`scar_id`)
+- provenance fields as received (no invention)
+- source integrity information (`content_hash`, capture-time `integrity_root`)
+- validation status labels without upgrade
+- distinctions among OBSERVED / CLAIMED / TESTED / … (adapter must not collapse them into “true”)
+- the fact that the record **came from SCAR** (`source_system = swi_v1_scar`)
+
+### 3. MUST REJECT
+
+- malformed SCAR records
+- missing fields required by this contract
+- contradictory provenance
+- content / hash mismatch
+- invalid integrity metadata
+- attempts to turn an unverified record into an **admitted** record (M11) or M12 input
+
+### 4. MUST NEVER INFER
+
+- factual truth
+- human intent
+- semantic meaning that SCAR does not establish
+- M11 admission
+- replay success
+- authorization
+- security / trustworthiness beyond “hash matched at T0”
+- external anchoring
+- “AI memory” merely because the record is stored
+
+---
+
+## Field matrix (V1 `Scar` → Firefly action → reason → failure)
+
+Canonical hash inputs:  
 `scar_class | title | description | trigger_context | failure_signature | recommended_response | embedding_model`
 
-| Field | Consume? | Ambiguity | Resolution |
-|-------|----------|-----------|------------|
-| `scar_id` | MAY / MUST preserve as source ref | None if non-empty UUID/string | REJECT if missing/empty |
-| `version` | MAY | Local scar version ≠ Firefly schema version | Store as `scar_version`; separate `contract_version` |
-| `scar_class` | MAY as metadata | “Sovereign” sounds like authority | Metadata only; never authority bit |
-| `status` | MAY / MUST preserve | `suspect` vs accept | Default: allow store as OBSERVED with status copied; policy may REJECT `suspect`/`pruned` |
-| `title` | MAY opaque | Looks like a claim | Opaque; no NLP |
-| `description` | MAY opaque | Same | Opaque |
-| `trigger_context` | MAY opaque | Same | Opaque |
-| `failure_signature` | MAY opaque | Same | Opaque |
-| `recommended_response` | MAY opaque | Could be read as policy order | Opaque advice text only; not executable authority |
-| `embedding` | **Default: DO NOT consume** in v1 adapter | Implies semantic memory | Out of scope unless a later contract; refuse silent use |
-| `embedding_model` | In content_hash only | Model name ≠ quality | Preserve string if present; no quality claim |
-| `embedding_dim` | Optional metadata | None | MAY copy if embedding out of scope still ignore vectors |
-| `content_hash` | MUST | Stale hash if fields edited | REJECT on mismatch |
-| `previous_scar_hash` | MAY | Suggests full chain existence | Hint only; no global ledger claim |
-| `created_at` | MUST preserve if present | Clock not authenticated | Label as SCAR-reported time |
-| `created_by` | MUST preserve | Free string | No identity proof |
-| `source_event_id` | MAY | May be null | Null ≠ invented id |
-| `priority_score` | MAY metadata | Looks like ranking truth | Sort hint only |
-| `protection_level` | MAY metadata | Looks like security level | SCAR access rule remnant only |
+| SCAR field | Firefly action | Reason | Failure behaviour |
+|------------|----------------|--------|-------------------|
+| `scar_id` | MAY consume; MUST preserve as source ref | Identity of record | Missing/empty → **REJECT** |
+| `version` | MAY consume as `scar_version` | Local scar version ≠ Firefly schema | Do not treat as contract_version |
+| `scar_class` | MAY consume as metadata only | Classification, not authority | Never set authority/admission bits |
+| `status` | MUST preserve without upgrade | ACTIVE/ARCHIVED/PRUNED/SUSPECT are SCAR labels | Policy choice: REJECT or accept-as-flagged for SUSPECT/PRUNED |
+| `title` | MAY preserve opaque | Text is not verified meaning | No NLP / intent extraction |
+| `description` | MAY preserve opaque | Same | Same |
+| `trigger_context` | MAY preserve opaque | Same | Same |
+| `failure_signature` | MAY preserve opaque | Same | Same |
+| `recommended_response` | MAY preserve opaque | Advice text ≠ executable policy | Must not execute or elevate to authorization |
+| `embedding` | **Default: do not consume** (v1) | Implies semantic memory SCAR does not claim | Ignore or **REJECT** if policy forbids vectors |
+| `embedding_model` | MAY preserve string only | In content_hash; not quality proof | No model-trust claim |
+| `embedding_dim` | MAY copy as metadata | Dimensionality only | Ignore vectors |
+| `content_hash` | MUST preserve; MUST verify match | Integrity of content bundle | Mismatch → **REJECT** |
+| `previous_scar_hash` | MAY preserve as hint | Not a global ledger | Must not claim full-chain proof |
+| `created_at` | MUST preserve if present | SCAR-reported time, not authenticated clock | Label as source-reported |
+| `created_by` | MUST preserve | Free-string actor, not identity proof | Missing under strict policy → **REJECT/HALT** |
+| `source_event_id` | MAY preserve | May be null | Null → leave null; do not invent |
+| `priority_score` | MAY as metadata | Ranking hint inside ScarStore | Not trust rank |
+| `protection_level` | MAY as metadata | SCAR prune/access remnant | Not V2 security clearance |
 | `tags` | MAY opaque | Free-form | No taxonomy authority |
-| `metadata` | **Ambiguous** | Open dict can smuggle claims | **Consume only allowlisted keys** or REJECT unknown claim-like keys (`true`, `admitted`, `verified`, …) |
-| Store `integrity_root` | MAY at capture | Snapshot timing | Record `integrity_root` + `captured_at`; not continuous proof |
-| M07 validation result | MAY record | One-shot local check | Status at T0 only; not continuous |
+| `metadata` | **Allowlist only** | Open dict can smuggle claims | Unknown claim-like keys → **REJECT** or strip per policy |
+| Store `integrity_root` | MAY at capture | Snapshot of active hashes at T0 | Missing when required → **REJECT**; not continuous proof |
+| M07 validation result | MAY record as reported status | One-shot local check | Record “reported at T0” only; never upgrade to sealed/true |
 
-### Ambiguity still requiring policy choice before code
+### Policy ambiguities (must resolve before any adapter code)
 
-1. **`metadata` allowlist** — exact denied key list for claim smuggling.  
-2. **`status == suspect|pruned`** — hard REJECT vs accept-as-flagged.  
-3. **Empty optional text fields** — accept vs require non-empty `title`+`description`.  
-4. **Embeddings** — remain out of first adapter (recommended).  
-
-Until these four are decided in writing, implementation stays blocked.
+1. Exact `metadata` allowlist / deny list  
+2. SUSPECT/PRUNED: hard REJECT vs accept-as-flagged  
+3. Empty `title`/`description`: allow or require non-empty  
+4. Embeddings: remain out of first adapter (recommended: yes)
 
 ---
 
-## 3. Conceptual test cases (no code)
+## Failure path (canonical)
 
-| # | Scenario | Expected |
-|---|----------|----------|
-| T1 | Valid active Scar, hash matches, root provided | MAY accept → evidence_status OBSERVED/CLAIMED only |
-| T2 | Description changed, hash not updated | REJECT |
-| T3 | `created_by` missing under strict provenance policy | REJECT/HALT |
-| T4 | Adapter output sets `admitted=true` | HALT |
-| T5 | Sovereign scar | Still no truth/admission inference |
-| T6 | `metadata: {"verified": true}` | REJECT or strip per allowlist policy |
-| T7 | Embedding present | Ignored or REJECT if policy forbids; never semantic use |
-| T8 | M07 reported valid at capture, later store corrupted | Firefly record still only claims “reported valid at T0” |
+```text
+SCAR record
+    → Firefly adapter
+    → missing / contradictory provenance
+       OR content/hash mismatch
+       OR manufactured admission/truth flag
+    → REJECT or HALT
+    → NO MEMORY AUTHORITY CREATED
+```
 
 ---
 
-## 4. Implementation gate
+## Conceptual tests (before implementation)
+
+| # | Input | Expected |
+|---|--------|----------|
+| T1 | Valid active Scar, hash matches, root present | Accept candidate; status OBSERVED/CLAIMED only |
+| T2 | Content edited, hash stale | REJECT |
+| T3 | Missing `scar_id` or `content_hash` | REJECT |
+| T4 | Output attempts `admitted=true` / M11 bypass | HALT |
+| T5 | Sovereign class | Still no truth/admission inference |
+| T6 | `metadata.verified = true` | REJECT or strip per allowlist |
+| T7 | Embedding present | Out of scope / ignore / REJECT per policy |
+| T8 | M07 valid at T0, later store broken | Firefly still only “reported valid at T0” |
+
+---
+
+## Chain and gates
+
+```text
+SCAR (V1 evidence)
+  → this Consume/Refuse Contract (DESIGN PENDING)
+  → Firefly design
+  → contract tests against real Scar fields
+  → implementation (only if authorized)
+```
+
+**Implementation authorized only when:**
 
 - [x] V1 SCAR_STATUS frozen  
-- [x] This CONSUME/REFUSE contract written  
-- [ ] Resolve four ambiguity items in §2  
-- [ ] Adapter contract tests specified against real Scar fields  
-- [ ] Still no M11 bypass in API  
-- [ ] Firefly code not started  
+- [x] This contract exists  
+- [ ] Four policy ambiguities resolved in writing  
+- [ ] Conceptual tests T1–T8 agreed  
+- [ ] Adapter API cannot express M11 admission or factual truth  
+- [ ] Explicit **NO IMPLEMENTATION AUTHORIZED** lifted by project decision  
 
-**Firefly remains DESIGN / DEFERRED.**
+**M11 seal record:** do not edit.  
+**Firefly code:** do not write until the gate above is closed.
 
 ---
 
-## 5. Claim language
+## Claim language
 
-| Allowed | Forbidden |
-|---------|-----------|
-| “Consume/refuse seam is designed and field-audited” | “Firefly is implemented” |
-| “SCAR fields classified for adapter use” | “Hashed scars are true” |
-| “Ambiguities listed for policy freeze” | “Firefly verifies SCAR” |
+| Allowed now | Forbidden now |
+|-------------|----------------|
+| “Consume/refuse contract is design-pending and field-mapped” | “Firefly is implemented” |
+| “SCAR is V1 IMPLEMENTED/TESTED evidence” | “SCAR proves truth / admission” |
+| “No implementation authorized” | “Hashed memory is trustworthy” |
 
-«SCAR preserves scars. Firefly may relate records. Neither establishes factual truth.»
+«MAY CONSUME ≠ TRUST. PRESERVE ≠ VERIFY. INTEGRITY ≠ TRUTH. MEMORY ≠ AUTHORITY.»
