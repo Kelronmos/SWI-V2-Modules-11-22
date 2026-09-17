@@ -7,34 +7,23 @@
 **Dependency:** M11 **SEALED** (`docs/M11_SEAL_RECORD.md`)  
 **Next dependency unlocked only after M12 seal:** M13
 
+Governing doctrine: evidence before claim · contract before implementation · never claim what the code cannot demonstrate.
+
 ---
 
 ## 1. Purpose (narrow)
 
-M12 owns **controlled evidence normalization** only.
+Given valid `AdmittedInput`, produce a deterministic `NormalizedEvidence` representation while preserving source identity, provenance, integrity reference, and admission marker.
 
-It turns M11 `AdmittedInput` into a deterministic `NormalizedEvidence` representation that later modules may consume.
-
-M12 is **not**:
-
-- memory / retrieval / vector store
-- embeddings / LLM summarization / semantic ranking
-- “knowledge confidence” or truth scoring
-- identity, authorization, or safety policy
-- CRTG or a new cryptographic trust layer
-- mutation of the original admitted evidence
-
-Current scaffold (`swi_v2/module12/process`) remains a **type-boundary placeholder** until implementation matches this contract.
+M12 may reorganize representation. M12 must not silently change meaning or invent truth.
 
 ---
 
-## 2. Ownership
+## 2. Non-goals
 
-| Role | Owner |
-|------|--------|
-| Controlled evidence normalization | **M12** |
-| Admission + post-admission continuity seal | M11 (already sealed) |
-| Scrubbed / controlled representation beyond normalization | M13 (blocked until M12 sealed) |
+M12 must **NOT** implement: truth verification, semantic interpretation, identity/authorization, AI safety evaluation, memory/retrieval, embeddings, vector search, LLM summarization, knowledge confidence, CRTG, key management, certificates, database persistence, external network calls, or M13+ functionality.
+
+If any of these appears in implementation — **stop**.
 
 ---
 
@@ -43,37 +32,40 @@ Current scaffold (`swi_v2/module12/process`) remains a **type-boundary placehold
 ```text
 V1 FoundationEvidenceEnvelope (serialized)
         ↓
-M11 admission → AdmittedInput (+ optional post-admission seal)
+M11 admission → AdmittedInput
         ↓
-M12 normalization → NormalizedEvidence
+M12 → NormalizedEvidence
         ↓
-M13 (not in scope)
+M13 (blocked until M12 sealed)
 ```
 
----
-
-## 4. Input
-
-**Type:** `AdmittedInput` only (M11 product).
-
-**Rejection (fail closed):**
-
-| Input | Required behaviour |
-|-------|--------------------|
-| `dict` / raw envelope | **REJECT** |
-| non-`AdmittedInput` object | **REJECT** |
-| missing required admitted fields | **REJECT** |
-| sealed/unsealed is orthogonal | M12 consumes admitted structure; does not re-define M11 seal |
-
-Existing V2 principle stands: raw material must not bypass M11 into M12.
+Raw input → M12 = **REJECT**. Only M11 → `AdmittedInput` → M12 is valid.
 
 ---
 
-## 5. Output — `NormalizedEvidence`
+## 4. Input — `AdmittedInput` (actual kernel type)
 
-### 5.1 Preserved exactly (copy, do not invent)
+Source of truth: `swi_v2/kernel/contracts.py`
 
-These fields MUST appear in the output with values **byte-for-byte / value-equal** to the corresponding `AdmittedInput` fields (no reinterpretation):
+| Field | Required |
+|-------|----------|
+| `payload` | yes |
+| `foundation_version` | yes |
+| `evidence_schema_version` | yes |
+| `evidence_id` | yes |
+| `integrity_reference` | yes |
+| `source_reference` | yes |
+| `admitted_by` | yes (default on type: `module_11_foundation_admission`) |
+
+**Note:** `verification_status` exists on `FoundationEvidenceEnvelope`, not on `AdmittedInput`. M12 must not invent a verification upgrade. If future admission carries status into `AdmittedInput`, amend this contract explicitly.
+
+**Reject:** `dict`, `str`, `bytes`, `list`, `tuple`, `None`, arbitrary objects, fake lookalikes that are not `AdmittedInput`.
+
+---
+
+## 5. Output — `NormalizedEvidence` (frozen shape)
+
+### 5.1 Preserved exactly (value-equal to input; no reinterpretation)
 
 | Field |
 |-------|
@@ -81,123 +73,93 @@ These fields MUST appear in the output with values **byte-for-byte / value-equal
 | `foundation_version` |
 | `evidence_schema_version` |
 | `source_reference` |
-| `source_integrity_reference` |
-| `verification_status` |
+| `integrity_reference` |
+| `admitted_by` |
 
-If a required preserved field is absent on input → **REJECT** (do not default).
+Absent required field on input → **REJECT** (do not default).
 
 ### 5.2 Derived (deterministic only)
 
 | Field | Rule |
 |-------|------|
-| `normalized_payload` | Pure function of admitted payload + published normalization rules for this M12 version |
-| `normalization_version` | Explicit version string of the M12 rule set (e.g. `1.0-proposed`) |
+| `normalized_payload` | Pure function of `payload` + published rules for this M12 version |
+| `normalization_version` | Explicit string, initial: `1.0-proposed` |
 | `module_id` | Constant `"M12"` |
 
-### 5.3 Forbidden in output (never silently generated)
+### 5.3 Forbidden in output
 
-| Forbidden |
-|-----------|
-| truth / factuality claims |
-| meaning / interpretation / summary text as “knowledge” |
-| identity / principal / authorization decisions |
-| confidence / safety scores |
-| random IDs, wall-clock timestamps, host/env fingerprints in the normalized result |
-| mutation of preserved provenance fields |
+Truth/factuality claims · meaning/summary as “knowledge” · identity/authorization decisions · confidence/safety scores · random IDs · wall-clock timestamps · host/env fingerprints · mutation of preserved fields · upgrading verification/admission status by side effect.
 
 ---
 
-## 6. Primary property
+## 6. Normalization rules (ten)
 
-**Deterministic normalization without loss or silent invention.**
+1. Admission required — only `AdmittedInput`.
+2. Raw objects rejected — no silent coercion.
+3. Evidence identity preserved — no replacement `evidence_id`.
+4. Provenance preserved — `source_reference` survives.
+5. Integrity reference preserved — `integrity_reference` survives.
+6. Admission marker preserved — `admitted_by` survives; M12 does not “re-admit.”
+7. No silent invention — absent data → REJECT or explicit absence per published rules; never guess.
+8. No semantic cleaning — structure only; not correct/incorrect/safe/trustworthy.
+9. Determinism — same input + same `normalization_version` + same rules → identical output.
+10. No mutation — original `AdmittedInput` unchanged.
 
-### 6.1 Determinism
-
-```text
-same AdmittedInput
-+ same normalization_version
-+ same published rules
-= same NormalizedEvidence
-```
-
-No hidden process state, locale, or time dependence in the normalized result.
-
-### 6.2 No loss of required provenance
-
-Required preserved fields MUST survive normalization unchanged.
-
-### 6.3 No silent invention
-
-Missing evidence MUST NOT be filled with plausible defaults for forbidden categories (§5.3).
-
-### 6.4 Immutability of source
-
-```text
-AdmittedInput ──preserved──→ provenance fields on NormalizedEvidence
-AdmittedInput ──derived───→ normalized_payload
-AdmittedInput is not modified in place
-```
+**Initial payload rule (v1.0-proposed):** If `payload` is a `Mapping`, emit a deterministic canonical form (sorted keys, JSON-serializable values only; reject unsupported types). If `payload` is a JSON-serializable scalar/list under the same constraints, preserve structure deterministically. Otherwise **REJECT**. No network, no I/O, no randomness.
 
 ---
 
-## 7. Rejection rules (summary)
+## 7. Error boundary
 
-| Condition | Result |
-|-----------|--------|
-| Not `AdmittedInput` | REJECT |
-| Missing required preserved field | REJECT |
-| Payload cannot be normalized under published rules | REJECT (explicit error; no partial invention) |
-| Attempt to attach forbidden semantics | REJECT / out of contract |
+M11 rejection of foundation evidence ≠ M12 rejection of admitted input. Audits must label which module failed.
 
 ---
 
-## 8. Limitations (permanent for this contract)
+## 8. Limitations
 
-| Limitation | Status |
-|------------|--------|
-| Semantic understanding | **OUT OF SCOPE** |
-| Long-term memory / retrieval | **OUT OF SCOPE** |
-| CRTG / production keys | **OUT OF SCOPE** |
-| Replay policy | **OUT OF SCOPE** (M11 signature ≠ replay) |
-| Factual truth of payload | **NOT ESTABLISHED** |
+| Topic | Status |
+|-------|--------|
+| Truth of payload | **NOT ESTABLISHED** |
 | Foundation Seal 5 (V1 signed export) | **NOT READY** — M12 does not fix origin signing |
+| CRTG / production keys | **OUT OF SCOPE** |
+| Memory / retrieval / embeddings | **OUT OF SCOPE** |
+| Replay policy | **OUT OF SCOPE** |
 
 ---
 
-## 9. Build sequence (mandatory)
+## 9. Build sequence
 
 | Pass | Deliverable | Status |
 |------|-------------|--------|
-| **1** | This contract frozen | **THIS DOCUMENT** |
-| **2** | Minimal implementation (`normalization.py`, models, errors) | NOT STARTED |
-| **3** | Contract / determinism / immutability / bypass / isolation tests | NOT STARTED |
-| **4** | M11→M12 evidence path + CI | NOT STARTED |
-| **5** | Independent rediscovery → audit → **M12 SEALED** | NOT STARTED |
+| **1** | This contract | **FROZEN** |
+| **2** | `models` + `normalization` + remove `accepted_placeholder` | NOT STARTED |
+| **3** | Contract / rejection / determinism / immutability / isolation tests | NOT STARTED |
+| **4** | M11→M12 integration + CI | NOT STARTED |
+| **5** | Audit worksheet + independent rediscovery → **M12 SEALED** | NOT STARTED |
 
-**M13 unlocks only after Pass 5.**
+M13 unlocks only after Pass 5.
 
 ---
 
-## 10. Relationship to scaffold
+## 10. Scaffold vs contract
 
 ```text
-Today:  process() → accepted_placeholder  (boundary only)
-Target: process() → NormalizedEvidence   (this contract)
+Today:  process() → accepted_placeholder
+Target: process() → NormalizedEvidence
 ```
 
-Until Pass 2–5 complete, any claim that “M12 normalizes evidence” is **false**.
+Until Pass 2–5 complete, “M12 normalizes evidence” is **false**.
 
 ---
 
-## 11. Governance cross-links
+## 11. Seal meaning (when earned)
 
-- `docs/M11_SEAL_RECORD.md` — dependency seal
-- `docs/GOVERNANCE_LOCK.md` — M12 controlled development only
-- `docs/V47_GATE_FREEZE.md` — claim → contract → implementation → test → CI → seal
-- Pre-Name retained: **Knowledge Anchor** / **The Mastery Archive**
+An M12 seal means only: the audited implementation satisfied this contract at the identified commit and CI boundary.
+
+It does **not** mean truth, AI safety, production readiness, knowledge correctness, or global compliance.
 
 ---
 
 ## 12. One-sentence freeze
 
-**M12 accepts only M11 `AdmittedInput`, emits deterministic `NormalizedEvidence` that preserves provenance exactly, derives payload without invention, and does not claim memory, truth, or trust beyond that boundary.**
+**M12 accepts only M11 `AdmittedInput`, emits deterministic `NormalizedEvidence` that preserves identity/provenance/integrity/admission fields exactly, derives payload without invention, and claims nothing beyond that boundary.**
