@@ -1,35 +1,22 @@
 # Sparse Merkle Trees and Compact Sparse Proofs
 
-**Status:** IMPLEMENTED / TESTED (research primitive in `swi_v2/kernel/sparse_merkle.py`)  
-**Does not:** replace M11 dense Merkle seal path · CRTG · production deployment
+**Status:** RESEARCH PRIMITIVE · M11 INTEGRATION: NONE · SEAL DEPENDENCY: NONE · PRODUCTION CLAIM: NONE
 
 ## Role in SWI
 
 | Component | Role |
 |-----------|------|
-| `merkle.py` | Dense Merkle over few post-admission seal leaves |
-| `sparse_merkle.py` | Key-addressed map + membership **and** non-membership |
-| Compact proofs | Omit empty siblings via `sibling_mask` |
+| `merkle.py` | Dense Merkle over post-admission seal leaves (**M11 seal path**) |
+| `sparse_merkle.py` | Key-addressed map + membership/non-membership (**not used by M11**) |
 
-## Construction
+Do not wire SMT into `create_seal` merely because it exists.
 
-- Fixed depth $d$ (tests use 8; up to 256 supported).
-- Leaf: `SHA256(SWI-SMT-LEAF || key || value)`.
-- Node: `SHA256(SWI-SMT-NODE || left || right)`.
-- Empty leaf / empty subtrees: precomputed $E_d \ldots E_0$.
+## Construction (research)
 
-## Compact proof
-
-```text
-siblings      = only non-empty sibling hashes along the path
-sibling_mask  = bit h set ⇒ siblings list contains a hash for height h
-              bit h clear ⇒ use empty hash E_{h+1}
-```
-
-Verifier recomputes the root; result must equal `proof.root`.
+Fixed depth, domain-separated leaves/nodes, compact proofs omit empty siblings via `sibling_mask`.
 
 ## Explicit non-claims
 
-- Not wired into `create_seal` by default (seal keeps dense Merkle).
-- Not a global SWI state commitment unless a future module adopts it.
-- M11 remains NOT SEALED until the existing release gate is met.
+- Not part of M11 closure evidence
+- Not CRTG / production deployment
+- M11 remains NOT SEALED until release gate passes
