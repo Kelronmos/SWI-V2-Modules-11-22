@@ -21,6 +21,8 @@ This is a **CURRENT** status document. It does not rewrite `docs/M11_SEAL_RECORD
 | Sparse Merkle | **EXPERIMENTAL / RESEARCH ONLY** |
 | Cross-node M11 | **NOT YET PROVEN** |
 | **Firefly** | **DESIGN / DEFERRED** |
+| SCAR→Firefly consume/refuse | **DESIGN FROZEN** — `docs/SCAR_FIREFLY_CONSUME_REFUSE_CONTRACT.md` |
+| SCAR→Firefly adapter shape | **DESIGN FROZEN** — `docs/SCAR_FIREFLY_ADAPTER_CONTRACT.md` |
 | Firefly distributed memory | **BLOCKED** |
 | M12 scaffold | **SCAFFOLD** (if present) |
 | M12 substantive implementation | **FROZEN** |
@@ -73,17 +75,18 @@ They do **not** mean every node has authority over every other node.
 ## Repair sequence (next)
 
 1. Freeze M11 (done — do not rewrite)  
-2. Reconcile CURRENT docs (this commit)  
+2. Reconcile CURRENT docs (done)  
 3. Independent M11 verification continuity  
 4. Deterministic replay beyond in-memory guard  
 5. Adversarial replay tests  
-6. SCAR status already frozen on V1  
-7. Firefly memory contract (consume/refuse from SCAR) — design only  
-8. Local SCAR→Firefly tests only after contract freeze  
-9. Firefly + replay  
-10. Failure/bypass paths  
-11. Then reassess distributed memory  
-12. Controlled module schema → M12 contract freeze → implement → test → CI → audit → seal  
+6. SCAR status frozen on V1 (done)  
+7. Firefly consume/refuse + adapter contracts frozen (done — design only)  
+8. Resolve remaining policy ambiguities in consume/refuse §2  
+9. Local SCAR→Firefly tests only after policy freeze + implementation gate  
+10. Firefly + replay  
+11. Failure/bypass paths  
+12. Then reassess distributed memory  
+13. Controlled module schema → M12 contract freeze → implement → test → CI → audit → seal  
 
 ---
 
@@ -91,6 +94,8 @@ They do **not** mean every node has authority over every other node.
 
 - `docs/M11_SEAL_RECORD.md` — historical seal (immutable intent)  
 - `docs/MODULE_STATUS.md`  
+- `docs/SCAR_FIREFLY_CONSUME_REFUSE_CONTRACT.md`  
+- `docs/SCAR_FIREFLY_ADAPTER_CONTRACT.md`  
 - `docs/M12_CONTRACT.md` / `docs/M12_IMPLEMENTATION_MANUAL.md`  
 - V1 `docs/SCAR_STATUS.md`  
 - `docs/SWI_TRUST_SEQUENCE.md` / `docs/SWI_CONTROLLED_SEQUENCE_MANUAL.md`  
