@@ -164,11 +164,20 @@ def test_previous_hash_mutation_fails():
 
 
 def test_canonical_key_order_stable():
-    from swi_v2.kernel.seal import _canonical_admitted_input
+    from swi_v2.kernel.seal import seal_canonicalize, seal_material_from_admitted
 
     a = _admit(payload={"b": 2, "a": 1})
     a2 = replace(a, payload={"a": 1, "b": 2})
-    assert _canonical_admitted_input(a) == _canonical_admitted_input(a2)
+    assert seal_canonicalize(seal_material_from_admitted(a)) == seal_canonicalize(
+        seal_material_from_admitted(a2)
+    )
+
+
+def test_seal_rejects_bytes_in_payload():
+    from swi_v2.kernel.seal import SealCanonicalizationError, seal_canonicalize
+
+    with pytest.raises(SealCanonicalizationError):
+        seal_canonicalize({"x": b"not-json"})
 
 
 def test_merkle_tree_unit():
