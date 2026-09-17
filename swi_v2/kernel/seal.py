@@ -2,36 +2,72 @@
 M11 post-admission cryptographic seal.
 
 STATUS: IMPLEMENTED / TESTED (post-admission seal path)
-Architecture:
-  AdmittedInput (only) → canonical → digest → chain → Merkle → Ed25519 → SealedEvidence
+NOT: M11 SEALED · CRTG · Foundation Seal 5 · production key governance
 
-Does NOT:
-  - accept FoundationEvidenceEnvelope or raw dict as seal input
-  - claim CRTG, Foundation Seal 5, production key management, or M11 SEALED
-  - claim that signing equals replay protection
+Admission integrity may use default=str (V1/V2 contract). Seal canonicalization does not.
 """
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Mapping, Optional
 
 from .contracts import AdmittedInput
-from .ed25519_sig import (
-    SignatureVerificationError,
-    canonical_message,
-    sign_ed25519,
-    verify_ed25519,
-)
+from .ed25519_sig import SignatureVerificationError, sign_ed25519, verify_ed25519
 from .merkle import MerkleProof, MerkleTree
+
+SEAL_DOMAIN = "SWI-M11-SEAL-V1"
+SEAL_VERSION = "1.0-proposed"
+COMMITMENT_PREFIX = b"SWI-M11-SEAL-COMMITMENT-V1:"
+CHAIN_PREFIX = b"SWI-M11-CHAIN-V1:"
+CHAIN_GENESIS = hashlib.sha256(b"SWI-M11-CHAIN-GENESIS-V1:").hexdigest()
+SIGN_DOMAIN = "SWI-M11-SEAL-SIGN-V1"
+
+
+class SealCanonicalizationError(ValueError):
+    pass
+
+
+def _validate_json_types(obj: Any, path: str = "$") -> None:
+    if obj is None or isinstance(obj, bool):
+        return
+    if isinstance(obj, int) and not isinstance(obj, bool):
+        return
+    if isinstance(obj, float):
+        return
+    if isinstance(obj, str):
+        return
+    if isinstance(obj, list):
+        for i, v in enumerate(obj):
+            _validate_json_types(v, f"{path}[{i}]")
+        return
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if not isinstance(k, str):
+                raise SealCanonicalizationError(f"non-string key at {path}")
+            _validate_json_types(v, f"{path}.{k}")
+        return
+    raise SealCanonicalizationError(
+        f"unsupported type {type(obj).__name__} at {path}"
+    )
+
+
+def seal_canonicalize(material: Mapping[str, Any]) -> bytes:
+    _validate_json_types(material)
+    return json.dumps(
+        material, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    ).encode("utf-8")
 
 
 def _sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _canonical_admitted_input(admitted: AdmittedInput) -> bytes:
-    material = {
+def seal_material_from_admitted(admitted: AdmittedInput) -> dict:
+    return {
+        "domain": SEAL_DOMAIN,
+        "seal_version": SEAL_VERSION,
         "payload": admitted.payload,
         "foundation_version": admitted.foundation_version,
         "evidence_schema_version": admitted.evidence_schema_version,
@@ -40,7 +76,11 @@ def _canonical_admitted_input(admitted: AdmittedInput) -> bytes:
         "source_reference": admitted.source_reference,
         "admitted_by": admitted.admitted_by,
     }
-    return canonical_message(material)
+
+
+def commitment_from_admitted(admitted: AdmittedInput) -> str:
+    canonical = seal_canonicalize(seal_material_from_admitted(admitted))
+    return _sha256_hex(COMMITMENT_PREFIX + canonical)
 
 
 @dataclass(frozen=True)
@@ -53,7 +93,8 @@ class SealedEvidence:
     merkle_proof: MerkleProof
     signature: bytes
     public_key: bytes
-    seal_version: str = "1.0-proposed"
+    seal_version: str = SEAL_VERSION
+    domain: str = SEAL_DOMAIN
 
 
 def create_seal(
@@ -62,40 +103,32 @@ def create_seal(
     public_key: bytes,
     previous_chain_hash: Optional[str] = None,
 ) -> SealedEvidence:
-    """Seal only AdmittedInput from M11. Rejects envelope/dict bypass."""
     if not isinstance(admitted, AdmittedInput):
         raise TypeError(
-            "create_seal requires AdmittedInput from M11 admission; "
-            f"got {type(admitted).__name__}"
+            f"create_seal requires AdmittedInput; got {type(admitted).__name__}"
         )
 
-    canonical = _canonical_admitted_input(admitted)
-    evidence_digest = _sha256_hex(canonical)
-
-    chain_material = {
-        "evidence_id": admitted.evidence_id,
-        "evidence_digest": evidence_digest,
-        "previous_chain_hash": previous_chain_hash,
-    }
-    chain_hash = _sha256_hex(canonical_message(chain_material))
-
-    tree = MerkleTree([canonical, chain_hash.encode("utf-8")])
+    evidence_digest = commitment_from_admitted(admitted)
+    prev = previous_chain_hash if previous_chain_hash is not None else CHAIN_GENESIS
+    chain_hash = _sha256_hex(
+        CHAIN_PREFIX + prev.encode("utf-8") + evidence_digest.encode("utf-8")
+    )
+    tree = MerkleTree([evidence_digest.encode("utf-8"), chain_hash.encode("utf-8")])
     proof = tree.prove(0)
-
     signing_material = {
-        "seal_version": "1.0-proposed",
+        "domain": SIGN_DOMAIN,
+        "seal_version": SEAL_VERSION,
         "evidence_id": admitted.evidence_id,
-        "evidence_digest": evidence_digest,
-        "previous_chain_hash": previous_chain_hash,
+        "commitment": evidence_digest,
+        "previous_chain_hash": prev,
         "chain_hash": chain_hash,
         "merkle_root": tree.root.hex(),
     }
-    signature = sign_ed25519(private_key, canonical_message(signing_material))
-
+    signature = sign_ed25519(private_key, seal_canonicalize(signing_material))
     return SealedEvidence(
         evidence_id=admitted.evidence_id,
         evidence_digest=evidence_digest,
-        previous_chain_hash=previous_chain_hash,
+        previous_chain_hash=prev,
         chain_hash=chain_hash,
         merkle_root=tree.root.hex(),
         merkle_proof=proof,
@@ -105,47 +138,44 @@ def create_seal(
 
 
 def verify_seal(admitted: AdmittedInput, sealed: SealedEvidence) -> bool:
-    """Independent verification. Returns False on any covered mismatch."""
     if not isinstance(admitted, AdmittedInput):
         return False
-
     try:
-        canonical = _canonical_admitted_input(admitted)
-        expected_digest = _sha256_hex(canonical)
-
+        expected_digest = commitment_from_admitted(admitted)
         if expected_digest != sealed.evidence_digest:
             return False
         if admitted.evidence_id != sealed.evidence_id:
             return False
-
-        chain_material = {
-            "evidence_id": admitted.evidence_id,
-            "evidence_digest": expected_digest,
-            "previous_chain_hash": sealed.previous_chain_hash,
-        }
-        expected_chain = _sha256_hex(canonical_message(chain_material))
+        if sealed.domain != SEAL_DOMAIN or sealed.seal_version != SEAL_VERSION:
+            return False
+        prev = (
+            sealed.previous_chain_hash
+            if sealed.previous_chain_hash is not None
+            else CHAIN_GENESIS
+        )
+        expected_chain = _sha256_hex(
+            CHAIN_PREFIX + prev.encode("utf-8") + expected_digest.encode("utf-8")
+        )
         if expected_chain != sealed.chain_hash:
             return False
-
-        proof = sealed.merkle_proof
-        if proof.root.hex() != sealed.merkle_root:
+        if sealed.merkle_proof.root.hex() != sealed.merkle_root:
             return False
-        if not MerkleTree.verify(proof):
+        if not MerkleTree.verify(sealed.merkle_proof):
             return False
-
         signing_material = {
+            "domain": SIGN_DOMAIN,
             "seal_version": sealed.seal_version,
             "evidence_id": admitted.evidence_id,
-            "evidence_digest": expected_digest,
-            "previous_chain_hash": sealed.previous_chain_hash,
+            "commitment": expected_digest,
+            "previous_chain_hash": prev,
             "chain_hash": expected_chain,
             "merkle_root": sealed.merkle_root,
         }
         verify_ed25519(
             sealed.public_key,
-            canonical_message(signing_material),
+            seal_canonicalize(signing_material),
             sealed.signature,
         )
         return True
-    except (SignatureVerificationError, ValueError, TypeError, Exception):
+    except Exception:
         return False
