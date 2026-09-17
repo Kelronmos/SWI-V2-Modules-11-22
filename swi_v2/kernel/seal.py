@@ -5,6 +5,7 @@ STATUS: IMPLEMENTED / TESTED (post-admission seal path)
 NOT: M11 SEALED · CRTG · Foundation Seal 5 · production key governance
 
 Admission integrity may use default=str (V1/V2 contract). Seal canonicalization does not.
+Verifier reconstructs expected Merkle tree/proof from AdmittedInput (no proof substitution).
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
 from .contracts import AdmittedInput
-from .ed25519_sig import SignatureVerificationError, sign_ed25519, verify_ed25519
+from .ed25519_sig import sign_ed25519, verify_ed25519
 from .merkle import MerkleProof, MerkleTree
 
 SEAL_DOMAIN = "SWI-M11-SEAL-V1"
@@ -78,9 +79,19 @@ def seal_material_from_admitted(admitted: AdmittedInput) -> dict:
     }
 
 
+def _canonical_admitted_input(admitted: AdmittedInput) -> bytes:
+    """Single canonical representation for seal cryptography."""
+    if not isinstance(admitted, AdmittedInput):
+        raise TypeError("expected AdmittedInput")
+    return seal_canonicalize(seal_material_from_admitted(admitted))
+
+
 def commitment_from_admitted(admitted: AdmittedInput) -> str:
-    canonical = seal_canonicalize(seal_material_from_admitted(admitted))
-    return _sha256_hex(COMMITMENT_PREFIX + canonical)
+    return _sha256_hex(COMMITMENT_PREFIX + _canonical_admitted_input(admitted))
+
+
+def _chain_hash(previous: str, commitment: str) -> str:
+    return _sha256_hex(CHAIN_PREFIX + previous.encode("utf-8") + commitment.encode("utf-8"))
 
 
 @dataclass(frozen=True)
@@ -110,9 +121,7 @@ def create_seal(
 
     evidence_digest = commitment_from_admitted(admitted)
     prev = previous_chain_hash if previous_chain_hash is not None else CHAIN_GENESIS
-    chain_hash = _sha256_hex(
-        CHAIN_PREFIX + prev.encode("utf-8") + evidence_digest.encode("utf-8")
-    )
+    chain_hash = _chain_hash(prev, evidence_digest)
     tree = MerkleTree([evidence_digest.encode("utf-8"), chain_hash.encode("utf-8")])
     proof = tree.prove(0)
     signing_material = {
@@ -138,6 +147,7 @@ def create_seal(
 
 
 def verify_seal(admitted: AdmittedInput, sealed: SealedEvidence) -> bool:
+    """Independently reconstruct commitment, chain, Merkle proof, signature."""
     if not isinstance(admitted, AdmittedInput):
         return False
     try:
@@ -148,20 +158,27 @@ def verify_seal(admitted: AdmittedInput, sealed: SealedEvidence) -> bool:
             return False
         if sealed.domain != SEAL_DOMAIN or sealed.seal_version != SEAL_VERSION:
             return False
+
         prev = (
             sealed.previous_chain_hash
             if sealed.previous_chain_hash is not None
             else CHAIN_GENESIS
         )
-        expected_chain = _sha256_hex(
-            CHAIN_PREFIX + prev.encode("utf-8") + expected_digest.encode("utf-8")
-        )
+        expected_chain = _chain_hash(prev, expected_digest)
         if expected_chain != sealed.chain_hash:
             return False
-        if sealed.merkle_proof.root.hex() != sealed.merkle_root:
+
+        expected_tree = MerkleTree(
+            [expected_digest.encode("utf-8"), expected_chain.encode("utf-8")]
+        )
+        expected_proof = expected_tree.prove(0)
+        if sealed.merkle_root != expected_tree.root.hex():
+            return False
+        if sealed.merkle_proof != expected_proof:
             return False
         if not MerkleTree.verify(sealed.merkle_proof):
             return False
+
         signing_material = {
             "domain": SIGN_DOMAIN,
             "seal_version": sealed.seal_version,
