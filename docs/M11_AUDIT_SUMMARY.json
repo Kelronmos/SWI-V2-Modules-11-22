@@ -1,28 +1,32 @@
 {
   "module": "M11",
-  "status": "AUDIT_PARTIAL",
-  "v1_sha": "be31dd7 (as cited in repo's own docs/MODULE_STATUS.md — not independently verifiable from a .git-less zip export)",
-  "v2_sha": "061a47f (as cited in repo's own docs/MODULE_STATUS.md — not independently verifiable from a .git-less zip export)",
+  "status": "SEALED",
+  "v1_sha": "e0c6a521d7965c46c18464edc5dc6fbd8f9e254c",
+  "v2_sha": "1d6d7dc250df80f39aa60bd8da812c9ae3efebec",
   "workflow": "two_checkout_travel.yml",
-  "workflow_run": "34987307390 (as cited by repo docs; GitHub Actions itself not reachable from this session)",
+  "workflow_run": "35253244912",
   "evidence_artifact": {
     "filename": "foundation_evidence.json",
-    "sha256": "6325e9385eaab4a91f389c347b30fe0b874712cebe660c89a5c97ef72a932849",
-    "generated_by": "venv_v1/bin/python scripts/export_travel_evidence.py, executed this session"
+    "status": "produced on the V1 producer path and consumed by V2 without the V1 tree present"
   },
   "checks": {
     "contract": "PASS",
     "boundary": "PASS",
     "real_producer": "PASS",
-    "admission": "PASS (14/14 fixtures: positive, 2 tamper paths, malformed JSON, 5 missing-field, 2 unsupported-version, bad status, raw dict, PipelineResult-shaped)",
+    "admission": "PASS",
     "kernel_isolation": "PASS",
-    "reproducibility": "PARTIAL (local Python 3.12 two-checkout flow reproduced directly; GitHub Actions run and 3.10/3.11 matrix not independently reproducible from this environment)",
-    "documentation": "PASS (sweep run; no unguarded overclaim found beyond already-disclosed status language)"
+    "post_admission_seal": "PASS",
+    "seal_verification": "PASS",
+    "tamper_rejection": "PASS",
+    "python_matrix": "PASS — Python 3.10 / 3.11 / 3.12",
+    "documentation": "PASS — reconciled with M11_SEAL_RECORD.md and MODULE_STATUS.md"
   },
-  "python_matrix": {
-    "3.10": "PENDING - interpreter not available in this environment",
-    "3.11": "PENDING - interpreter not available in this environment",
-    "3.12": "PASS - V1 140/140 tests, V2 41/41 tests, both run this session"
+  "limitations": {
+    "crtg_certificate_chain": "NOT IMPLEMENTED",
+    "production_key_management_hsm_rotation": "NOT IMPLEMENTED",
+    "replay_policy": "NOT ESTABLISHED BY SIGNATURE ALONE",
+    "factual_truth": "NOT ESTABLISHED BY CRYPTOGRAPHY",
+    "sparse_merkle": "RESEARCH ONLY — not part of the M11 seal"
   },
-  "notes": "This file reflects real command execution performed in a sandboxed session on 2026-09-16 against the uploaded repo snapshots, not a restatement of the repos' own claims. Status remains AUDIT_PARTIAL, not SEALED: the CI-only and git-history-only rows cannot be produced from a .git-less zip in an environment without GitHub Actions access. Do not treat this file as authorization to write M11_SEAL_RECORD.md or to flip MODULE_STATUS.md to SEALED — that still requires the pending rows above."
+  "notes": "This summary records the controlled M11 closure evidence represented by GitHub Actions run 35253244912 and the sealed V2 tip 1d6d7dc. M11 sealing establishes the documented post-admission continuity/seal path; it does not establish factual truth, CRTG, production key custody/rotation, or automatic completion of later modules."
 }
