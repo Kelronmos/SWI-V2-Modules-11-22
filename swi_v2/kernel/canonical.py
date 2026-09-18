@@ -13,8 +13,25 @@ CANONICALIZATION_VERSION = "canonicalization_v0"
 _SEPARATORS = (",", ":")
 
 
+def _reject_nonfinite(obj: Any, path: str = "$") -> None:
+    if isinstance(obj, float):
+        if obj != obj or obj in (float("inf"), float("-inf")):
+            raise ValueError(
+                f"non-finite float at {path} is not allowed in canonical material"
+            )
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            _reject_nonfinite(v, f"{path}.{k}")
+    elif isinstance(obj, (list, tuple)):
+        for i, v in enumerate(obj):
+            _reject_nonfinite(v, f"{path}[{i}]")
+
+
 def canonical_dumps(obj: Any) -> str:
-    return json.dumps(obj, sort_keys=True, separators=_SEPARATORS, default=str)
+    _reject_nonfinite(obj)
+    return json.dumps(
+        obj, sort_keys=True, separators=_SEPARATORS, default=str, allow_nan=False
+    )
 
 
 def canonical_bytes(obj: Any) -> bytes:
