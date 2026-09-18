@@ -5,6 +5,9 @@
 **Contract id:** `authority_boundary_v0`  
 **Rule:** Information may cross a boundary without authority crossing that boundary.
 
+**Paired implementation:** V1 `swi_core.authority` + `docs/AUTHORITY_BOUNDARY_MODEL.md`  
+Repository: `Kelronmos/SWI-V1-Module-1-10`
+
 ---
 
 ## 1. Invariant
