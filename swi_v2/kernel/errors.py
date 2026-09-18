@@ -35,3 +35,11 @@ class StateTransitionError(ModuleKernelError):
 
 class ContractError(ModuleKernelError):
     """Module or kernel contract violated."""
+
+
+class AuthorityError(ModuleKernelError):
+    """Authority boundary violation: undeclared or escalated authority."""
+
+
+class AuthorityHalt(AuthorityError):
+    """Missing or unknown authority required for the requested transition."""
