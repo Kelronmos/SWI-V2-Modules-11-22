@@ -1,16 +1,10 @@
 """Module 11 foundation admission (deterministic, fail-closed).
 
 Admits schema + integrity + allowed verification_status.
-Does NOT establish factual truth, sender authentication, or action safety.
-
-fixture status = TEST-ONLY
-v1_trainer_pipeline_completed = V1 producer status string (still needs integrity match;
-origin authenticity requires future CRTG signatures — NOT implemented here).
+Does NOT establish factual truth, sender authentication, CRTG, or action rights.
 """
 from __future__ import annotations
 
-import hashlib
-import json
 from typing import Any, Mapping, Union
 
 from .contracts import (
@@ -28,7 +22,6 @@ from .errors import (
     UnsupportedFoundationVersion,
 )
 
-# TEST-ONLY vs V1 producer claim — both still require integrity match.
 STATUS_TEST_FIXTURE = "foundation_verified_test_fixture"
 STATUS_V1_PIPELINE = "v1_trainer_pipeline_completed"
 _ACCEPTED_STATUS = frozenset({STATUS_TEST_FIXTURE, STATUS_V1_PIPELINE})
@@ -41,16 +34,19 @@ def compute_integrity_reference(
     evidence_id: str,
     source_reference: str,
 ) -> str:
-    """Same covered fields as V1 (excludes created_at metadata)."""
-    material = {
-        "payload": payload,
-        "foundation_version": foundation_version,
-        "evidence_schema_version": evidence_schema_version,
-        "evidence_id": evidence_id,
-        "source_reference": source_reference,
-    }
-    encoded = json.dumps(material, sort_keys=True, separators=(",", ":"), default=str)
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+    """Same covered fields as V1 (excludes created_at metadata).
+
+    Delegates to swi_v2.kernel.canonical (Lane B canonicalization_v0).
+    """
+    from .canonical import compute_integrity_reference as _canonical_integrity
+
+    return _canonical_integrity(
+        payload,
+        foundation_version,
+        evidence_schema_version,
+        evidence_id,
+        source_reference,
+    )
 
 
 def admit_foundation_input(
@@ -73,23 +69,15 @@ def admit_foundation_input(
             raise InvalidFoundationEvidence(
                 f"missing required evidence fields: {sorted(missing)}"
             )
-        # created_at is legitimate optional metadata from real V1 producer;
-        # excluded from integrity digest, allowed on the envelope schema.
         known_optional = {"created_at"}
         extra = set(candidate.keys()) - required - known_optional
         if extra:
             raise UnexpectedFieldError(
-                f"evidence envelope contains fields outside the declared contract: "
-                f"{sorted(extra)}"
+                f"unexpected evidence fields: {sorted(extra)}"
             )
-        try:
-            envelope = envelope_from_mapping(candidate)
-        except Exception as exc:
-            raise InvalidFoundationEvidence(f"malformed envelope: {exc}") from exc
+        envelope = envelope_from_mapping(candidate)
     else:
-        raise FoundationAdmissionError(
-            f"raw input rejected: expected evidence envelope, got {type(candidate).__name__}"
-        )
+        raise InvalidFoundationEvidence("candidate must be mapping or envelope")
 
     if envelope.foundation_version not in SUPPORTED_FOUNDATION_VERSIONS:
         raise UnsupportedFoundationVersion(
@@ -99,24 +87,20 @@ def admit_foundation_input(
         raise UnsupportedFoundationVersion(
             f"unsupported evidence_schema_version: {envelope.evidence_schema_version!r}"
         )
-
     if envelope.verification_status not in _ACCEPTED_STATUS:
         raise InvalidFoundationEvidence(
-            f"verification_status not acceptable for current V2 build: "
-            f"{envelope.verification_status!r}"
+            f"verification_status not accepted: {envelope.verification_status!r}"
         )
 
     expected = compute_integrity_reference(
-        payload=envelope.payload,
-        foundation_version=envelope.foundation_version,
-        evidence_schema_version=envelope.evidence_schema_version,
-        evidence_id=envelope.evidence_id,
-        source_reference=envelope.source_reference,
+        envelope.payload,
+        envelope.foundation_version,
+        envelope.evidence_schema_version,
+        envelope.evidence_id,
+        envelope.source_reference,
     )
-    if envelope.integrity_reference != expected:
-        raise IntegrityVerificationError(
-            "integrity_reference does not match computed foundation evidence digest"
-        )
+    if expected != envelope.integrity_reference:
+        raise IntegrityVerificationError("integrity_reference mismatch")
 
     return AdmittedInput(
         payload=envelope.payload,
@@ -124,6 +108,6 @@ def admit_foundation_input(
         evidence_schema_version=envelope.evidence_schema_version,
         evidence_id=envelope.evidence_id,
         integrity_reference=envelope.integrity_reference,
+        verification_status=envelope.verification_status,
         source_reference=envelope.source_reference,
-        admitted_by="module_11_foundation_admission",
     )
