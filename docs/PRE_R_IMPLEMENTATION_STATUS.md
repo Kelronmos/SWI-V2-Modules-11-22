@@ -7,21 +7,19 @@
 
 | Gate | State |
 |------|--------|
-| Spec | `docs/pre-R/` including fail-closed/fail-safe manual |
+| Spec | `docs/pre-R/` |
 | Code | `experimental/response_boundary/` |
-| Unit tests | `tests/pre_r/` — **20 local PASS** (gate decisions) |
-| Fail-closed (gate) | **TESTED** for covered mutations |
-| Fail-safe (beyond gate) | **NOT YET IMPLEMENTED** in pre-R · see PR-009 |
+| Unit tests (gate) | 20 PASS |
+| **PR-009 enforcement** | IMPLEMENTED + T20 tests |
+| Fail-closed (gate) | TESTED |
+| Fail-safe (privileged path via API) | TESTED (unit T20) |
 | Independent audit | NOT YET |
 | SEALED | NO |
 
 ## Precise claim
 
-> Gate-level fail-closed is implemented and unit-tested.  
-> Fail-safe enforcement beyond the gate (caller cannot ignore REJECT) is **not** established by the current experimental slice.
+> Gate-level fail-closed is unit-tested.  
+> PR-009 binds REJECT to `HaltedWorkflow` and blocks `privileged_action` / `require_executable`.  
+> Callers that bypass this API are out of scope. Not sealed / not production.
 
-## Historical `64bf105`
-
-Missing test path → CI **NOT TESTED** (integration). Not a behavioral security verdict.
-
-See: `docs/pre-R/FAIL_CLOSED_FAIL_SAFE_REBUILD_MANUAL.md`
+See: `docs/pre-R/PR009_ENFORCEMENT.md`
