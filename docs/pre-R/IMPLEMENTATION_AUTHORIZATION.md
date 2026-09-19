@@ -5,11 +5,9 @@
 
 | Item | State |
 |------|--------|
-| Spec | `docs/pre-R/RETURN_BOUNDARY_SPEC.md` |
-| Code | `experimental/response_boundary/` |
-| Tests | `tests/pre_r/test_response_boundary.py` (20 local PASS) |
+| Gate code | `experimental/response_boundary/core.py` |
+| PR-009 enforcement | `experimental/response_boundary/enforcement.py` |
+| Tests | `tests/pre_r/` (gate + T20) |
 | Formal M-module | **NOT AUTHORIZED** |
 | SEALED | **NO** |
 | Production security claim | **NONE** |
-
-Promotion requires: tip CI matrix, limitations review, independent audit, explicit AUTHORIZED-to-promote.

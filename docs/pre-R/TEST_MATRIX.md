@@ -1,33 +1,38 @@
 # pre-R Test Matrix (V2)
 
-**Status:** Gate-level tests present · fail-safe beyond gate not fully covered  
+**Status:** Gate + PR-009 enforcement unit-tested · **NOT SEALED**
 
-## Gate (fail-closed) — covered by current unit suite
+## Gate (fail-closed) — `test_response_boundary.py`
 
-| Mutation | Expected |
-|----------|----------|
-| Valid response | ADMIT |
-| Change result / destination / integrity | REJECT |
-| Wrong request binding | REJECT |
-| Expand authority | REJECT |
-| Missing evidence | REJECT |
-| Expired / revoked | REJECT |
-| Policy deny | REJECT |
-| Principal/action/resource mismatch | REJECT |
-| Transform without new integrity | REJECT |
-| NaN in payload | cannot form integrity |
-| Certificate out of scope | not permitted |
-| Receipt | not authority |
-| No execute attribute on response | no self-authorization API |
+| Mutation | Expected | Status |
+|----------|----------|--------|
+| Valid response | ADMIT | TESTED |
+| Integrity / destination / result mutation | REJECT | TESTED |
+| Wrong request binding | REJECT | TESTED |
+| Authority expansion | REJECT | TESTED |
+| Missing evidence / expired / revoked / policy deny | REJECT | TESTED |
+| Scope mismatch | REJECT | TESTED |
+| Certificate scoped / receipt ≠ authority | structural | TESTED |
+| Transform without new integrity | REJECT | TESTED |
+| NaN / deterministic integrity | construction | TESTED |
 
-## Fail-safe / enforcement — not yet established in pre-R slice
+## Fail-safe (PR-009) — `test_pr009_enforcement.py`
 
 | Test | Expected | Status |
 |------|----------|--------|
-| REJECT → caller cannot execute | blocked | **NOT IMPLEMENTED / NOT TESTED** |
-| HALT → may_execute() == False | non-executing | **N/A** (no pre-R may_execute) |
-| Sticky halt via require_admitted | blocked | Uses V2 kernel helpers, **not wired to pre-R gate** |
-| Automatic recovery after HALT | forbidden unless policy | **NOT IMPLEMENTED** |
-| Evidence/receipt → execute | REJECT | receipt test only (no authorize) |
+| REJECT → privileged_action blocked | StateTransitionError; side effect not run | **TESTED** |
+| HaltedWorkflow.may_execute() == False | True | **TESTED** |
+| require_executable(HaltedWorkflow) | fails | **TESTED** |
+| require_executable(raw envelope) | ModuleKernelError | **TESTED** |
+| attempt_recovery does not clear halt | still blocked | **TESTED** |
+| REJECT → no output via privileged path | blocked | **TESTED** |
+| ADMIT → privileged read | allowed | **TESTED** |
 
-See `docs/pre-R/FAIL_CLOSED_FAIL_SAFE_REBUILD_MANUAL.md`.
+## Still out of scope
+
+| Item | Status |
+|------|--------|
+| Authorized recovery protocol | NOT IMPLEMENTED |
+| Callers that bypass privileged_action API | OUT OF SCOPE |
+| ReturnGate returning HALT string (vs REJECT) | DEFERRED (PR-010) |
+| Network/UI transport | OUT OF SCOPE |

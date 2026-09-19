@@ -1,25 +1,14 @@
 # pre-R Implementation Status
 
-**Scope:** V2 experimental response boundary  
 **Formal module:** NO · **Seal:** NO · **Production:** NOT AUTHORIZED  
-
-## Tip posture
 
 | Gate | State |
 |------|--------|
-| Spec | `docs/pre-R/` |
-| Code | `experimental/response_boundary/` |
-| Unit tests (gate) | 20 PASS |
-| **PR-009 enforcement** | IMPLEMENTED + T20 tests |
-| Fail-closed (gate) | TESTED |
-| Fail-safe (privileged path via API) | TESTED (unit T20) |
+| Gate implementation | `core.py` |
+| PR-009 enforcement | `enforcement.py` |
+| Unit tests | `tests/pre_r/` |
+| CI workflow | full `tests/pre_r/` |
 | Independent audit | NOT YET |
 | SEALED | NO |
 
-## Precise claim
-
-> Gate-level fail-closed is unit-tested.  
-> PR-009 binds REJECT to `HaltedWorkflow` and blocks `privileged_action` / `require_executable`.  
-> Callers that bypass this API are out of scope. Not sealed / not production.
-
-See: `docs/pre-R/PR009_ENFORCEMENT.md`
+> Gate-level fail-closed and PR-009 API enforcement are unit-tested. Not sealed. Not production. API bypass out of scope.

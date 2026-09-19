@@ -1,14 +1,35 @@
-# pre-R experimental response boundary
+# Experimental response boundary (pre-R)
 
-Executable experiment derived from the V2 pre-R design specification.
+**Status:** EXPERIMENTAL · **NOT** a formal SWI module · **NOT SEALED** · **NOT production-authorized**
 
-Tested scope is deliberately local: request binding, scoped authority, evidence presence,
-canonical SHA-256 integrity, destination checks, expiry, revocation, and non-expansion of authority.
+## Components
 
-**Not claimed:** production security, semantic truth, network delivery, formal SWI seal, M-module promotion.
+| Piece | Module | Role |
+|-------|--------|------|
+| RequestBinding, AuthorityScope, EvidenceCarrier | `core.py` | Contracts |
+| ReturnGate | `core.py` | Fail-closed **admission** (ADMIT/REJECT) |
+| enforce / AdmittedResponse / privileged_action | `enforcement.py` | **PR-009** fail-safe binding |
+| HaltedWorkflow | `swi_v2.kernel.halt` | `may_execute() == False` |
 
-Run:
+## Flow
+
+```text
+envelope → ReturnGate.evaluate → ADMIT|REJECT
+                ↓
+            enforce()
+         ┌──────┴──────┐
+      ADMIT          REJECT
+         ↓               ↓
+ AdmittedResponse   HaltedWorkflow
+ may_execute True   may_execute False
+         ↓
+ privileged_action / require_executable
+```
+
+## Tests
 
 ```bash
-PYTHONPATH=. python -m pytest -q tests/pre_r/test_response_boundary.py
+PYTHONPATH=. python -m pytest -q tests/pre_r/
 ```
+
+Gate suite + PR-009/T20. See `docs/pre-R/PR009_ENFORCEMENT.md`.
