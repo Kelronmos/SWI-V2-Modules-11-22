@@ -1,34 +1,27 @@
 # pre-R Implementation Status
 
 **Scope:** V2 experimental response boundary  
-**Formal module:** NO  
-**Seal:** NO  
-**Production authorization:** NOT AUTHORIZED  
+**Formal module:** NO · **Seal:** NO · **Production:** NOT AUTHORIZED  
 
-## Tip (2026-09-19)
+## Tip posture
 
 | Gate | State |
 |------|--------|
-| Spec / docs | `docs/pre-R/` |
-| Implementation | `experimental/response_boundary/` |
-| Unit tests | `tests/pre_r/test_response_boundary.py` |
-| Local pytest | **20 passed** |
-| Workflow | `.github/workflows/pre_r_boundary.yml` |
+| Spec | `docs/pre-R/` including fail-closed/fail-safe manual |
+| Code | `experimental/response_boundary/` |
+| Unit tests | `tests/pre_r/` — **20 local PASS** (gate decisions) |
+| Fail-closed (gate) | **TESTED** for covered mutations |
+| Fail-safe (beyond gate) | **NOT YET IMPLEMENTED** in pre-R · see PR-009 |
 | Independent audit | NOT YET |
 | SEALED | NO |
 
-## Historical integration defect (`64bf105`)
+## Precise claim
 
-| Finding | Detail |
-|---------|--------|
-| Classification | **F5/F1** — workflow expected test path; tree incomplete |
-| CI symptom | `file or directory not found` · exit 4 · **no tests ran** |
-| Meaning | PRE-R CI = **NOT TESTED** (not a security-assertion failure) |
-| Repair | Tests + matching `core.py` (`f9f234d` / `0cbc42e`) |
+> Gate-level fail-closed is implemented and unit-tested.  
+> Fail-safe enforcement beyond the gate (caller cannot ignore REJECT) is **not** established by the current experimental slice.
 
-## Claim boundary
+## Historical `64bf105`
 
-Passing tests = tested local contracts only.  
-Not: production security, semantic truth, CRTG, Seal 5, formal module.
+Missing test path → CI **NOT TESTED** (integration). Not a behavioral security verdict.
 
-See: `docs/pre-R/PRE_R_REPAIR_RECORD.md`
+See: `docs/pre-R/FAIL_CLOSED_FAIL_SAFE_REBUILD_MANUAL.md`
