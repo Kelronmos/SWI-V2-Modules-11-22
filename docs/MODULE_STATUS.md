@@ -14,6 +14,10 @@
 | SCAR → Firefly docs | **DESIGN FROZEN** — see `docs/SCAR_FIREFLY_INDEX.md` |
 | SCAR (V1) | **IMPLEMENTED / TESTED** — V1 `docs/SCAR_STATUS.md` |
 | M13–22 | **BLOCKED** |
+| **pre-R / PR-009** | **EXPERIMENTAL** — gate + enforce API **TESTED**; **NOT SEALED**; API bypass out of scope |
+| PRE module registry | `docs/pre-R/PRE_MODULE_REGISTRY.md` (docs only) |
+| Lifecycle manual | `docs/SWI_MODULE_LIFECYCLE_MANUAL.md` |
+| Latest local regression | `docs/REGRESSION_RECORD_2026-09-19.md` |
 
 Canonical memory-web freeze: `docs/V2_MEMORY_WEB_STATUS.md`  
 SCAR→Firefly entry point: `docs/SCAR_FIREFLY_INDEX.md`
