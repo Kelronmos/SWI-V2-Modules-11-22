@@ -1,7 +1,6 @@
 # V2 pre-R Return Boundary
 
 **Date:** 2026-09-19  
-**Tip reference:** see `docs/PRE_R_IMPLEMENTATION_STATUS.md`  
 
 | Field | Value |
 |-------|--------|
@@ -11,46 +10,32 @@
 | Formal module | **NOT AUTHORIZED** |
 | SEALED | **NO** |
 | Production | **NOT AUTHORIZED** |
-| Security claim | **NONE** |
 
-## Question (narrow)
-
-> Can a result cross a return boundary while preserving defined evidence, integrity, identity, destination and authority scope, without the return path, intermediary backend, or UI creating new authority?
-
-## Current evidence posture
+## Evidence posture
 
 | Layer | State |
 |-------|--------|
 | Spec | `RETURN_BOUNDARY_SPEC.md` |
-| Executable slice | `experimental/response_boundary/` |
-| Unit tests | `tests/pre_r/test_response_boundary.py` — **20 local PASS** |
-| Workflow | `.github/workflows/pre_r_boundary.yml` |
-| Historical gap (`64bf105`) | Workflow present, test path incomplete → **NOT TESTED** (integration) |
-| After `0cbc42e` | Test path + core aligned → assertions reached |
-| Independent audit | NOT YET |
-| SEALED | NO |
+| Code | `experimental/response_boundary/` |
+| Unit tests | **20 local PASS** (gate decisions) |
+| Fail-closed (gate) | TESTED for covered mutations |
+| Fail-safe (beyond gate) | **NOT YET** — see PR-009 |
+| Coverage map | `TEST_COVERAGE_FAIL_CLOSED_FAIL_SAFE.md` |
 
 ## Doctrine
 
 ```text
-DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
-RESULT ≠ RESPONSE ≠ AUTHORITY ≠ NEW ACTION
-Aᵣ ⊆ A₀ · UNKNOWN ⇏ ALLOW
-TESTED ≠ SEALED · IMPLEMENTED ≠ AUTHORIZED
+DATA ≠ AUTHORITY · TESTED ≠ SEALED
+FAIL-CLOSED = admission proof
+FAIL-SAFE   = enforcement after failure
 ```
 
 ## Documents
 
 | File | Role |
 |------|------|
-| `RETURN_BOUNDARY_SPEC.md` | Build guide |
-| `TEST_MATRIX.md` | Mutation → expected |
-| `LIMITATIONS.md` | Limitation register |
-| `PROMOTION_CRITERIA.md` | When (not) to promote |
-| `IMPLEMENTATION_AUTHORIZATION.md` | Experimental · not promote/seal |
-| `PRE_R_REPAIR_RECORD.md` | F1 path failure + evidence |
-| `RESPONSE_BOUNDARY_REPAIR_AND_VERIFICATION_MANUAL.md` | Repair doctrine |
-
-## Next
-
-Expand adversarial depth (contract-first) · keep V2 + two-checkout regression green · audit before promote.
+| `FAIL_CLOSED_FAIL_SAFE_REBUILD_MANUAL.md` | Rebuild guide |
+| `TEST_COVERAGE_FAIL_CLOSED_FAIL_SAFE.md` | 20-test mapping |
+| `TEST_MATRIX.md` | Mutations |
+| `LIMITATIONS.md` | PR-009+ |
+| `IMPLEMENTATION_AUTHORIZATION.md` | Not promote/seal |
