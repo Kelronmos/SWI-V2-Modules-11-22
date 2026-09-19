@@ -2,41 +2,28 @@
 
 **Date:** 2026-09-19
 
-## Intermediate failures (historical tip evidence)
+## Intermediate failures (historical)
 
 | Commit | Workflow | Conclusion | Classification |
 |--------|----------|------------|----------------|
-| `43cc6a2` | pre-R boundary | failure | **F1** — incomplete core (missing `build_response` / original API) |
+| `64bf105` | pre-R boundary | failure | **F5/F1** — test path missing/incomplete; **no tests ran** |
+| `43cc6a2` | pre-R boundary | failure | **F1** — incomplete core vs tests |
 | `f9f234d` | pre-R boundary | failure | **F1** — tests present, core not yet restored |
-| `f9f234d` | V2 verification / two-checkout | failure | **F5/F1** cascade from incomplete experimental tree |
 
-**Root cause:** Partial commit sequence landed tests before a matching `core.py` implementation.
+**Root cause (64bf105):** CI wired to `tests/pre_r/test_response_boundary.py` before the verification layer was complete in-tree.
 
-**Corrective change:** Restore original executable `core.py` with `build_response`, `EvidenceCarrier.payload`, `ReturnGate.evaluate(..., policy_allows=)`, integrity gate matching the contract tests.
+**Corrective change:** Land tests + matching `core.py` with `build_response` / gate API (`f9f234d` → `0cbc42e`).
 
-**Commit:** `0cbc42e`
-
-## Current tip evidence (`0cbc42e`)
+## Tip evidence after alignment
 
 | Check | Result |
 |-------|--------|
-| Local `pytest tests/pre_r/test_response_boundary.py` | **20 passed** |
-| Actions pre-R boundary (`35427307226`) | **success** |
-| Actions SWI V2 Verification (`35427307161`) | **success** |
-| Actions two-checkout-travel (`35427307165`) | **success** |
+| Local `pytest tests/pre_r/` | **20 passed** |
+| Test path present | Yes |
+| Formal module / SEALED / production | **NO** |
 
-## Explicit non-claims
+## Status reconciliation
 
-| Item | State |
-|------|--------|
-| Formal module | NO |
-| SEALED | NO |
-| Production authorization | NOT AUTHORIZED |
-| CRTG / Seal 5 | unchanged |
-| System-wide security | NOT claimed |
+Rebuild guides that still say “test file missing” apply to historical **`64bf105`**, not current tip.
 
-## Next
-
-1. Keep regression gate on every pre-R change  
-2. Expand adversarial matrix only with contract-first tests  
-3. Independent audit before any promote decision  
+Canonical status: experimental implementation + tests present; **NOT SEALED**; **NOT production-authorized**.

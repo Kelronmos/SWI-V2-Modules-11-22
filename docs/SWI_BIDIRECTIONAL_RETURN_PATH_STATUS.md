@@ -1,17 +1,21 @@
 # Bidirectional Verified Return Path — Status (V2)
 
 **Date:** 2026-09-19  
-**Status:** DESIGN ONLY — see `docs/pre-R/`  
-**Implementation:** NOT AUTHORIZED  
+**Status:** EXPERIMENTAL implementation present · **NOT SEALED**  
 **V1 dependency:** NONE  
-**Code:** absent  
+**Formal module:** NOT AUTHORIZED  
 
-| Item | Path |
-|------|------|
-| Canonical pre-R package | `docs/pre-R/README.md` |
-| Full build guide | `docs/pre-R/RETURN_BOUNDARY_SPEC.md` |
-| Authorization | `docs/pre-R/IMPLEMENTATION_AUTHORIZATION.md` (**NOT AUTHORIZED**) |
+| Item | Path / state |
+|------|----------------|
+| Spec package | `docs/pre-R/` |
+| Code | `experimental/response_boundary/` |
+| Tests | `tests/pre_r/` — **20 local PASS** |
+| Authorization | Experimental only · **not** promote/seal |
+| M11 | SEALED (independent) |
+| M12 | Controlled / frozen gates |
 
 > Information may travel backwards; authority does not.
 
-Next: freeze contracts → AUTHORIZED → code. M11 SEALED · M12 controlled · pre-R ≠ M12.
+```text
+TESTED ≠ SEALED · DATA ≠ AUTHORITY
+```

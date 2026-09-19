@@ -5,20 +5,30 @@
 **Seal:** NO  
 **Production authorization:** NOT AUTHORIZED  
 
-## Tip (`0cbc42e`)
+## Tip (2026-09-19)
 
 | Gate | State |
 |------|--------|
-| Implementation | EXPERIMENTAL present |
-| Unit tests (local) | **20 passed** |
-| CI pre-R workflow | **CI-VERIFIED** — run 35427307226 |
-| V2 full verification | **CI-VERIFIED** — run 35427307161 |
-| Two-checkout travel | **CI-VERIFIED** — run 35427307165 |
+| Spec / docs | `docs/pre-R/` |
+| Implementation | `experimental/response_boundary/` |
+| Unit tests | `tests/pre_r/test_response_boundary.py` |
+| Local pytest | **20 passed** |
+| Workflow | `.github/workflows/pre_r_boundary.yml` |
 | Independent audit | NOT YET |
 | SEALED | NO |
 
-Implemented slice: pre-R01…pre-R08 (local); pre-R09 delivery narrow; pre-R10 audit deferred.
+## Historical integration defect (`64bf105`)
 
-Claim boundary: tested local contracts only — not production security or semantic truth.
+| Finding | Detail |
+|---------|--------|
+| Classification | **F5/F1** — workflow expected test path; tree incomplete |
+| CI symptom | `file or directory not found` · exit 4 · **no tests ran** |
+| Meaning | PRE-R CI = **NOT TESTED** (not a security-assertion failure) |
+| Repair | Tests + matching `core.py` (`f9f234d` / `0cbc42e`) |
 
-See: `docs/pre-R/PRE_R_REPAIR_RECORD.md`, `docs/pre-R/RESPONSE_BOUNDARY_REPAIR_AND_VERIFICATION_MANUAL.md`
+## Claim boundary
+
+Passing tests = tested local contracts only.  
+Not: production security, semantic truth, CRTG, Seal 5, formal module.
+
+See: `docs/pre-R/PRE_R_REPAIR_RECORD.md`
