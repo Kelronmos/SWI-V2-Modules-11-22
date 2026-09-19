@@ -3,19 +3,22 @@
 **Scope:** V2 experimental response boundary  
 **Formal module:** NO  
 **Seal:** NO  
+**Production authorization:** NOT AUTHORIZED  
 
-Implemented executable slice:
-- pre-R01 RequestBinding
-- pre-R02 AuthorityScope
-- pre-R03 EvidenceCarrier
-- pre-R04 IntegrityVerifier
-- pre-R05 ResponseEnvelope
-- pre-R06 ReturnGate
-- pre-R07 Destination checks
-- pre-R08 Transformation re-integrity requirement
-- pre-R09 Delivery contract only; no network adapter
-- pre-R10 Audit persistence deferred
+## Tip (`0cbc42e`)
 
-Status must be updated only from current-tip test/CI evidence.
+| Gate | State |
+|------|--------|
+| Implementation | EXPERIMENTAL present |
+| Unit tests (local) | **20 passed** |
+| CI pre-R workflow | **CI-VERIFIED** — run 35427307226 |
+| V2 full verification | **CI-VERIFIED** — run 35427307161 |
+| Two-checkout travel | **CI-VERIFIED** — run 35427307165 |
+| Independent audit | NOT YET |
+| SEALED | NO |
 
-Claim boundary: passing tests establish only the tested local contracts; they do not establish production security or semantic truth.
+Implemented slice: pre-R01…pre-R08 (local); pre-R09 delivery narrow; pre-R10 audit deferred.
+
+Claim boundary: tested local contracts only — not production security or semantic truth.
+
+See: `docs/pre-R/PRE_R_REPAIR_RECORD.md`, `docs/pre-R/RESPONSE_BOUNDARY_REPAIR_AND_VERIFICATION_MANUAL.md`
