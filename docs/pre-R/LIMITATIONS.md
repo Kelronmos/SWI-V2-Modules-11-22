@@ -2,8 +2,8 @@
 
 | ID | Limitation | Status |
 |----|------------|--------|
-| PR-001 | No implementation yet | OPEN |
-| PR-002 | No executable tests | OPEN |
+| PR-001 | Experimental slice implemented; not sealed | OPEN |
+| PR-002 | Local unit suite present; tip CI evidence required | OPEN |
 | PR-003 | Semantic truth not in scope | STANDING |
 | PR-004 | Production key custody not in scope | STANDING |
 | PR-005 | UI adapter contract-only | OPEN |
