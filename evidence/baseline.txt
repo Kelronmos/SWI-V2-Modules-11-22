@@ -1,0 +1,21 @@
+SWI V2 Independent-Verification Baseline
+========================================
+Repository: Kelronmos/SWI-V2-Modules-11-22
+Branch: hardening/m11-independent-verification
+Frozen tip SHA: 968f85a77cb9385091369c75eaa4c41524d7d953
+Recorded UTC: 2026-09-20
+
+Purpose
+-------
+Record the exact starting SHA for controlled M11 independent-verification
+work. This commit does NOT implement a new verifier, does NOT expand M11
+scope, and does NOT open M12.
+
+Explicit non-claims
+-------------------
+- M11 remains SEALED only for the scope and commits in docs/M11_SEAL_RECORD.md
+- M12 remains BLOCKED / controlled development
+- S9 remains NOT_PROVEN
+- No production keys / CRTG claim
+
+Next allowed step: independent verifier construction under explicit gates.
