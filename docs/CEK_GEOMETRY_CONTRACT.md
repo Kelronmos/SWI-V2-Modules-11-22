@@ -3,148 +3,87 @@
 **Document ID:** CEK-GEO-001  
 **Status:** Terminology / model freeze — **NOT IMPLEMENTED**  
 **Date:** 2026-09-21  
-**Doctrine:** Claim → Implementation → Test → Result → Limitation → Next  
+**Cross-ref:** `docs/CEK_GODSEYE_FLOW_OBSERVABILITY.md` (God's-Eye flow observability)  
 
-## 1. Terminology freeze (no ambiguous abbreviations)
+## 1. Terminology freeze
 
-Until each term is defined below and accepted, **CEK must not appear in runtime claims**.
+| Symbol | Meaning |
+|--------|---------|
+| **C** | *Context* — circumstances of a flow (request, state, module, source, destination, time, dependencies) |
+| **E** | *Evidence* — what can support a claim (integrity, receipts, hashes, tests, provenance). **Not authority.** |
+| **K** | *Knowledge / Constraints* — established structure (contracts, permitted transitions, invariants, limitations, unknowns) |
+| **CEK** | Joint observability geometry of (C, E, K) over consequential flows |
+| **geometry** | Nodes, typed edges, states, invariants — not a security percentage |
+| **God's Eye** | Whole-flow observability requirement where claimed — **not omniscience** |
+| **vibration** | Observable change / transition / propagation through the architecture |
+| **frontier** | Boundary between demonstrated visibility and unknown |
+| **real-world door** | Boundary where software can produce external consequence |
 
-| Symbol | Provisional meaning (must be confirmed before implementation) |
-|--------|----------------------------------------------------------------|
-| **C** | *Constraint / Condition space* — the set of declared constraints under which a transition is evaluated |
-| **E** | *Evidence / Event space* — structured records of what occurred (integrity-bound, not authority) |
-| **K** | *Kernel / Kontrol state* — controlled runtime state subject to explicit transitions |
-| **CEK** | The joint geometry of (C, E, K): constrained state-space in which SWI evaluates transitions |
-| **geometry** | Formal structure of nodes, typed edges, states, and invariants — not a security percentage |
-| **input** | Declared inputs to a geometric evaluation |
-| **output** | Declared outputs of a geometric evaluation |
-| **measurement** | Explicit function over defined inputs; must name baseline, metric, units |
-| **threshold** | Named boundary on a measurement; must name action on cross |
-| **decision** | BIND / REJECT / HALT / other contractually defined outcome — not implicit ALLOW |
-| **authority relationship** | How (if at all) CEK output is permitted to influence AUTHORITY — default: **none** |
+If any term remains ambiguous in a claim, that claim is **out of scope** until clarified.
 
-If any row remains ambiguous in a claim, that claim is **out of scope** until clarified.
-
-## 2. Architectural model (not yet an engineering claim)
+## 2. Architectural placement
 
 ```text
-                    AUTHORITY
-                        ▲
-                        │
-                  ┌─────┴─────┐
-                  │  BINDING  │
-                  └─────┬─────┘
-                        │
-REQUEST → ADMISSION → EXECUTION
-              │         │
-              ▼         ▼
-             HALT ←── FAILURE
-                    │
-                    ▼
-                 EVIDENCE
-                    │
-                    ▼
-                CONTINUITY
-```
+CEK observes (does not own):
 
-This becomes an engineering claim only after: formal definition + implementation + tests.
+AUTHORITY ▲
+          │
+    ┌─────┴─────┐
+    │  BINDING  │
+    └─────┬─────┘
+REQUEST → ADMISSION → EXECUTION → EVIDENCE → CONTINUITY → REAL-WORLD DOOR
+              │            │
+             HALT ←──── FAILURE
+```
 
 ## 3. Geometric objects
 
-### Node
+**Node:** id, version, contract, authority_scope, state, observability_status  
+**Edge:** source, destination, transition_type (DATA|CONTROL|AUTHORITY|EVIDENCE|IDENTITY|CONTINUITY|EXECUTION), constraints, authority_requirement, evidence_requirement  
+**State:** identity, lifecycle, authority_context, binding_context, evidence_context  
 
-```text
-Node {
-  id
-  version
-  contract
-  authority_scope
-  state
-}
-```
+DATA edge ≠ AUTHORITY or EXECUTION.
 
-### Edge
+## 4. Invariants
 
-```text
-Edge {
-  source
-  destination
-  transition_type   # DATA | CONTROL | AUTHORITY | EVIDENCE | IDENTITY | CONTINUITY | EXECUTION
-  constraints
-  authority_requirement
-  evidence_requirement
-}
-```
-
-### State
-
-```text
-State {
-  identity
-  lifecycle
-  authority_context
-  binding_context
-  evidence_context
-}
-```
-
-## 4. Edge types (mandatory)
-
-| Type | Meaning |
-|------|---------|
-| DATA | Payload / result flow |
-| CONTROL | Sequencing / orchestration |
-| AUTHORITY | Permission / scope |
-| EVIDENCE | Integrity / provenance artifacts |
-| IDENTITY | Principal / identity binding |
-| CONTINUITY | State-continuation proof |
-| EXECUTION | Right to invoke operation |
-
-**A DATA edge does not imply AUTHORITY or EXECUTION.**
-
-## 5. Geometric invariants (GEO-001 … GEO-010)
+### GEO-001 … GEO-010 (structure)
 
 | ID | Invariant |
 |----|-----------|
-| GEO-001 | Every runtime node has an identified contract. |
-| GEO-002 | Every permitted transition has a source and destination. |
-| GEO-003 | Undefined transitions are not implicitly permitted. |
-| GEO-004 | A transition cannot expand authority without an explicit contract. |
-| GEO-005 | Evidence cannot manufacture authority. |
-| GEO-006 | Binding cannot silently execute. |
-| GEO-007 | REJECT cannot reach execution through the enforced path. |
-| GEO-008 | HALT cannot reach execution without an explicitly defined transition. |
-| GEO-009 | Material transition mutation invalidates applicable evidence. |
-| GEO-010 | Runtime state must remain consistent with its transition history. |
+| GEO-001 | Every runtime node has an identified contract |
+| GEO-002 | Every permitted transition has source and destination |
+| GEO-003 | Undefined transitions are not implicitly permitted |
+| GEO-004 | Transition cannot expand authority without explicit contract |
+| GEO-005 | Evidence cannot manufacture authority |
+| GEO-006 | Binding cannot silently execute |
+| GEO-007 | REJECT cannot reach execution through enforced path |
+| GEO-008 | HALT cannot reach execution without explicit transition |
+| GEO-009 | Material transition mutation invalidates applicable evidence |
+| GEO-010 | Runtime state consistent with transition history |
 
-## 6. CEK position relative to SWI law
+### GEO-CEK-001 … GEO-CEK-015 (observability)
+
+See full list in `CEK_GODSEYE_FLOW_OBSERVABILITY.md` §15. Core:
+
+- Observation does not create authority  
+- Unknown ≠ authorized  
+- No silent propagation through unobserved edge  
+- No evidence/replay laundering into authority  
+- Explicit visibility frontier  
+- Observation does not seal  
+
+## 5. CEK position
 
 ```text
-SWI LAW
-  ↓
-runtime conditions
-  ↓
-CEK measurement (if implemented)
-  ↓
-defined interpretation only
+SWI LAW → runtime conditions → CEK measurement (if implemented) → defined interpretation only
 ```
 
-CEK output has **only** the authority explicitly assigned by contract.  
-Default: measurement informs diagnostics; it does **not** grant AUTHORITY or EXECUTION.
+Default: measurement informs diagnostics; does **not** grant AUTHORITY or EXECUTION.
 
-## 7. Thresholds (if used later)
+## 6. Explicit non-claims
 
-For every threshold, freeze before use:
-
-- name, value, unit  
-- input, calculation, boundary  
-- meaning, action, evidence, limitation  
-
-Never convert a numeric threshold into an unexplained “security percentage.”
-
-## 8. Explicit non-claims
-
-- CEK is **not implemented** in this repository.  
-- This document does **not** authorize runtime development.  
-- PRE-CONSEQUENCES is **not** part of CEK geometry.  
-- GEO invariants are **requirements**, not proven properties, until tested.  
+- CEK is **not implemented**  
+- This document does **not** authorize runtime development  
+- PRE-CONSEQUENCES is **not** part of CEK  
+- GEO / GEO-CEK invariants are **requirements**, not proven properties, until tested  
+- God's Eye ≠ omniscience  
