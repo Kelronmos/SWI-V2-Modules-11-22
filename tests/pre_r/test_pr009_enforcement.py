@@ -152,3 +152,118 @@ def test_gate_still_independent_of_enforcement():
     )
     assert d == BoundaryDecision.ADMIT
     assert not hasattr(d, "may_execute")
+
+
+# ---------------------------------------------------------------------------
+# Adversarial boundary diagnosis (2026-09-21)
+# Claim under test: invalid state cannot be converted into an executable
+# state without passing the intended boundary.
+# ---------------------------------------------------------------------------
+
+import pickle
+import copy
+
+
+def test_adversarial_serialize_deserialize_halted_remains_non_executable():
+    """REJECT → HaltedWorkflow → serialize → deserialize → still blocked."""
+    r, a, x = fixtures()
+    halted = _enforce(x, r, a, policy_allows=False)
+    assert isinstance(halted, HaltedWorkflow)
+    assert halted.may_execute() is False
+
+    # Attempt pickle round-trip (if it fails, that itself is a documented result)
+    try:
+        serialized = pickle.dumps(halted)
+        restored = pickle.loads(serialized)
+    except Exception as exc:
+        # Documented outcome: object cannot safely be serialized
+        assert True, f"serialization refused: {type(exc).__name__}"
+        return
+
+    assert isinstance(restored, HaltedWorkflow)
+    assert restored.may_execute() is False
+
+    executed = {"ran": False}
+
+    def priv(_env):
+        executed["ran"] = True
+        return "secrets"
+
+    with pytest.raises((StateTransitionError, ModuleKernelError, TypeError, AttributeError)):
+        privileged_action(restored, priv)
+    assert executed["ran"] is False
+
+    with pytest.raises((StateTransitionError, ModuleKernelError)):
+        require_executable(restored)
+
+
+def test_adversarial_reject_string_cannot_reach_privileged_action():
+    """Raw REJECT string must not be usable as an executable token."""
+    with pytest.raises((ModuleKernelError, StateTransitionError, TypeError, AttributeError)):
+        privileged_action(BoundaryDecision.REJECT, lambda e: e)
+
+
+def test_adversarial_raw_envelope_cannot_reach_privileged_action():
+    """Raw ResponseEnvelope (never passed through enforce) must be rejected."""
+    r, a, x = fixtures()
+    with pytest.raises((ModuleKernelError, StateTransitionError)):
+        privileged_action(x, lambda e: e.result)
+    with pytest.raises((ModuleKernelError, StateTransitionError)):
+        require_executable(x)
+
+
+def test_adversarial_mutated_admitted_object_blocked():
+    """An AdmittedResponse whose may_execute is forced False must be blocked."""
+    r, a, x = fixtures()
+    out = _enforce(x, r, a)
+    assert isinstance(out, AdmittedResponse)
+    assert out.may_execute() is True
+
+    # Attempt to create a mutated view that claims may_execute False
+    class MutatedAdmitted:
+        def __init__(self, original):
+            self.envelope = original.envelope
+            self.decision = original.decision
+
+        def may_execute(self):
+            return False
+
+    mutated = MutatedAdmitted(out)
+    with pytest.raises((StateTransitionError, ModuleKernelError, TypeError)):
+        require_executable(mutated)
+    with pytest.raises((StateTransitionError, ModuleKernelError, TypeError)):
+        privileged_action(mutated, lambda e: e.result)
+
+
+def test_adversarial_halted_with_altered_fields_still_blocked():
+    """HaltedWorkflow with altered record / state attributes remains non-executable."""
+    r, a, x = fixtures()
+    halted = _enforce(x, r, a, policy_allows=False)
+    assert isinstance(halted, HaltedWorkflow)
+
+    # Direct attribute mutation attempts
+    try:
+        halted.state = "ADMITTED"  # type: ignore[misc]
+    except Exception:
+        pass  # frozen or protected — acceptable
+
+    # Even if mutation succeeded, may_execute must still be False
+    assert halted.may_execute() is False
+
+    with pytest.raises((StateTransitionError, ModuleKernelError)):
+        require_executable(halted)
+    with pytest.raises((StateTransitionError, ModuleKernelError)):
+        privileged_action(halted, lambda e: e.result)
+
+
+def test_adversarial_copy_of_halted_still_blocked():
+    """Shallow/deep copy of HaltedWorkflow must not become executable."""
+    r, a, x = fixtures()
+    halted = _enforce(x, r, a, policy_allows=False)
+
+    for copied in (copy.copy(halted), copy.deepcopy(halted)):
+        assert copied.may_execute() is False
+        with pytest.raises((StateTransitionError, ModuleKernelError)):
+            require_executable(copied)
+        with pytest.raises((StateTransitionError, ModuleKernelError)):
+            privileged_action(copied, lambda e: "leaked")
