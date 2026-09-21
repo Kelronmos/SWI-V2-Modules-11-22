@@ -3,7 +3,7 @@
 **Status:** Architecture and gate definitions only.  
 **Runtime implementation:** NOT AUTHORIZED until RUNTIME-ENTRY GATE passes.
 
-## Documents
+## Documents in this directory
 
 | File | Role |
 |------|------|
@@ -13,6 +13,13 @@
 | DEPENDENCY_GRAPH_MODEL.md | Typed dependency edges |
 | MODULE_COMPLETION_CONTRACT.md | Common per-module record template |
 | RUNTIME_STATE_MACHINE.md | State machine + hard HALT rule |
+
+## Master programme (repo root docs)
+
+| File | Role |
+|------|------|
+| `docs/LAW_TRUTH_CEK_GEO_RUNTIME.md` | Master CEK → Module → Binding → Runtime programme |
+| `docs/CEK_GEOMETRY_CONTRACT.md` | CEK terminology freeze + GEO-001…010 |
 
 ## Parallel tracks (after gate)
 
@@ -28,6 +35,7 @@ Tracks may develop in parallel **only after** their contracts are frozen.
 ## Standing separations
 
 - PRE-CONSEQUENCES = separate architecture, not built  
-- Experimental pre-R (ReturnGate / PR-009) = admission + rejection enforcement, not the binding layer  
+- Experimental pre-R (ReturnGate / PR-009) = admission + rejection enforcement, **not** the binding layer  
 - TESTED ≠ SEALED  
 - Binding ≠ Execution  
+- DATA ≠ AUTHORITY ≠ BINDING ≠ EXECUTION  
