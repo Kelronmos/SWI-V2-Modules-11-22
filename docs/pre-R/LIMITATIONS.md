@@ -1,6 +1,6 @@
 # pre-R Limitations Register (V2)
 
-**Last diagnostic:** 2026-09-21 (baseline `3f87e7c3c21ba7016a8affb5c4c0b3045703055e` + adversarial + LAW-TRUTH evidence)
+**Last diagnostic:** 2026-09-21 (V1 export repair + LAW-TRUTH evidence)
 
 | ID | Limitation | Status |
 |----|------------|--------|
@@ -18,7 +18,7 @@
 | PR-012 | Full V1 ModuleKernel composition into pre-R not required | OPEN |
 | PR-013 | Distributed multi-agent / NATS stack = design only (`docs/design/`) | STANDING |
 | PR-014 | PRE-CONSEQUENCES is a separate architecture and is **not implemented** in this repository | **STANDING** |
-| PR-015 | V1 `export_travel_evidence.py` out of date vs Trainer.process(admission=…) | **OPEN** |
+| PR-015 | V1 `export_travel_evidence.py` required admission= | **RESOLVED** (V1 `c25467c`) |
 
 ## Current proof boundary (PR-009)
 
@@ -35,4 +35,7 @@ Unproven:
   complete structural coverage (Level 4 / Level 5)
 ```
 
-This refinement is stronger documentation than claiming “secure.”
+## Two-checkout
+
+Live V1 export → V2 `admit_foundation_input` verified after V1 fix.
+CI workflow `.github/workflows/two_checkout_travel.yml` is the authoritative path.
