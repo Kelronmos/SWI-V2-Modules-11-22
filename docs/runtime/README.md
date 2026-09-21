@@ -1,41 +1,43 @@
 # SWI Runtime documentation package
 
 **Status:** Architecture and gate definitions only.  
-**Runtime implementation:** NOT AUTHORIZED until RUNTIME-ENTRY GATE passes.
+**Runtime implementation:** NOT AUTHORIZED until Runtime-Closure G11 + Runtime Entry Gate pass.  
+**M11:** SEALED (historical) — do not reopen.
 
-## Documents in this directory
-
-| File | Role |
-|------|------|
-| RUNTIME_PATH.md | End-to-end path from tested modules to runtime seal |
-| RUNTIME_ENTRY_GATE.md | Explicit gate before any runtime code |
-| BINDING_CONTRACT.md | Binding semantics + BIND-001…010 |
-| DEPENDENCY_GRAPH_MODEL.md | Typed dependency edges |
-| MODULE_COMPLETION_CONTRACT.md | Common per-module record template |
-| RUNTIME_STATE_MACHINE.md | State machine + hard HALT rule |
-
-## Master programme (repo root docs)
+## Documents
 
 | File | Role |
 |------|------|
-| `docs/LAW_TRUTH_CEK_GEO_RUNTIME.md` | Master CEK → Module → Binding → Runtime programme |
-| `docs/CEK_GEOMETRY_CONTRACT.md` | CEK terminology freeze + GEO-001…010 |
+| **RUNTIME_CLOSURE_MANUAL.md** | **Primary** — 12 closure gates G00–G11; starting position; module path M12–M22 |
+| RUNTIME_PATH.md | End-to-end path sketch |
+| RUNTIME_ENTRY_GATE.md | Explicit gate checklist |
+| BINDING_CONTRACT.md | BIND-001…010; BIND ≠ EXECUTE |
+| DEPENDENCY_GRAPH_MODEL.md | Typed edges |
+| MODULE_COMPLETION_CONTRACT.md | Per-module common record |
+| RUNTIME_STATE_MACHINE.md | State machine + HALT rule |
 
-## Parallel tracks (after gate)
+## Master programme (repo docs)
 
-- **A** Architecture (contracts, graph, state machine)  
-- **B** Binding (types, registry, validation, tests)  
-- **C** Runtime (context, transitions, dispatcher)  
-- **D** Evidence (receipts, chain, replay)  
-- **E** Security (laundering, mutation, bypass)  
-- **F** Verification (unit → cross-repo → audit)  
+| File | Role |
+|------|------|
+| `docs/LAW_TRUTH_CEK_GEO_RUNTIME.md` | CEK → Module → Binding → Runtime programme |
+| `docs/CEK_GEOMETRY_CONTRACT.md` | CEK terminology + GEO-001…010 |
 
-Tracks may develop in parallel **only after** their contracts are frozen.
+## Repository truth (from MODULE_STATUS)
+
+| Component | Status |
+|-----------|--------|
+| M11 | **SEALED** (historical) |
+| M12 | **FROZEN** pending Gates A–D |
+| M13–22 | **BLOCKED** |
+| PR-009 / pre-R | **EXPERIMENTAL** — TESTED; **NOT SEALED** |
+| Replay | **NOT sealed** |
+| PRE-CONSEQUENCES | Separate — **NOT BUILT** |
 
 ## Standing separations
 
-- PRE-CONSEQUENCES = separate architecture, not built  
-- Experimental pre-R (ReturnGate / PR-009) = admission + rejection enforcement, **not** the binding layer  
-- TESTED ≠ SEALED  
-- Binding ≠ Execution  
-- DATA ≠ AUTHORITY ≠ BINDING ≠ EXECUTION  
+```text
+DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORITY ≠ BINDING ≠ EXECUTION ≠ TRUTH ≠ CONTINUITY
+TESTED ≠ SEALED
+BINDING ≠ EXECUTION
+```
