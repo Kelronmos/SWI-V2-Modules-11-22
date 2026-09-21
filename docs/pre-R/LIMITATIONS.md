@@ -1,6 +1,6 @@
 # pre-R Limitations Register (V2)
 
-**Last diagnostic:** 2026-09-21 (baseline `c1c9416818c84b1b3088308af63f1fde2c5a2a73` + adversarial suite)
+**Last diagnostic:** 2026-09-21 (baseline `3f87e7c3c21ba7016a8affb5c4c0b3045703055e` + adversarial + LAW-TRUTH evidence)
 
 | ID | Limitation | Status |
 |----|------------|--------|
@@ -18,6 +18,7 @@
 | PR-012 | Full V1 ModuleKernel composition into pre-R not required | OPEN |
 | PR-013 | Distributed multi-agent / NATS stack = design only (`docs/design/`) | STANDING |
 | PR-014 | PRE-CONSEQUENCES is a separate architecture and is **not implemented** in this repository | **STANDING** |
+| PR-015 | V1 `export_travel_evidence.py` out of date vs Trainer.process(admission=…) | **OPEN** |
 
 ## Current proof boundary (PR-009)
 
