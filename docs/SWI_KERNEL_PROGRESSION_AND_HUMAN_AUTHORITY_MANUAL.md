@@ -592,91 +592,227 @@ When the Mathematical Evidence Engine or claim-ledger tooling is wired in, the e
 
 ---
 
-## 22. Common Sense Equation (authority boundary)
+## 22. Common Sense Equation (continuous monitoring + authority boundary)
 
 **Position:** Below the Seal Eligibility Equation.  
-**Role:** Reasoning and correction path for human error.  
-**Rule:** Common Sense may detect, analyse, diagnose, correct, and produce evidence.  
-It must **never** execute, promote, seal, or authorize.
+**Role:** Continuous boundary-awareness, pattern detection, structural integrity, root-cause analysis, and harm-aware diagnostics.  
+**Rule:** Common Sense may monitor, detect, analyse, diagnose, correct/redirect, and produce evidence.  
+It must **never** execute, promote, seal, authorize, extend, or renew authority.
 
-### 22.1 Command contract
+### 22.1 Continuous watch structure
 
 ```text
-SWI::COMMONSENSE(HUMAN_ERROR)
-        ↓
-DETECT
-        ↓
-ANALYSE
-        ↓
-DIAGNOSE
-        ↓
-CORRECT / REDIRECT
-        ↓
-EVIDENCE
-        ↓
-HUMAN AUTHORITY
-        │
-        ├── absent  → HALT
-        │
-        └── present → AUTHORIZED PATH
+COMMON_SENSE
+      │
+      ├── AUTHORIZATION WATCH
+      │      ├── who / what
+      │      ├── scope
+      │      ├── purpose
+      │      ├── start
+      │      ├── expiry / duration
+      │      ├── conditions
+      │      └── revocation_state
+      │
+      ├── PATTERN WATCH
+      │      ├── repetition
+      │      ├── abnormal sequence
+      │      ├── repeated failure
+      │      └── authority drift
+      │
+      ├── STRUCTURE WATCH
+      │      ├── dependency integrity
+      │      ├── foundation completeness
+      │      ├── conflicting rules
+      │      └── boundary crossings
+      │
+      ├── ROOT-CAUSE ANALYSIS
+      │      ├── symptom
+      │      ├── contributing condition
+      │      ├── structural cause
+      │      └── originating cause
+      │
+      └── EVIDENCE
+             ↓
+       AUTHORITY_CHECK
+          ↙       ↘
+       HALT    HUMAN AUTHORITY PATH
 ```
 
-### 22.2 Formal equation
+### 22.2 Authorization lifetime (non-permanent)
 
 ```text
-COMMON_SENSE(HumanError)
-  → DETECT + ANALYSE + DIAGNOSE + CORRECT/REDIRECT + EVIDENCE
+AUTHORIZATION =
+    IDENTITY
+  + SCOPE
+  + PURPOSE
+  + START
+  + EXPIRY
+  + CONDITIONS
+  + REVOCATION_STATE
+```
+
+Continuous validity question:
+
+```text
+IS_AUTHORIZATION_VALID_NOW?
+
+EXPIRED          → HALT
+OUT_OF_SCOPE     → HALT
+CONDITION_FAILED → HALT
+REVOKED          → HALT
+CONTEXT_CHANGED  → RECHECK
+CONFLICT         → HALT
+```
+
+Common Sense detects that an authorization is no longer valid.  
+It cannot manufacture, extend, or renew a new authorization.
+
+### 22.3 Formal equation (updated)
+
+```text
+COMMON_SENSE(H)
+  → MONITOR
+  → DETECT
+  → ANALYSE
+  → ROOT_CAUSE
+  → CORRECT / REDIRECT
+  → EVIDENCE
+  → AUTHORITY_CHECK
+  →
+     VALID   → HUMAN AUTHORITY PATH
+     INVALID → HALT
+
   ↛ EXECUTE
   ↛ PROMOTE
   ↛ SEAL
   ↛ AUTHORIZE
+  ↛ EXTEND AUTHORIZATION
+  ↛ RENEW AUTHORIZATION
 ```
 
-Or boxed:
+### 22.4 Core invariants (strengthened)
 
 ```text
-COMMON_SENSE(HumanError) → Correction → Evidence ↛ Authority
+CS ∩ {EXECUTION, PROMOTION, SEAL, AUTHORIZATION,
+      EXTEND_AUTHORIZATION, RENEW_AUTHORIZATION} = ∅
+
+ERROR        ≠ AUTHORITY
+CORRECTION   ≠ EXECUTION
+PROOF        ≠ PROMOTION
+PROOF        ≠ AUTHORIZATION
+MONITORING   ≠ AUTHORIZATION
+DIAGNOSIS    ≠ AUTHORIZATION
 ```
 
-### 22.3 Core invariants
+### 22.5 Privacy, security, vulnerable populations, and irreversible harm
+
+Common Sense must treat the following as first-class constraints:
+
+- **Sensitive / vulnerable data** must never be retained as payload by the monitor itself.
+- **Privacy boundary violation** → terminal HALT.
+- **Security boundary violation** → terminal HALT.
+- **Equation mismatch** → terminal HALT (no replay chain continues).
+- **Downstream pipe** is never opened by Common Sense (`may_cross_downstream_pipe` always returns false).
+- **Irreversible or high-downstream harm** while waiting → ESCALATE (human findings required), never autonomous action.
+- **Risk weighting** includes privacy, security, physical, economic, dignity, irreversibility, downstream consequence, and vulnerable-population factors.
+
+These constraints implement the ethical core:
+
+> SWI is a mirror to humanity.  
+> It optimises for human findings when delay itself would increase irreversible harm.  
+> It never converts that optimisation into autonomous authority.
+
+### 22.6 Diamond (bounded evidence package)
+
+A diamond is a structured, versioned package of foundations evaluated together inside a single bounded context. It is **not** an authority object.
 
 ```text
-CS ∩ {EXECUTION, PROMOTION, SEAL, AUTHORIZATION} = ∅
-
-ERROR      ≠ AUTHORITY
-CORRECTION ≠ EXECUTION
-PROOF      ≠ PROMOTION
-PROOF      ≠ AUTHORIZATION
+                  LAW
+                  ◆
+             POLICY / RULE
+             ◆           ◆
+       EVIDENCE           IDENTITY
+             ◆           ◆
+          SCOPE         CONDITIONS
+             ◆           ◆
+          TESTS        EXPIRY
+             ◆           ◆
+          RESULT ────── RECORD
+                  ◆
+               HALT /
+              AUTHORITY
 ```
 
-### 22.4 Allowed vs forbidden outcomes
-
-| Common Sense may | Common Sense must not |
-|------------------|------------------------|
-| DETECT human error | EXECUTE any path |
-| ANALYSE the failure | PROMOTE a module or kernel |
-| DIAGNOSE the boundary defect | Issue or imply a SEAL |
-| CORRECT / REDIRECT the claim or implementation | Manufacture AUTHORIZATION |
-| Produce EVIDENCE of the correction | Bypass HUMAN AUTHORITY |
-
-### 22.5 Relationship to Section 21
-
-- Section 21 governs when a **seal** may be written.
-- Section 22 governs how **human error** is handled without converting reasoning into power.
-- A successful Common Sense correction may improve evidence that later feeds the Seal Eligibility Equation.
-- It never short-circuits the equation and never grants execution rights.
-
-### 22.6 Relationship to core doctrine
+**Diamond invariants**
 
 ```text
-DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
+DIAMOND ≠ AUTHORIZATION
+DIAMOND ≠ EXECUTION
+DIAMOND ≠ TRUST
+DIAMOND ≠ TRUTH
+DIAMOND ≠ SEAL
 ```
 
-Common Sense operates in the space of reasoning and evidence production.  
-It stops at the authority boundary. Where human authority is absent: **HALT**.
+The diamond only asserts:
 
-> «Common Sense may reason about error.  
-> It must not acquire execution or promotion authority from that reasoning.»
+> These foundations were evaluated together and belong to this bounded context.
+
+Root-cause traversal:
+
+```text
+WHAT CHANGED?
+      ↓
+WHICH FOUNDATION?
+      ↓
+WHICH DEPENDENCY?
+      ↓
+WHICH BOUNDARY?
+      ↓
+WHAT PATTERN APPEARED?
+      ↓
+WHAT IS THE ROOT CAUSE?
+      ↓
+IS CURRENT AUTHORIZATION STILL VALID?
+      ↓
+EVIDENCE
+      ↓
+HUMAN AUTHORITY
+```
+
+### 22.7 Experimental implementation status (research only)
+
+As of tip `0117944b2cb112bfd9e32ecd6753001bdb84c62a` on this branch:
+
+| Artifact | Status |
+|----------|--------|
+| `experimental/common_sense/monitor.py` | IMPLEMENTED (research) |
+| `experimental/common_sense/__init__.py` | IMPLEMENTED |
+| `tests/pre_r/test_common_sense_monitor.py` | 19 unit tests PASS |
+| Full PRE-R suite | 62 PASS |
+| Full repository regression | **171 PASS** |
+| Seal | **NOT CLAIMED** |
+| Production | **NOT AUTHORIZED** |
+| Downstream execution pipe | **CLOSED** |
+
+The implementation demonstrates:
+
+- authorization expiry / revocation / scope / condition checks → HALT;
+- privacy & security boundary violations → HALT;
+- equation mismatch → HALT (no continued replay chain);
+- sensitive / vulnerable data → no payload retention;
+- pattern drift / repeated failure → RECHECK;
+- irreversible or high-downstream harm while waiting → ESCALATE;
+- explicit rejection of EXECUTE / PROMOTE / SEAL / AUTHORIZE / EXTEND / RENEW.
+
+### 22.8 Relationship to Section 21
+
+- Section 21 decides **when a seal may be written**.
+- Section 22 continuously monitors and diagnoses **without ever becoming the authority that writes the seal or grants execution**.
+- A successful Common Sense diagnosis may improve the evidence that later feeds the Seal Eligibility Equation.
+- It never short-circuits the equation and never grants, extends, or renews execution rights.
+
+> «Common Sense may reason about error, duration, scope, pattern, structure, and harm.  
+> It must not acquire, extend, or renew authority from that reasoning.»
 
 ---
 
