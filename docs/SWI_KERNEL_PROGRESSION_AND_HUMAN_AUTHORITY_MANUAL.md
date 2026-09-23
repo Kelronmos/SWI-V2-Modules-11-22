@@ -516,4 +516,80 @@ No change to those positions is made by this document.
 
 ---
 
+## 21. Seal Eligibility Equation (mandatory before every seal)
+
+**Rule:** The Seal Eligibility Equation **MUST** be evaluated and recorded **every time** before any seal decision is issued.
+
+No seal may be written, claimed, or relied upon unless the equation evaluates to true **and** the evaluation itself is preserved as evidence.
+
+### 21.1 The Equation
+
+```text
+SEAL_ELIGIBLE  ⇔
+    CONTRACT_FROZEN
+  ∧ ARCHITECTURAL_BOUNDARY
+  ∧ REAL_PRODUCER
+  ∧ ADMISSION_BEHAVIOUR
+  ∧ KERNEL_ISOLATION
+  ∧ REPRODUCIBILITY_CI
+  ∧ DOCUMENTATION_HONESTY
+  ∧ TIP_SPECIFIC_CI_GREEN
+  ∧ ADVERSARIAL_MATRIX_PASS
+  ∧ EVIDENCE_FRESH
+  ∧ LIMITATIONS_DECLARED
+```
+
+Where each term is a boolean that is true only when the corresponding gate has been independently demonstrated for the **exact tip** under consideration.
+
+### 21.2 Mandatory evaluation procedure
+
+Before every seal:
+
+1. **Instantiate** the equation for the specific module / kernel / tip.
+2. **Evaluate** every term against current evidence (not historical claims).
+3. **Record** the evaluation (term → true/false + evidence pointer).
+4. **Refuse** the seal if any term is false or lacks tip-specific evidence.
+5. **Only then** may a seal record be written, and the evaluation must be referenced inside the seal record.
+
+### 21.3 Non-negotiable constraints
+
+- The equation is **not** a one-time checklist. It is re-run for every seal attempt.
+- Historical seals do not satisfy the equation for a new tip.
+- Local green tests do not satisfy `TIP_SPECIFIC_CI_GREEN`.
+- “Tests passed last week” does not satisfy `EVIDENCE_FRESH`.
+- Documentation that still says “PENDING” while claiming “SEALED” falsifies `DOCUMENTATION_HONESTY`.
+- A missing limitation list falsifies `LIMITATIONS_DECLARED`.
+
+### 21.4 Formal statement
+
+```text
+∀ seal decision S:
+    Evaluate(SealEligibilityEquation, tip(S)) = TRUE
+    ∧ EvidenceRecord(Evaluation) exists
+    ⇒ S may be written
+    otherwise
+    ⇒ HALT (no seal)
+```
+
+### 21.5 Relationship to core doctrine
+
+The equation operationalises the doctrine:
+
+```text
+DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
+```
+
+A passing equation yields a **seal** (a controlled dependency boundary).  
+It never yields **authorization** or **action**. Those remain separate human / legal steps.
+
+### 21.6 Implementation note (future)
+
+When the Mathematical Evidence Engine or claim-ledger tooling is wired in, the equation evaluation itself should become a first-class evidence artifact that can be replayed. Until then, the evaluation must still be performed manually and recorded in the seal record or an attached worksheet.
+
+> «Run the equation every time before seal.  
+> No equation → no seal.  
+> Stale equation → no seal.»
+
+---
+
 *End of manual.*
