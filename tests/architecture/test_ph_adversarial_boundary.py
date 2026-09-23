@@ -228,26 +228,28 @@ def test_ph_10_irreversibility_downstream_harm_no_authority(
 
 
 def test_ph_11_authority_drift_recheck(monitor: CommonSenseMonitor):
-    """PH-11 — authority_drift → RECHECK (or stronger), not permission expand."""
+    """PH-11 — authority_drift + high pattern signal → RECHECK; no pipe."""
     now = _now()
+    # Live monitor uses RECHECK only when pattern_signal > 0.75
     case = _case(
         now,
         case_id="ph-11",
         pattern=PatternObservation(
             name="drift",
-            occurrences=4,
+            occurrences=10,
             baseline_occurrences=1,
             authority_drift=True,
+            repeated_failure=True,
+            abnormal_sequence=True,
         ),
     )
     record = monitor.inspect(case)
     assert "AUTHORITY_DRIFT" in record.reason_codes
-    assert record.decision in {
-        CommonSenseDecision.RECHECK,
-        CommonSenseDecision.ESCALATE,
-        CommonSenseDecision.HALT,
-    }
+    assert record.pattern_signal > 0.75
+    assert record.decision == CommonSenseDecision.RECHECK
     assert monitor.may_cross_downstream_pipe(case) is False
+    with pytest.raises(PermissionError):
+        monitor.request_action("AUTHORIZE")
 
 
 def test_ph_12_repeated_failure_recheck(monitor: CommonSenseMonitor):
