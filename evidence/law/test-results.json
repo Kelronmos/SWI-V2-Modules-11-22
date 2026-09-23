@@ -1,81 +1,16 @@
 {
-  "tip": "93e166733039bfd1e65b25e1b56eb776a79c5625",
-  "branch": "experimental/law-ingestion-lane",
-  "captured_at": "2026-09-23T13:30:00+02:00",
-  "local_runs": {
-    "law_adversarial_core_on_538490a": {
-      "command": "python3 -m pytest tests/law/ -v",
-      "collected": 20,
-      "passed": 20,
-      "failed": 0,
-      "result": "ALL_PASSED",
-      "note": "core matrix before expanded surface"
-    },
-    "law_adversarial_expanded_on_93e1667": {
-      "command": "python3 -m pytest tests/law/ -q",
-      "collected": 35,
-      "passed": 35,
-      "failed": 0,
-      "duration_s": 6.37,
-      "result": "ALL_PASSED"
-    },
-    "v2_test_plus_law": {
-      "command": "python3 -m pytest test/ tests/law/ -v",
-      "collected": 129,
-      "passed": 129,
-      "failed": 0,
-      "duration_s": 21.66,
-      "result": "ALL_PASSED",
-      "note": "includes existing kernel/M11 tests + law"
-    }
+  "source_tip": "8245e3f03d8673c966abf9c63be9d838073159b0",
+  "pytest_law": {
+    "command": "python -m pytest -q tests/law/",
+    "result": "40 passed",
+    "seconds": 0.11
   },
-  "ci_on_93e1667": {
-    "law_ingestion_adversarial": "success",
-    "swi_v2_verification": "success",
-    "pre_r_boundary": "success",
-    "two_checkout_travel": "success"
+  "verify_sh": {
+    "result": "PASS",
+    "module11": "12 passed",
+    "foundation": "2 passed",
+    "full_pytest": "192 passed"
   },
-  "demonstrated_properties": {
-    "authority": {
-      "missing_authority": "HALT",
-      "wrong_scope": "REJECT",
-      "correct_admin_scope": "ACCEPTED"
-    },
-    "integrity": {
-      "content_tamper": "REJECT",
-      "metadata_tamper": "REJECT",
-      "each_canonical_field_tamper": "REJECT",
-      "hash_substitution": "REJECT",
-      "forged_lifecycle_hash": "REJECT",
-      "empty_lifecycle_hash": "REJECT",
-      "related_version_hash_coverage": "REJECT on mutation"
-    },
-    "supersession": {
-      "invalid_event": "ZERO_WRITES",
-      "v001_remains_identical": true,
-      "v001_field_for_field": true,
-      "v002_independently_addressable": true,
-      "event_stored_separately": true
-    },
-    "replay": {
-      "first_valid_event": "ACCEPTED",
-      "same_event_replayed": "REJECT",
-      "scope_limitation": "IN_PROCESS_ONLY_NOT_DURABLE"
-    },
-    "non_escalation": {
-      "ingest_does_not_authorize": true,
-      "policy_does_not_mutate_artifact": true,
-      "policy_does_not_authorize": true,
-      "status_remains_INGEST_ONLY": true
-    }
-  },
-  "explicit_non_claims": [
-    "NOT SEALED",
-    "NOT PRODUCTION AUTHORIZED",
-    "LEGAL COMPLIANCE NOT CLAIMED",
-    "EU DEMO NOT PERFORMED",
-    "BOTSWANA DEMO NOT PERFORMED",
-    "DURABLE REPLAY NOT CLAIMED",
-    "TESTED != SEALED"
-  ]
+  "timestamp_utc": "2026-09-23T11:56:49+00:00",
+  "note": "Concrete execution on tip 8245e3f. Not a seal."
 }
