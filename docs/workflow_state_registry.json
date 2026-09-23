@@ -1,0 +1,63 @@
+{
+  "schema": "swi.workflow_state.v1",
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "branch": "architecture/kernel-progression-human-authority",
+  "note": "Labels are workflow states, not scores. PIPE_SEALED never implies AUTHORIZED or PRODUCTION.",
+  "allowed_labels": [
+    "AWAITING_EXECUTION",
+    "AWAITING_HUMAN",
+    "AWAITING_COMMAND",
+    "READY",
+    "EXECUTED",
+    "TESTED",
+    "EVIDENCE_RECORDED",
+    "CI_VERIFIED",
+    "PIPE_SEALED",
+    "HALTED",
+    "NOT_AUTHORIZED",
+    "NOT_PROVEN"
+  ],
+  "items": [
+    {
+      "id": "PH-01_to_PH-14",
+      "label": "TESTED",
+      "commit_hint": "e535240 / 860a6d19 tip lineage",
+      "limitations": ["CI_VERIFIED not claimed until Actions binds exact SHA"]
+    },
+    {
+      "id": "L0_formal_properties_P01_P14",
+      "label": "TESTED",
+      "limitations": ["Executable invariants only; TLC not required"]
+    },
+    {
+      "id": "L1_common_sense_fsm_tla",
+      "label": "EXECUTED",
+      "note": "Model text present; TLC CI not required yet",
+      "limitations": ["Model check run optional"]
+    },
+    {
+      "id": "Universal_Gate",
+      "label": "NOT_PROVEN",
+      "limitations": ["Path universe not closed"]
+    },
+    {
+      "id": "M11_historical_seal",
+      "label": "PIPE_SEALED",
+      "note": "Only for exact historical seal scope/SHAs if documented",
+      "limitations": ["Does not auto-apply to architecture branch tip"]
+    },
+    {
+      "id": "Production",
+      "label": "NOT_AUTHORIZED"
+    },
+    {
+      "id": "PH_CI_on_tip",
+      "label": "AWAITING_EXECUTION",
+      "note": "Await CI run against exact architecture tip SHA"
+    },
+    {
+      "id": "Independent_review_PH",
+      "label": "AWAITING_HUMAN"
+    }
+  ]
+}
