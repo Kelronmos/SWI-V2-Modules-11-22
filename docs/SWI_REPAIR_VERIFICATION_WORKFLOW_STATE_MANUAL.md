@@ -21,6 +21,7 @@ TESTED ≠ SEALED
 CI_VERIFIED ≠ AUTHORIZED
 MODEL_CHECKED ≠ LEGAL VALIDITY
 PASSING TEST ≠ ETHICAL TRUTH
+SIGNATURE alone ≠ REPLAY COMPLETENESS
 ```
 
 ## Filename reconciliation
@@ -46,7 +47,31 @@ Machine-readable: `docs/workflow_state_registry.json`
 ```text
 PIPE_SEALED ≠ AUTHORIZED ≠ PRODUCTION
 TESTED ↛ SEALED
+A seal is a frozen (SHA, run, scope, limitations) contract — it does not travel with a branch.
 ```
+
+## Cryptographic primitive rule
+
+**Never** repair a governance, authorization, admission, or truth problem by adding a signature.
+
+First identify the missing boundary, then choose the mechanism that actually proves it:
+
+canonicalization · integrity verification · admission · authorization · human review ·
+governance · legal/policy binding · execution control · evidence/replay
+
+Use cryptography only for the property it actually proves.
+
+```text
+SIGNATURE ≠ TRUTH
+SIGNATURE ≠ AUTHORITY
+SIGNATURE ≠ ADMISSION
+SIGNATURE alone ≠ REPLAY COMPLETENESS
+SIGNATURE ≠ PRODUCTION AUTHORIZATION
+```
+
+Ed25519 placement: integrity over canonical bytes under a key. See `docs/ED25519_SIGNATURE_PRIMITIVE.md`.
+
+M11 order remains: **admit first, then seal** — never `RAW → Ed25519 → admitted`.
 
 ## Repair protocol (summary)
 
@@ -69,6 +94,7 @@ CI_VERIFIED → PRODUCTION
 MODEL_CHECKED → LEGAL | ETHICAL
 COMMON_SENSE → AUTHORITY
 SURVIVAL_CLAIM → AUTHORITY
+Ed25519 PASS → ADMISSION | AUTHORITY | SEAL OF NEW SHA
 ```
 
 ## PH family (live)
@@ -86,7 +112,7 @@ SURVIVAL_CLAIM → AUTHORITY
 ```text
 🟡 L0 / PH — TESTED (local / fresh checkout evidence exists)
 ⚪ TLA FSM — PRESENT (EXECUTED as file write)
-🔵 CI — AWAITING_CI (0 workflow runs observed on architecture branch at last check)
+🔵 CI — AWAITING_CI
 ⚫ TLC — NOT_RUN
 ⚫ UNIVERSAL_GATE — NOT_PROVEN
 🔵 Independent review — AWAITING_HUMAN
