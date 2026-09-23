@@ -10,6 +10,7 @@ Fixes applied:
 - Authority binding respects kernel contract (action ∈ declared_scopes)
 - Supersession is atomic: full validation before any write
 - Lifecycle event hashes are recomputed and verified
+- append_event is authority-gated (no public write bypass)
 """
 from __future__ import annotations
 
@@ -108,7 +109,20 @@ class LawRegistry:
         self._artifacts[key] = artifact
         return artifact
 
-    def append_event(self, event: LawLifecycleEvent) -> LawLifecycleEvent:
+    def append_event(
+        self,
+        event: LawLifecycleEvent,
+        *,
+        authorization_present: bool,
+        authorization_scope: Optional[str],
+    ) -> LawLifecycleEvent:
+        """Authority-gated event append. Integrity is not permission."""
+        authorize_law_mutation(
+            mutation=LawMutation.INGEST,
+            authorization_present=authorization_present,
+            authorization_scope=authorization_scope,
+        )
+
         if event.event_id in self._events:
             raise LawRegistryError("event already exists")
 
