@@ -1,0 +1,20 @@
+{
+  "source_tip": "8245e3f03d8673c966abf9c63be9d838073159b0",
+  "declared_contract_tip": "4cb10a0425b1026d51ef60dae97eda2c42bafc35",
+  "formal_result": "PASS",
+  "z3_version": "4.8.12",
+  "z3_model_blob_sha": "d50ca6e12305943c5aef5128599d84d48e5b3bb9",
+  "authority_py_blob_sha": "f148fa1dbe8bb9b63afcf5aac2474f7e806ac676",
+  "registry_py_blob_sha": "c77ec572b0f701f2e740ce650f03542981bf7138",
+  "contract_binding": "OK",
+  "properties": {
+    "F-001": {"expected": "UNSAT", "actual": "UNSAT", "pass": true},
+    "F-002": {"expected": "UNSAT", "actual": "UNSAT", "pass": true},
+    "F-003": {"expected": "UNSAT", "actual": "UNSAT", "pass": true},
+    "F-004": {"expected": "UNSAT", "actual": "UNSAT", "pass": true},
+    "F-005": {"expected": "SAT", "actual": "SAT", "pass": true},
+    "F-006": {"expected": "UNSAT", "actual": "UNSAT", "pass": true}
+  },
+  "timestamp_utc": "2026-09-23T11:56:49+00:00",
+  "limitation": "Formal model has no counterexample for checked properties. Not a proof of the Python implementation."
+}
