@@ -2,9 +2,15 @@
   "schema": "swi.workflow_state.v1",
   "repository": "Kelronmos/SWI-V2-Modules-11-22",
   "branch": "architecture/kernel-progression-human-authority",
-  "note": "Labels are workflow states, not scores. PIPE_SEALED never implies AUTHORIZED or PRODUCTION.",
+  "reference_commits": {
+    "formal_l0_l1": "860a6d199e709be2a05ac1bc08b5d016bb5b4f7b",
+    "ph_manual_aligned": "e53524018c330b268059806430d50e9705ae9530",
+    "registry_intro": "5663a31a5054d4d56a304dece00e21ca922f7c27"
+  },
+  "note": "Labels are workflow states, not scores. A label describes what has actually happened, not intent. PIPE_SEALED never implies AUTHORIZED or PRODUCTION. TESTED never implies SEALED.",
   "allowed_labels": [
     "AWAITING_EXECUTION",
+    "AWAITING_CI",
     "AWAITING_HUMAN",
     "AWAITING_COMMAND",
     "READY",
@@ -17,47 +23,90 @@
     "NOT_AUTHORIZED",
     "NOT_PROVEN"
   ],
+  "color_class": {
+    "AWAITING_EXECUTION": "BLUE",
+    "AWAITING_CI": "BLUE",
+    "AWAITING_HUMAN": "BLUE",
+    "AWAITING_COMMAND": "BLUE",
+    "READY": "BLUE",
+    "EXECUTED": "ORANGE",
+    "TESTED": "YELLOW",
+    "EVIDENCE_RECORDED": "WHITE",
+    "CI_VERIFIED": "WHITE",
+    "PIPE_SEALED": "WHITE",
+    "HALTED": "RED",
+    "NOT_AUTHORIZED": "BLACK",
+    "NOT_PROVEN": "BLACK"
+  },
   "items": [
     {
       "id": "PH-01_to_PH-14",
       "label": "TESTED",
-      "commit_hint": "e535240 / 860a6d19 tip lineage",
-      "limitations": ["CI_VERIFIED not claimed until Actions binds exact SHA"]
+      "commit": "e53524018c330b268059806430d50e9705ae9530",
+      "evidence": "local/fresh pytest architecture+pre_r",
+      "limitations": ["CI_VERIFIED requires Actions on exact tip"]
     },
     {
       "id": "L0_formal_properties_P01_P14",
       "label": "TESTED",
-      "limitations": ["Executable invariants only; TLC not required"]
+      "commit": "860a6d199e709be2a05ac1bc08b5d016bb5b4f7b",
+      "evidence": "29 passed with PH adversarial on that lineage",
+      "limitations": ["Executable only; not TLC"]
     },
     {
       "id": "L1_common_sense_fsm_tla",
       "label": "EXECUTED",
-      "note": "Model text present; TLC CI not required yet",
-      "limitations": ["Model check run optional"]
+      "commit": "860a6d199e709be2a05ac1bc08b5d016bb5b4f7b",
+      "note": "common_sense_fsm.tla present",
+      "limitations": ["TLC_NOT_RUN"]
+    },
+    {
+      "id": "formal_properties_P01_P14_doc",
+      "label": "EVIDENCE_RECORDED",
+      "commit": "860a6d199e709be2a05ac1bc08b5d016bb5b4f7b",
+      "note": "COMMON_SENSE_PH_PROPERTIES.md frozen"
+    },
+    {
+      "id": "TLC_model_check",
+      "label": "NOT_PROVEN",
+      "note": "TLC_NOT_RUN — model text is not a model-check result"
     },
     {
       "id": "Universal_Gate",
       "label": "NOT_PROVEN",
-      "limitations": ["Path universe not closed"]
+      "limitations": ["Path universe open"]
     },
     {
-      "id": "M11_historical_seal",
-      "label": "PIPE_SEALED",
-      "note": "Only for exact historical seal scope/SHAs if documented",
-      "limitations": ["Does not auto-apply to architecture branch tip"]
+      "id": "CI_on_860a6d19_lineage",
+      "label": "AWAITING_CI",
+      "note": "Next operational label — not complete, not sealed"
+    },
+    {
+      "id": "Independent_review_PH",
+      "label": "AWAITING_HUMAN"
+    },
+    {
+      "id": "Seal",
+      "label": "NOT_PROVEN",
+      "note": "SEAL_NOT_CLAIMED"
     },
     {
       "id": "Production",
       "label": "NOT_AUTHORIZED"
     },
     {
-      "id": "PH_CI_on_tip",
-      "label": "AWAITING_EXECUTION",
-      "note": "Await CI run against exact architecture tip SHA"
-    },
-    {
-      "id": "Independent_review_PH",
-      "label": "AWAITING_HUMAN"
+      "id": "M11_historical_seal",
+      "label": "PIPE_SEALED",
+      "note": "Historical seal scope only if documented exact SHAs",
+      "limitations": ["Does not apply to architecture tip by default"]
     }
+  ],
+  "forbidden_inferences": [
+    "TESTED → AUTHORIZED",
+    "TESTED → SEALED",
+    "CI_VERIFIED → PRODUCTION",
+    "MODEL_CHECKED → LEGALLY_VALID",
+    "PIPE_SEALED → AUTHORIZED",
+    "PIPE_SEALED → PRODUCTION"
   ]
 }
