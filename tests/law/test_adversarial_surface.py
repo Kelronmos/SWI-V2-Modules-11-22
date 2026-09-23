@@ -166,7 +166,11 @@ def test_forged_event_field_mutation_rejects():
         event_hash=event.event_hash,  # old hash
     )
     with pytest.raises(LawRegistryError, match="hash mismatch"):
-        reg.append_event(forged)
+        reg.append_event(
+            forged,
+            authorization_present=True,
+            authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -189,7 +193,11 @@ def test_empty_event_hash_rejects():
         event_hash="",
     )
     with pytest.raises(LawRegistryError, match="must be hashed"):
-        reg.append_event(event)
+        reg.append_event(
+            event,
+            authorization_present=True,
+            authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -223,7 +231,11 @@ def test_related_version_in_event_hash_coverage():
         event_hash=event.event_hash,  # old hash
     )
     with pytest.raises(LawRegistryError, match="hash mismatch"):
-        reg.append_event(forged)
+        reg.append_event(
+            forged,
+            authorization_present=True,
+            authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+        )
 
 
 # ---------------------------------------------------------------------------
