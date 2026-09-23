@@ -2,7 +2,7 @@
 
 **Date:** 23 September 2026  
 **Branch:** `experimental/law-ingestion-lane`  
-**Tip:** `538490a525f2e86c9bd9b37293b82adf302dfc4f`
+**Tip:** `93e166733039bfd1e65b25e1b56eb776a79c5625`
 
 ## Status vocabulary
 
@@ -17,34 +17,43 @@ LAW ARTIFACT (immutable) ≠ LIFECYCLE EVENT ≠ POLICY MAPPING (interpretive)
 
 Artifacts are never rewritten. Supersession is recorded only as a separate immutable `LawLifecycleEvent`.
 
-## Execution evidence (this tip)
+## Tip lineage (evidence chain)
 
-| Capability                         | Result                                      |
-|------------------------------------|---------------------------------------------|
-| Law adversarial suite              | **20/20 PASSED** (local)                    |
-| V2 `test/` + law                   | **129/129 PASSED** (local)                  |
-| CI pre-R boundary                  | **success** (run 35853865120)               |
-| CI SWI V2 Verification             | **success** (run 35853865150)               |
-| CI two-checkout-travel             | **success** (run 35853865056)               |
-| Evidence package                   | populated under `evidence/law/`             |
-| EU source demo                     | **deferred**                                |
-| Botswana source demo               | **deferred**                                |
-| Independent audit                  | **required next**                           |
-| Sealed                             | **NO**                                      |
-| Production authorized              | **NO**                                      |
-| Legal compliance claim             | **NO**                                      |
+| Commit | Role |
+|--------|------|
+| `538490a` | Authority binding fix, atomic supersession, event-hash verification |
+| `8945662` | First evidence package (20/20 law + 129/129 combined) |
+| `93e1667` | **Current tip** — expanded adversarial surface + dedicated CI gate |
 
-## Demonstrated properties (by test + CI)
+## Execution evidence (tip 93e1667)
 
-1. **Authority** — missing → HALT; wrong scope → REJECT; correct admin scope → accepted  
+| Capability | Result |
+|------------|--------|
+| Law adversarial suite (expanded) | **35/35 PASSED** (local) |
+| V2 `test/` + law (combined, prior tip) | **129/129 PASSED** (local) |
+| CI LAW INGESTION ADVERSARIAL | **success** |
+| CI SWI V2 Verification (3.10–3.12) | **success** |
+| CI pre-R boundary | **success** |
+| CI two-checkout-travel | **success** |
+| Evidence package | `evidence/law/` |
+| EU source demo | **deferred** |
+| Botswana source demo | **deferred** |
+| Independent audit | **required next** |
+| Sealed | **NO** |
+| Production authorized | **NO** |
+| Legal compliance claim | **NO** |
+
+## Demonstrated properties
+
+1. **Authority** — missing → HALT; wrong scope → REJECT; correct `LAW_REGISTRY_ADMIN` → accepted  
 2. **Integrity** — content / metadata / hash tamper → REJECT; forged/empty lifecycle hash → REJECT  
-3. **Supersession** — invalid event → zero writes; v001 remains identical; v002 independently addressable; event stored separately  
-4. **Replay** — first event accepted; replay → REJECT; **explicitly in-process only, not durable**  
-5. **Non-escalation** — ingest does not authorize; policy does not mutate or authorize the artifact; status remains `INGEST_ONLY`
+3. **Supersession** — invalid event → zero writes; v001 remains identical; v002 independently addressable  
+4. **Replay** — first event accepted; replay → REJECT; **in-process only, not durable**  
+5. **Non-escalation** — ingest does not authorize; policy does not mutate or authorize; status remains `INGEST_ONLY`
 
-## Defensible claim (only)
+## Safe claim (only)
 
-> SWI experimentally ingests identified legal-source artefacts and demonstrates controlled versioning, integrity verification, immutable evidence retention, authority-gated registry mutation, and separation between legal-source evidence and executable policy **for the tested scenarios at tip 538490a**.
+> On tip `93e1667`, the dedicated law adversarial suite executed 35 tests and all 35 passed; the full V2 verification CI and the dedicated LAW INGESTION ADVERSARIAL CI both concluded success. The lane demonstrates controlled versioning, integrity verification, immutable evidence retention, authority-gated mutation, and separation of legal-source evidence from executable policy **for the tested scenarios**.
 
 ## Forbidden claims
 
@@ -52,9 +61,10 @@ Artifacts are never rewritten. Supersession is recorded only as a separate immut
 - “SWI is legally compliant.”
 - “SWI automatically enforces EU / Botswana law.”
 - “TESTED → SEALED.”
+- Durable / distributed replay protection.
 
 ## Next
 
-1. Independent audit of the experimental lane  
-2. Only then EU / Botswana source fixtures  
+1. Independent audit of the experimental lane at tip `93e1667`  
+2. Only then EU / Botswana fixtures (URI + timestamp → hash → `INGEST_ONLY` → verify)  
 3. PR remains unopened until audit boundary is accepted

@@ -1,17 +1,25 @@
 {
   "lane": "experimental/law",
-  "tip": "538490a525f2e86c9bd9b37293b82adf302dfc4f",
+  "tip": "93e166733039bfd1e65b25e1b56eb776a79c5625",
   "branch": "experimental/law-ingestion-lane",
   "status": "RESEARCH / EXPERIMENTAL",
   "sealed": false,
   "production_authorized": false,
   "legal_compliance_claimed": false,
+  "lineage": {
+    "538490a": "authority binding + atomic supersession + event hash verify",
+    "8945662": "first evidence package",
+    "93e1667": "expanded adversarial surface + dedicated CI gate (current tip)"
+  },
   "adversarial_suite_executed": true,
-  "adversarial_suite_result": "20/20 PASSED",
-  "v2_plus_law_result": "129/129 PASSED",
-  "ci_verification": "success",
-  "ci_two_checkout": "success",
-  "ci_pre_r": "success",
+  "adversarial_suite_result": "35/35 PASSED",
+  "v2_plus_law_result": "129/129 PASSED (on fixed tree)",
+  "ci": {
+    "law_ingestion_adversarial": "success",
+    "swi_v2_verification": "success",
+    "pre_r_boundary": "success",
+    "two_checkout_travel": "success"
+  },
   "governing_invariant": [
     "DATA != EVIDENCE != ADMISSION != AUTHORIZATION != ACTION",
     "NO IMPLICIT TRANSITION",
@@ -25,5 +33,5 @@
     "independent audit",
     "only then EU/Botswana fixtures"
   ],
-  "note": "A green test run establishes the tested properties at this commit. It does not establish legal compliance, jurisdictional correctness, tamper-proof persistence, or production readiness."
+  "note": "A green test run establishes the tested properties at this commit. It does not establish legal compliance, jurisdictional correctness, tamper-proof persistence, or production readiness. TESTED != SEALED."
 }

@@ -1,14 +1,22 @@
 {
-  "tip": "538490a525f2e86c9bd9b37293b82adf302dfc4f",
+  "tip": "93e166733039bfd1e65b25e1b56eb776a79c5625",
   "branch": "experimental/law-ingestion-lane",
-  "captured_at": "2026-09-23T13:25:00+02:00",
+  "captured_at": "2026-09-23T13:30:00+02:00",
   "local_runs": {
-    "law_adversarial_suite": {
+    "law_adversarial_core_on_538490a": {
       "command": "python3 -m pytest tests/law/ -v",
       "collected": 20,
       "passed": 20,
       "failed": 0,
-      "duration_s": 5.48,
+      "result": "ALL_PASSED",
+      "note": "core matrix before expanded surface"
+    },
+    "law_adversarial_expanded_on_93e1667": {
+      "command": "python3 -m pytest tests/law/ -q",
+      "collected": 35,
+      "passed": 35,
+      "failed": 0,
+      "duration_s": 6.37,
       "result": "ALL_PASSED"
     },
     "v2_test_plus_law": {
@@ -17,25 +25,15 @@
       "passed": 129,
       "failed": 0,
       "duration_s": 21.66,
-      "result": "ALL_PASSED"
+      "result": "ALL_PASSED",
+      "note": "includes existing kernel/M11 tests + law"
     }
   },
-  "ci_runs": {
-    "pre_r_boundary": {
-      "run_id": 35853865120,
-      "conclusion": "success",
-      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865120"
-    },
-    "swi_v2_verification": {
-      "run_id": 35853865150,
-      "conclusion": "success",
-      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865150"
-    },
-    "two_checkout_travel": {
-      "run_id": 35853865056,
-      "conclusion": "success",
-      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865056"
-    }
+  "ci_on_93e1667": {
+    "law_ingestion_adversarial": "success",
+    "swi_v2_verification": "success",
+    "pre_r_boundary": "success",
+    "two_checkout_travel": "success"
   },
   "demonstrated_properties": {
     "authority": {
@@ -46,13 +44,16 @@
     "integrity": {
       "content_tamper": "REJECT",
       "metadata_tamper": "REJECT",
+      "each_canonical_field_tamper": "REJECT",
       "hash_substitution": "REJECT",
       "forged_lifecycle_hash": "REJECT",
-      "empty_lifecycle_hash": "REJECT"
+      "empty_lifecycle_hash": "REJECT",
+      "related_version_hash_coverage": "REJECT on mutation"
     },
     "supersession": {
       "invalid_event": "ZERO_WRITES",
       "v001_remains_identical": true,
+      "v001_field_for_field": true,
       "v002_independently_addressable": true,
       "event_stored_separately": true
     },
