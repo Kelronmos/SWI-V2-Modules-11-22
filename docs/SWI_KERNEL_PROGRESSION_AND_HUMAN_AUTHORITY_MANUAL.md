@@ -592,4 +592,122 @@ When the Mathematical Evidence Engine or claim-ledger tooling is wired in, the e
 
 ---
 
+## 22. Common Sense Equation (authority boundary)
+
+**Position:** Below the Seal Eligibility Equation.  
+**Role:** Reasoning and correction path for human error.  
+**Rule:** Common Sense may detect, analyse, diagnose, correct, and produce evidence.  
+It must **never** execute, promote, seal, or authorize.
+
+### 22.1 Command contract
+
+```text
+SWI::COMMONSENSE(HUMAN_ERROR)
+        ↓
+DETECT
+        ↓
+ANALYSE
+        ↓
+DIAGNOSE
+        ↓
+CORRECT / REDIRECT
+        ↓
+EVIDENCE
+        ↓
+HUMAN AUTHORITY
+        │
+        ├── absent  → HALT
+        │
+        └── present → AUTHORIZED PATH
+```
+
+### 22.2 Formal equation
+
+```text
+COMMON_SENSE(HumanError)
+  → DETECT + ANALYSE + DIAGNOSE + CORRECT/REDIRECT + EVIDENCE
+  ↛ EXECUTE
+  ↛ PROMOTE
+  ↛ SEAL
+  ↛ AUTHORIZE
+```
+
+Or boxed:
+
+```text
+COMMON_SENSE(HumanError) → Correction → Evidence ↛ Authority
+```
+
+### 22.3 Core invariants
+
+```text
+CS ∩ {EXECUTION, PROMOTION, SEAL, AUTHORIZATION} = ∅
+
+ERROR      ≠ AUTHORITY
+CORRECTION ≠ EXECUTION
+PROOF      ≠ PROMOTION
+PROOF      ≠ AUTHORIZATION
+```
+
+### 22.4 Allowed vs forbidden outcomes
+
+| Common Sense may | Common Sense must not |
+|------------------|------------------------|
+| DETECT human error | EXECUTE any path |
+| ANALYSE the failure | PROMOTE a module or kernel |
+| DIAGNOSE the boundary defect | Issue or imply a SEAL |
+| CORRECT / REDIRECT the claim or implementation | Manufacture AUTHORIZATION |
+| Produce EVIDENCE of the correction | Bypass HUMAN AUTHORITY |
+
+### 22.5 Relationship to Section 21
+
+- Section 21 governs when a **seal** may be written.
+- Section 22 governs how **human error** is handled without converting reasoning into power.
+- A successful Common Sense correction may improve evidence that later feeds the Seal Eligibility Equation.
+- It never short-circuits the equation and never grants execution rights.
+
+### 22.6 Relationship to core doctrine
+
+```text
+DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
+```
+
+Common Sense operates in the space of reasoning and evidence production.  
+It stops at the authority boundary. Where human authority is absent: **HALT**.
+
+> «Common Sense may reason about error.  
+> It must not acquire execution or promotion authority from that reasoning.»
+
+---
+
+## 23. Core Test Loop (evidence cycle)
+
+```text
+CLAIM
+  → IMPLEMENT
+  → TEST
+  → REPLAY
+  → RECORD
+  → ANALYSE
+  → DIAGNOSE
+  → RE-IMPLEMENT
+  → RE-TEST
+  → EVIDENCE
+  → PROOF
+        ↓
+LIMITATION
+        ↓
+NEXT CLAIM
+```
+
+**Distinction:** Proof is the end of the evidence cycle, not the beginning of the next assumption.
+
+```text
+PROOF ≠ AUTHORIZATION
+```
+
+A proven mechanism can still remain blocked and awaiting human authority.
+
+---
+
 *End of manual.*
