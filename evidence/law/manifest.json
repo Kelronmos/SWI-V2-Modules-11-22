@@ -1,24 +1,68 @@
 {
   "lane": "experimental/law",
-  "tip": "93e166733039bfd1e65b25e1b56eb776a79c5625",
+  "source_tip": "8245e3f03d8673c966abf9c63be9d838073159b0",
+  "declared_contract_tip": "4cb10a0425b1026d51ef60dae97eda2c42bafc35",
   "branch": "experimental/law-ingestion-lane",
   "status": "RESEARCH / EXPERIMENTAL",
   "sealed": false,
   "production_authorized": false,
   "legal_compliance_claimed": false,
-  "lineage": {
-    "538490a": "authority binding + atomic supersession + event hash verify",
-    "8945662": "first evidence package",
-    "93e1667": "expanded adversarial surface + dedicated CI gate (current tip)"
+  "timestamp_utc": "2026-09-23T11:56:49.135464+00:00",
+  "authority_py_blob_sha": "f148fa1dbe8bb9b63afcf5aac2474f7e806ac676",
+  "registry_py_blob_sha": "c77ec572b0f701f2e740ce650f03542981bf7138",
+  "z3_model_path": "formal/z3/law_authority.py",
+  "z3_model_blob_sha": "d50ca6e12305943c5aef5128599d84d48e5b3bb9",
+  "z3_version": "4.8.12",
+  "contract_binding": "OK",
+  "formal_properties": {
+    "F-001": {
+      "name": "missing_authority_cannot_write",
+      "expected": "UNSAT",
+      "actual": "UNSAT",
+      "pass": true
+    },
+    "F-002": {
+      "name": "wrong_scope_cannot_write",
+      "expected": "UNSAT",
+      "actual": "UNSAT",
+      "pass": true
+    },
+    "F-003": {
+      "name": "wrong_action_cannot_write",
+      "expected": "UNSAT",
+      "actual": "UNSAT",
+      "pass": true
+    },
+    "F-004": {
+      "name": "policy_cannot_authorize_write",
+      "expected": "UNSAT",
+      "actual": "UNSAT",
+      "pass": true
+    },
+    "F-005": {
+      "name": "authorization_not_execution",
+      "expected": "SAT",
+      "actual": "SAT",
+      "pass": true
+    },
+    "F-006": {
+      "name": "rejection_zero_write",
+      "expected": "UNSAT",
+      "actual": "UNSAT",
+      "pass": true
+    }
   },
-  "adversarial_suite_executed": true,
-  "adversarial_suite_result": "35/35 PASSED",
-  "v2_plus_law_result": "129/129 PASSED (on fixed tree)",
-  "ci": {
-    "law_ingestion_adversarial": "success",
-    "swi_v2_verification": "success",
-    "pre_r_boundary": "success",
-    "two_checkout_travel": "success"
+  "formal_result": "PASS",
+  "pytest_law": {
+    "command": "python -m pytest -q tests/law/",
+    "result": "40 passed",
+    "seconds": 0.11
+  },
+  "verify_sh": {
+    "result": "PASS",
+    "module11": "12 passed",
+    "foundation": "2 passed",
+    "full_pytest": "192 passed"
   },
   "governing_invariant": [
     "DATA != EVIDENCE != ADMISSION != AUTHORIZATION != ACTION",
@@ -26,12 +70,18 @@
     "NO HISTORY REWRITE",
     "NO EXTERNAL WRITE BYPASS",
     "NO LAW -> AUTHORIZATION SHORTCUT",
-    "NO POLICY -> LAW MUTATION"
+    "NO POLICY -> LAW MUTATION",
+    "FORMALLY CHECKED != PYTHON PROOF"
   ],
   "replay_limitation": "in-process / in-memory only; not durable storage protection",
+  "lineage": {
+    "4cb10a0": "append_event authority matrix + audited Python contract tip",
+    "0522d01": "Z3 transition model F-001..F-006",
+    "8245e3f": "contract binding; code tip under this evidence run"
+  },
   "next": [
-    "independent audit",
-    "only then EU/Botswana fixtures"
+    "independent correspondence audit (Z3 vs Python vs pytest)",
+    "only then EU/Botswana official-source fixtures"
   ],
-  "note": "A green test run establishes the tested properties at this commit. It does not establish legal compliance, jurisdictional correctness, tamper-proof persistence, or production readiness. TESTED != SEALED."
+  "note": "A green formal run establishes absence of counterexamples in the model. It does not prove the Python implementation, seal, production readiness, or legal compliance. TESTED != FORMALLY CHECKED != SEALED. source_tip is the code tip tested; this evidence commit may be a descendant that only updates evidence/."
 }
