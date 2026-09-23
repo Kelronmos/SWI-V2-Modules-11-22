@@ -29,28 +29,40 @@ DISCIPLINE
 """
 from __future__ import annotations
 
+import hashlib
+import os
+import subprocess
 from dataclasses import dataclass
+from pathlib import Path
 from typing import List, Optional, Sequence, Tuple
 
 from z3 import And, Bool, Implies, Not, Or, Solver, String, StringVal, sat, unsat
 
 # ---------------------------------------------------------------------------
-# Constants matching experimental/law/authority.py
+# Contract binding — audited Python tip (authority + registry semantics)
+# Formal commits after this tip may add formal/ only; source blobs must match.
 # ---------------------------------------------------------------------------
+
+DECLARED_CONTRACT_TIP = "4cb10a0425b1026d51ef60dae97eda2c42bafc35"
+
+# git blob SHAs at DECLARED_CONTRACT_TIP (git hash-object / API sha)
+EXPECTED_SOURCE_BLOBS = {
+    "experimental/law/authority.py": "f148fa1dbe8bb9b63afcf5aac2474f7e806ac676",
+    "experimental/law/registry.py": "c77ec572b0f701f2e740ce650f03542981bf7138",
+}
 
 ADMIN = "LAW_REGISTRY_ADMIN"
 
-# Decision labels (abstract)
 HALT = "HALT"
 REJECT = "REJECT"
-ACCEPT_CONTINUE = "ACCEPT_CONTINUE"  # auth OK; integrity not yet applied
+ACCEPT_CONTINUE = "ACCEPT_CONTINUE"
 
 
 @dataclass(frozen=True)
 class PropertyResult:
     prop_id: str
     name: str
-    expected: str  # "UNSAT" | "SAT"
+    expected: str
     actual: str
     passed: bool
     note: str = ""
@@ -60,6 +72,76 @@ def _admin():
     return StringVal(ADMIN)
 
 
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+
+def _git_blob_sha(path: Path) -> str:
+    """Git blob SHA (same as GitHub content sha for regular files)."""
+    data = path.read_bytes()
+    return hashlib.sha1(b"blob %d\0" % len(data) + data).hexdigest()
+
+
+def _current_head() -> Optional[str]:
+    try:
+        out = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=_repo_root(),
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+        return out.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        return None
+
+
+def verify_contract_binding() -> Tuple[bool, List[str]]:
+    """Fail loud if authority/registry sources drifted from audited tip.
+
+    Set SWI_Z3_ALLOW_DRIFT=1 only for deliberate model re-audit against a
+    new tip (then update DECLARED_CONTRACT_TIP + EXPECTED_SOURCE_BLOBS).
+    """
+    lines: List[str] = []
+    root = _repo_root()
+    head = _current_head()
+    lines.append(f"DECLARED_CONTRACT_TIP: {DECLARED_CONTRACT_TIP}")
+    lines.append(f"GIT_HEAD:              {head or '(unavailable)'}")
+
+    allow_drift = os.environ.get("SWI_Z3_ALLOW_DRIFT", "") == "1"
+    mismatches: List[str] = []
+
+    for rel, expected in EXPECTED_SOURCE_BLOBS.items():
+        path = root / rel
+        if not path.is_file():
+            mismatches.append(f"missing source file: {rel}")
+            continue
+        actual = _git_blob_sha(path)
+        if actual != expected:
+            mismatches.append(
+                f"{rel}: blob {actual} != expected {expected} "
+                f"(audited @ {DECLARED_CONTRACT_TIP[:7]})"
+            )
+        else:
+            lines.append(f"SOURCE_OK: {rel} blob={actual[:12]}…")
+
+    if mismatches:
+        lines.append("CONTRACT_DRIFT:")
+        for m in mismatches:
+            lines.append(f"  - {m}")
+        if allow_drift:
+            lines.append("SWI_Z3_ALLOW_DRIFT=1 → continuing despite drift")
+            return True, lines
+        lines.append(
+            "REFUSING to emit formal results for a divergent authority contract. "
+            "Re-audit, update DECLARED_CONTRACT_TIP + EXPECTED_SOURCE_BLOBS, "
+            "or set SWI_Z3_ALLOW_DRIFT=1 for an explicit override."
+        )
+        return False, lines
+
+    lines.append("CONTRACT_BINDING: OK (authority/registry match audited tip)")
+    return True, lines
+
+
 def build_transition_model():
     """Symbolic single-step law-registry mutation transition.
 
@@ -67,8 +149,7 @@ def build_transition_model():
       auth_present, auth_scope, req_action, integrity_ok, policy_maps
 
     Derived:
-      decision ∈ {HALT, REJECT, ACCEPT_CONTINUE}
-      authorized ⇔ decision == ACCEPT_CONTINUE
+      authorized ⇔ ACCEPT_CONTINUE
       write ⇔ authorized ∧ integrity_ok
 
     Kernel rules (require_authorization_for_action):
@@ -78,7 +159,6 @@ def build_transition_model():
     with D = {LAW_REGISTRY_ADMIN}.
 
     Integrity is separate: even after ACCEPT_CONTINUE, bad hash → no write.
-    Policy mapping is orthogonal and never enables authorization.
     """
     auth_present = Bool("auth_present")
     auth_scope = String("auth_scope")
@@ -86,15 +166,12 @@ def build_transition_model():
     integrity_ok = Bool("integrity_ok")
     policy_maps = Bool("policy_maps")
 
-    # Kernel decision (lane hard-binds req_action to ADMIN in Python;
-    # model keeps req_action free to check the kernel contract).
     is_halt = Not(auth_present)
     scope_ok = auth_scope == _admin()
     action_ok = req_action == _admin()
     is_reject = And(auth_present, Or(Not(scope_ok), Not(action_ok)))
     is_accept = And(auth_present, scope_ok, action_ok)
 
-    # Mutual exclusion of decision (for clarity in models)
     decision_partition = Or(
         And(is_halt, Not(is_reject), Not(is_accept)),
         And(Not(is_halt), is_reject, Not(is_accept)),
@@ -102,17 +179,12 @@ def build_transition_model():
     )
 
     authorized = is_accept
-
-    # Transition: write only if authorized AND integrity passes.
-    # This is the observed registry behavior, not an axiom of "writes are good".
     write = And(authorized, integrity_ok)
-
-    # Rejection / halt ⇒ zero write (same step)
     reject_or_halt = Or(is_halt, is_reject)
     zero_write_on_reject = Implies(reject_or_halt, Not(write))
-
-    # Policy never participates in authorization
-    policy_does_not_authorize = Implies(Not(authorized), Not(And(policy_maps, write)))
+    policy_does_not_authorize = Implies(
+        Not(authorized), Not(And(policy_maps, write))
+    )
 
     return {
         "auth_present": auth_present,
@@ -131,7 +203,9 @@ def build_transition_model():
     }
 
 
-def _check(extra, *, expect_unsat: bool, background: Optional[Sequence] = None) -> Tuple[str, bool]:
+def _check(
+    extra, *, expect_unsat: bool, background: Optional[Sequence] = None
+) -> Tuple[str, bool]:
     s = Solver()
     if background:
         for c in background:
@@ -151,10 +225,8 @@ def _check(extra, *, expect_unsat: bool, background: Optional[Sequence] = None) 
 def run_checks() -> List[PropertyResult]:
     m = build_transition_model()
     bg = [m["decision_partition"]]
-
     results: List[PropertyResult] = []
 
-    # F-001: missing authority cannot write
     actual, ok = _check(
         And(Not(m["auth_present"]), m["write"]),
         expect_unsat=True,
@@ -171,7 +243,6 @@ def run_checks() -> List[PropertyResult]:
         )
     )
 
-    # F-002: wrong scope cannot write
     actual, ok = _check(
         And(m["auth_present"], m["auth_scope"] != _admin(), m["write"]),
         expect_unsat=True,
@@ -188,7 +259,6 @@ def run_checks() -> List[PropertyResult]:
         )
     )
 
-    # F-003: wrong requested_action cannot write
     actual, ok = _check(
         And(m["auth_present"], m["req_action"] != _admin(), m["write"]),
         expect_unsat=True,
@@ -205,7 +275,6 @@ def run_checks() -> List[PropertyResult]:
         )
     )
 
-    # F-004: policy mapping cannot authorize a write
     actual, ok = _check(
         And(m["policy_maps"], m["write"], Not(m["authorized"])),
         expect_unsat=True,
@@ -222,7 +291,6 @@ def run_checks() -> List[PropertyResult]:
         )
     )
 
-    # F-005: authorization does not itself force write
     actual, ok = _check(
         And(m["authorized"], Not(m["write"])),
         expect_unsat=False,
@@ -239,7 +307,6 @@ def run_checks() -> List[PropertyResult]:
         )
     )
 
-    # F-006: rejection/halt implies zero-write
     actual, ok = _check(
         And(Or(m["is_halt"], m["is_reject"]), m["write"]),
         expect_unsat=True,
@@ -259,20 +326,24 @@ def run_checks() -> List[PropertyResult]:
     return results
 
 
-def format_report(results: Sequence[PropertyResult]) -> str:
+def format_report(
+    results: Sequence[PropertyResult], binding_lines: Sequence[str]
+) -> str:
     lines = [
         "SWI Z3 LAW AUTHORITY CHECK",
         "==========================",
         "",
         "STATUS: RESEARCH / EXPERIMENTAL · NOT SEALED",
         "SCOPE:  finite single-step authority/law-registry transition model",
-        "TIP:    designed against experimental/law contract @ 4cb10a0",
         "",
     ]
+    lines.extend(binding_lines)
+    lines.append("")
     for r in results:
         mark = "PASS" if r.passed else "FAIL"
         lines.append(
-            f"{r.prop_id}  {r.name:<36}  expected={r.expected:<5}  actual={r.actual:<7}  [{mark}]"
+            f"{r.prop_id}  {r.name:<36}  expected={r.expected:<5}  "
+            f"actual={r.actual:<7}  [{mark}]"
         )
         if r.note:
             lines.append(f"         {r.note}")
@@ -291,8 +362,18 @@ def format_report(results: Sequence[PropertyResult]) -> str:
 
 
 def main() -> int:
+    ok_bind, binding_lines = verify_contract_binding()
+    if not ok_bind:
+        print("SWI Z3 LAW AUTHORITY CHECK")
+        print("==========================")
+        print()
+        print("\n".join(binding_lines))
+        print()
+        print("MODEL RESULT: REFUSED (contract drift)")
+        return 2
+
     results = run_checks()
-    print(format_report(results))
+    print(format_report(results, binding_lines))
     return 0 if all(r.passed for r in results) else 1
 
 
