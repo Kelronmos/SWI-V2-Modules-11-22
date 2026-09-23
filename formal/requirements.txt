@@ -1,0 +1,2 @@
+# Optional — formal/z3 models only (not required for core V2 tests)
+z3-solver>=4.12.0
