@@ -28,7 +28,11 @@ def test_valid_event_accepted():
         resulting_status=LawStatus.SUPERSEDED,
         related_version="v002",
     )
-    stored = reg.append_event(event)
+    stored = reg.append_event(
+        event,
+        authorization_present=True,
+        authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+    )
     assert stored.event_id == event.event_id
 
 
@@ -59,7 +63,11 @@ def test_forged_hash_rejected():
         event_hash="0" * 64,
     )
     with pytest.raises(LawRegistryError, match="hash mismatch"):
-        reg.append_event(forged)
+        reg.append_event(
+            forged,
+            authorization_present=True,
+            authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+        )
 
 
 def test_empty_hash_rejected():
@@ -78,4 +86,8 @@ def test_empty_hash_rejected():
         event_hash="",
     )
     with pytest.raises(LawRegistryError, match="must be hashed"):
-        reg.append_event(event)
+        reg.append_event(
+            event,
+            authorization_present=True,
+            authorization_scope=LAW_REGISTRY_ADMIN_SCOPE,
+        )
