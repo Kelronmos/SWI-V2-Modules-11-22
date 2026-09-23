@@ -1,0 +1,80 @@
+{
+  "tip": "538490a525f2e86c9bd9b37293b82adf302dfc4f",
+  "branch": "experimental/law-ingestion-lane",
+  "captured_at": "2026-09-23T13:25:00+02:00",
+  "local_runs": {
+    "law_adversarial_suite": {
+      "command": "python3 -m pytest tests/law/ -v",
+      "collected": 20,
+      "passed": 20,
+      "failed": 0,
+      "duration_s": 5.48,
+      "result": "ALL_PASSED"
+    },
+    "v2_test_plus_law": {
+      "command": "python3 -m pytest test/ tests/law/ -v",
+      "collected": 129,
+      "passed": 129,
+      "failed": 0,
+      "duration_s": 21.66,
+      "result": "ALL_PASSED"
+    }
+  },
+  "ci_runs": {
+    "pre_r_boundary": {
+      "run_id": 35853865120,
+      "conclusion": "success",
+      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865120"
+    },
+    "swi_v2_verification": {
+      "run_id": 35853865150,
+      "conclusion": "success",
+      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865150"
+    },
+    "two_checkout_travel": {
+      "run_id": 35853865056,
+      "conclusion": "success",
+      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22/actions/runs/35853865056"
+    }
+  },
+  "demonstrated_properties": {
+    "authority": {
+      "missing_authority": "HALT",
+      "wrong_scope": "REJECT",
+      "correct_admin_scope": "ACCEPTED"
+    },
+    "integrity": {
+      "content_tamper": "REJECT",
+      "metadata_tamper": "REJECT",
+      "hash_substitution": "REJECT",
+      "forged_lifecycle_hash": "REJECT",
+      "empty_lifecycle_hash": "REJECT"
+    },
+    "supersession": {
+      "invalid_event": "ZERO_WRITES",
+      "v001_remains_identical": true,
+      "v002_independently_addressable": true,
+      "event_stored_separately": true
+    },
+    "replay": {
+      "first_valid_event": "ACCEPTED",
+      "same_event_replayed": "REJECT",
+      "scope_limitation": "IN_PROCESS_ONLY_NOT_DURABLE"
+    },
+    "non_escalation": {
+      "ingest_does_not_authorize": true,
+      "policy_does_not_mutate_artifact": true,
+      "policy_does_not_authorize": true,
+      "status_remains_INGEST_ONLY": true
+    }
+  },
+  "explicit_non_claims": [
+    "NOT SEALED",
+    "NOT PRODUCTION AUTHORIZED",
+    "LEGAL COMPLIANCE NOT CLAIMED",
+    "EU DEMO NOT PERFORMED",
+    "BOTSWANA DEMO NOT PERFORMED",
+    "DURABLE REPLAY NOT CLAIMED",
+    "TESTED != SEALED"
+  ]
+}

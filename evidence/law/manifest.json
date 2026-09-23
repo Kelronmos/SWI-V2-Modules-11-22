@@ -1,10 +1,17 @@
 {
   "lane": "experimental/law",
+  "tip": "538490a525f2e86c9bd9b37293b82adf302dfc4f",
+  "branch": "experimental/law-ingestion-lane",
   "status": "RESEARCH / EXPERIMENTAL",
   "sealed": false,
   "production_authorized": false,
   "legal_compliance_claimed": false,
-  "branch": "experimental/law-ingestion-lane",
+  "adversarial_suite_executed": true,
+  "adversarial_suite_result": "20/20 PASSED",
+  "v2_plus_law_result": "129/129 PASSED",
+  "ci_verification": "success",
+  "ci_two_checkout": "success",
+  "ci_pre_r": "success",
   "governing_invariant": [
     "DATA != EVIDENCE != ADMISSION != AUTHORIZATION != ACTION",
     "NO IMPLICIT TRANSITION",
@@ -13,7 +20,10 @@
     "NO LAW -> AUTHORIZATION SHORTCUT",
     "NO POLICY -> LAW MUTATION"
   ],
-  "artifacts": [],
-  "lifecycle_events": [],
-  "note": "Populate after adversarial suite is green and independent audit."
+  "replay_limitation": "in-process / in-memory only; not durable storage protection",
+  "next": [
+    "independent audit",
+    "only then EU/Botswana fixtures"
+  ],
+  "note": "A green test run establishes the tested properties at this commit. It does not establish legal compliance, jurisdictional correctness, tamper-proof persistence, or production readiness."
 }
