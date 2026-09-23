@@ -1,0 +1,19 @@
+{
+  "lane": "experimental/law",
+  "status": "RESEARCH / EXPERIMENTAL",
+  "sealed": false,
+  "production_authorized": false,
+  "legal_compliance_claimed": false,
+  "branch": "experimental/law-ingestion-lane",
+  "governing_invariant": [
+    "DATA != EVIDENCE != ADMISSION != AUTHORIZATION != ACTION",
+    "NO IMPLICIT TRANSITION",
+    "NO HISTORY REWRITE",
+    "NO EXTERNAL WRITE BYPASS",
+    "NO LAW -> AUTHORIZATION SHORTCUT",
+    "NO POLICY -> LAW MUTATION"
+  ],
+  "artifacts": [],
+  "lifecycle_events": [],
+  "note": "Populate after adversarial suite is green and independent audit."
+}
