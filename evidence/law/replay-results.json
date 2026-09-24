@@ -1,0 +1,28 @@
+{
+  "tip": "538490a525f2e86c9bd9b37293b82adf302dfc4f",
+  "guard": "experimental.law.replay.LawReplayGuard",
+  "scope": "IN_PROCESS_IN_MEMORY_ONLY",
+  "durable": false,
+  "cross_process": false,
+  "cross_machine": false,
+  "results": [
+    {
+      "case": "first_valid_event",
+      "event_id": "evt-001",
+      "outcome": "ACCEPTED"
+    },
+    {
+      "case": "same_event_replayed",
+      "event_id": "evt-001",
+      "outcome": "REJECT",
+      "exception": "ReplayError"
+    },
+    {
+      "case": "empty_event_id",
+      "event_id": "",
+      "outcome": "REJECT",
+      "exception": "ReplayError"
+    }
+  ],
+  "limitation_statement": "This does NOT claim durable distributed replay protection. Reference building block only."
+}

@@ -1,0 +1,49 @@
+name: LAW INGESTION ADVERSARIAL
+
+on:
+  push:
+    branches:
+      - experimental/law-ingestion-lane
+    paths:
+      - "experimental/law/**"
+      - "tests/law/**"
+      - "formal/z3/**"
+      - "formal/requirements.txt"
+      - "evidence/law/**"
+      - ".github/workflows/law_adversarial.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "experimental/law/**"
+      - "tests/law/**"
+      - "formal/z3/**"
+      - "formal/requirements.txt"
+
+jobs:
+  law-adversarial:
+    name: Law adversarial suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r formal/requirements.txt
+      - name: Run formal law authority model (Z3)
+        run: python formal/z3/law_authority.py
+      - name: Run dedicated law adversarial gate
+        run: python -m pytest -q tests/law/
+      - name: Record result
+        if: always()
+        run: |
+          echo "LAW_ADVERSARIAL_GATE=executed" >> $GITHUB_STEP_SUMMARY
+          echo "Formal Z3 model: executed" >> $GITHUB_STEP_SUMMARY
+          echo "Tip: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
