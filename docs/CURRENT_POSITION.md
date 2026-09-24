@@ -3,31 +3,28 @@
 **Label: CURRENT**
 
 **Governing procedure:** `docs/SWI_COMPLETE_FIX_MANUAL_2026-09-23.md`  
-**Closure baseline:** `docs/runtime/CLOSURE_BASELINE_2026-09-24.md`  
+**Closure programme index:** `docs/runtime/COMPLETE_CLOSURE_PROGRAMME.md`  
+**WP-01 classification closure:** `docs/WP01_CLASSIFICATION_CLOSURE_2026-09-24.md`  
 **WP-01 source_tip location:** `docs/WP01_SOURCE_TIP_LOCATION_2026-09-24.md`  
+**WP-02 inheritance matrix:** `docs/WP02_EVIDENCE_INHERITANCE_MATRIX_2026-09-24.md`  
+**Closure baseline:** `docs/runtime/CLOSURE_BASELINE_2026-09-24.md`  
 **Snyder matrix:** `docs/runtime/SNYDER_COMPATIBILITY_MATRIX.md`  
 **Decision envelope (design):** `docs/runtime/DECISION_ENVELOPE.md`  
-**Human authority:** `docs/runtime/HUMAN_AUTHORITY.md`  
-**Foundation matrix:** `docs/SWI_NON_EXECUTION_FOUNDATION_STATUS_2026-09-23.md`  
-**Freshness detail:** `docs/EVIDENCE_FRESHNESS_STATUS_2026-09-23.md`
+**Human authority:** `docs/runtime/HUMAN_AUTHORITY.md`
 
 | Area | Status |
 |------|--------|
-| V1 foundation (M00–M10) | 🟢 CI-VERIFIED PASS (historical at V1 tip `07dffe1…`; re-verify after any V1 move) |
-| V2 modules (M11–M22) | 🟢 prior CI on `f475589…`; tip has moved — re-verify at current HEAD before claiming |
-| V2 two-checkout travel | 🟢 historically PASS on `f475589…`; refresh required for post-baseline HEAD |
-| PRE-R boundary | 🟢 PASS within existing scope |
-| **Evidence law package (`8245e3f`)** | 🟢 **ancestor of HEAD + blobs match** (local freshness tests PASS); tip-bound, not HEAD re-proof |
-| Evidence freshness (narrative 2026-09-23)** | 🟡 earlier FAIL vs `a6b81fb` pre-merge — superseded by WP-01 location report |
-| MATH-002 local containment | 🟢 tested locally; not six-way `C(a)` |
-| **Human authority (H)** | 🟡 **UNDER_CONSTRUCTION** — design only |
+| **WP-01** | ✅ **CLOSED FOR CLASSIFICATION**, open for re-proof where required |
+| Law evidence `8245e3f` | ✅ Tip-bound; ancestor; blobs match; local freshness 2 passed |
+| Freshness as HEAD re-proof | ❌ Not claimed |
+| **WP-02** | 🟡 STARTED — inheritance matrix |
+| Human authority (H) | 🟡 UNDER_CONSTRUCTION |
 | Decision envelope | 🟡 DESIGNED only |
-| Six-way invariant `C(a) ⊆ L∩G∩S∩H∩E∩P` | 🔴 NOT PROVEN |
-| Snyder runtime (six requirements) | 🔴 OPEN / PARTIAL — see matrix |
-| **V2 M11** | ⛔ **NOT SEALED** as current runtime seal |
-| Execution module | ⛔ **BLOCKED** |
-| Production | 🚫 **NOT AUTHORIZED** |
-| Foundation PASS claim | **NOT YET CLAIMED** |
+| Six-way invariant | 🔴 NOT PROVEN |
+| M11 / runtime seal | ⛔ NOT CLAIMED |
+| Execution | 🚫 BLOCKED |
+| Production | 🚫 NOT AUTHORIZED |
+| Foundation PASS | **NOT YET CLAIMED** |
 
 ## Boundary freeze (active)
 
@@ -36,8 +33,6 @@
 
 ## Next step
 
-WP-01 location complete. Optional: CI-bind freshness at exact SHA. Do not hand-edit `source_tip`. Do not open execution. Decision-envelope / human-authority remain design-only until their WPs.
+WP-02: expand claim ledger (INHERIT / REGENERATE / NO EVIDENCE). Do not open execution. Do not treat H docs as satisfying H.
 
-«Do not claim what the code cannot demonstrate.»  
-«Do not seal on stale evidence.»  
-«Do not open the blocked execution module.»
+«Do not claim what the code cannot demonstrate.»
