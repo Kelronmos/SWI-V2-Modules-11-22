@@ -2,7 +2,8 @@
 
 **Status:** Architecture and gate definitions only.  
 **Runtime implementation:** NOT AUTHORIZED until Phase 3 gates G01–G13 (required scope) and Runtime Entry Gate pass.  
-**M11:** SEALED (historical) — do not reopen or rewrite seal record.
+**M11:** Historical seal records, if any, are separate from current runtime seal — do not reopen or rewrite seal records as runtime proof.  
+**Human authority (H):** UNDER_CONSTRUCTION — see `HUMAN_AUTHORITY.md`.
 
 ## Documents
 
@@ -16,6 +17,10 @@
 | DEPENDENCY_GRAPH_MODEL.md | Typed edges |
 | MODULE_COMPLETION_CONTRACT.md | Per-module record |
 | RUNTIME_STATE_MACHINE.md | State machine + HALT rule |
+| CLOSURE_BASELINE_2026-09-24.md | Phase 0 starting envelope |
+| SNYDER_COMPATIBILITY_MATRIX.md | Six Snyder rows (OPEN/PARTIAL) |
+| DECISION_ENVELOPE.md | Design-only decision context |
+| **HUMAN_AUTHORITY.md** | **H under construction — not a closed gate** |
 
 ## Master programme
 
@@ -28,12 +33,13 @@
 
 | Component | Status |
 |-----------|--------|
-| M11 | **SEALED** (historical) |
+| M11 | Historical seal ≠ current runtime seal |
 | M12 | **FROZEN** pending Gates A–D |
 | M13–22 | **BLOCKED** |
 | PR-009 / pre-R | **EXPERIMENTAL** — NOT SEALED |
 | Replay | **NOT sealed** |
 | PRE-CONSEQUENCES | Separate — **NOT BUILT** |
+| Human authority (H) | **UNDER_CONSTRUCTION** |
 | Phase 3 runtime (G14) | **NOT STARTED** |
 
 ## Standing separations
@@ -42,4 +48,5 @@
 DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORITY ≠ BINDING ≠ EXECUTION ≠ TRUTH ≠ CONTINUITY
 TESTED ≠ SEALED
 Module seal ≠ Runtime seal ≠ System release
+SYSTEM_RESULT ≠ HUMAN_AUTHORIZATION
 ```

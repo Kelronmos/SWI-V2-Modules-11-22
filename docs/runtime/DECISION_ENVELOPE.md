@@ -35,5 +35,9 @@ UNKNOWN must not become APPROVED.
 
 ## Human authorization (when required)
 
-Human ID is bound to request + resource + action + evidence + law + policy.
-A boolean `approved=true` is insufficient.
+**STATUS: UNDER_CONSTRUCTION** — see `docs/runtime/HUMAN_AUTHORITY.md`.
+
+Human ID is bound to request + resource + action + evidence + law + policy.  
+A boolean `approved=true` is insufficient.  
+AI / system PASS is never human authorization.  
+Until a `HumanAuthorizationCapability` exists with tests and evidence, `H` remains open in the six-way invariant.
