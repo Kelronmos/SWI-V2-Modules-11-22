@@ -1,9 +1,9 @@
 # SWI V2 — Complete Closure → Seal Programme (index)
 
 **STATUS:** DESIGNED / PROGRAMME INDEX  
-**TIP AT DRAFT:** `8e369c6d5b22402dde20e6db0ea59d8fc8779e4a` (superseded as HEAD moves; re-bind in seal record)  
+**FRESHNESS DOCTRINE:** `docs/runtime/EVIDENCE_FRESHNESS_CONTRACT.md` (**FROZEN**)  
 **LIMITATIONS:** Index only. Implementation proceeds WP-by-WP. Runtime development not authorized until entry gates pass.  
-**NEXT GATE:** Finish WP-02 claim ledger; do not jump to execution corridor.
+**NEXT GATE:** WP-02 scoped HEAD_CURRENT only where required; never by rewriting tip-bound packages.
 
 ## Target chain
 
@@ -20,18 +20,28 @@ Execute(a) ⇒ L ∧ G ∧ S ∧ H ∧ E ∧ P ∧ A ∧ B
 ¬(L ∧ G ∧ S ∧ H ∧ E ∧ P) ⇒ ¬Execute(a)
 ```
 
+## Freshness (non-negotiable)
+
+```text
+AncestorPass =/=> HeadCurrent
+HeadCurrent  =>   AncestorPass
+TIP_BOUND packages are preserved, not “repaired”
+HEAD_CURRENT is always scope-declared
+```
+
 ## Work-package order
 
 | WP | Focus | Status |
 |----|--------|--------|
 | 01 | Evidence/freshness classification | **CLOSED FOR CLASSIFICATION** |
-| 02 | Inherit / regenerate / no-evidence matrix + claim ledger | **STARTED** |
+| — | Evidence freshness contract | **FROZEN** |
+| 02 | Inherit / regenerate / no-evidence + optional scoped HEAD_CURRENT | **STARTED** |
 | 03 | Authority model | OPEN |
 | 04 | Evidence lifecycle | OPEN |
 | 05 | Binding | OPEN |
 | 06 | State / decision semantics | OPEN |
 | 07 | Execution corridor | OPEN (blocked until prior gates) |
-| 08 | Decision semantics / envelope | DESIGNED |
+| 08 | Decision envelope | DESIGNED |
 | 09 | Ledger | OPEN |
 | 10 | Receipts | OPEN |
 | 11 | Replay | OPEN |
@@ -54,7 +64,5 @@ Execute(a) ⇒ L ∧ G ∧ S ∧ H ∧ E ∧ P ∧ A ∧ B
 - `TESTED ≠ SEALED ≠ PRODUCTION AUTHORIZED`.
 - PRE-R / PR-009 remain experimental; not production authority.
 - One production execution corridor only — when authorized.
-
-Detail phases (geometry, contracts, envelope, human capability, adversarial A01–A30, seal criteria) live in design notes and prior manuals; this file is the **ordered gate index**, not the full specification dump.
 
 «Do not claim what the code cannot demonstrate.»
