@@ -19,6 +19,16 @@
 | Execution | 🚫 BLOCKED |
 | Production / seal / Foundation PASS | NOT CLAIMED |
 
+## Normative design (this branch)
+
+| Document | Role |
+|----------|------|
+| [`docs/SWI_MANIFESTO.md`](SWI_MANIFESTO.md) | Human-capacity doctrine; audience; non-autonomy |
+| [`docs/ZERO_TRUST_RELATIONSHIP.md`](ZERO_TRUST_RELATIONSHIP.md) | External ZT reference; SWI boundary |
+| [`docs/REPOSITORY_OWNERSHIP_MAP.md`](REPOSITORY_OWNERSHIP_MAP.md) | Rebuild contract ownership map |
+
+**Manifesto status:** NORMATIVE DESIGN / REBUILD CONTRACT · does **not** create or imply a seal · production **BLOCKED** unless separately authorized.
+
 ## Experimental rebuild kernel (this branch only)
 
 **Branch:** `experimental/privacy-domain`  
@@ -28,8 +38,6 @@
 |------|------|--------|
 | Privacy domain gate | `experimental/privacy/` | IMPLEMENTED · tests on branch · NOT SEALED |
 | Closed transition engine | `experimental/repair/transition_engine.py` | IMPLEMENTED · P0 adversarial tests · NOT SEALED |
-| ZTA external relationship | `docs/ZERO_TRUST_RELATIONSHIP.md` | DESIGN / NORMATIVE reference only |
-| Repository ownership map | `docs/REPOSITORY_OWNERSHIP_MAP.md` | DESIGN / rebuild contract |
 
 **Invariant (frozen):**
 
