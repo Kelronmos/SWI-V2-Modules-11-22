@@ -7,22 +7,26 @@
 | Execution | 🚫 BLOCKED |
 | Production / seal | NOT CLAIMED |
 
-## Normative / methodology docs
+## Primary references
 
 | Document | Role |
 |----------|------|
-| [`SWI_MANIFESTO.md`](SWI_MANIFESTO.md) | Doctrine; school resilience; policy-bounded workflow |
-| [`SCHOOL_DEPLOYMENT_SPEC.md`](SCHOOL_DEPLOYMENT_SPEC.md) | School intended use (not core module) |
-| [`LOCAL_SCHOOL_RESILIENCE.md`](LOCAL_SCHOOL_RESILIENCE.md) | Offline hub / Wi-Fi / SMS architecture |
-| [`COMPARATIVE_TEST_FRAMEWORK.md`](COMPARATIVE_TEST_FRAMEWORK.md) | **SWI vs The Shift — test each on own premises** |
-| [`ZERO_TRUST_RELATIONSHIP.md`](ZERO_TRUST_RELATIONSHIP.md) | External ZT reference |
-| [`REPOSITORY_OWNERSHIP_MAP.md`](REPOSITORY_OWNERSHIP_MAP.md) | Ownership map |
+| [`SWI_REBUILD_IMPLEMENTATION_GUIDE.md`](SWI_REBUILD_IMPLEMENTATION_GUIDE.md) | **Normative rebuild guide** — GUIDE STATUS ACTIVE; floor defined |
+| [`COMPARATIVE_TEST_FRAMEWORK.md`](COMPARATIVE_TEST_FRAMEWORK.md) | SWI vs The Shift — **floor** distinction (not mere assumptions) |
+| [`SWI_MANIFESTO.md`](SWI_MANIFESTO.md) | Human-capacity; policy-bounded; school resilience |
+| [`SCHOOL_DEPLOYMENT_SPEC.md`](SCHOOL_DEPLOYMENT_SPEC.md) | School intended use |
 
-**Comparative rule:** Neither system is tested by secretly imposing the other’s assumptions.  
-**Outcome sought:** Where assumptions, definitions, rules, implementation, or evidence **differ** — not a forced floor ranking.
+```text
+GUIDE ACTIVE ≠ IMPLEMENTATION VERIFIED ≠ SEALED ≠ PRODUCTION AUTHORIZED
+HARDENING SWI ≠ CHANGING SWI'S FLOOR
+DIFFERENT FLOOR = DIFFERENT SYSTEM
+```
+
+**SWI floor:** inherited computational floor  
+**The Shift floor:** as stated by its proponents (corrected floor chain) — not validated or invalidated by SWI docs alone
 
 ## Experimental kernel
 
-Privacy gate · Transition engine — EXPERIMENTAL · NOT SEALED
+Privacy · Transition engine — EXPERIMENTAL · NOT SEALED
 
 «Do not claim what the code cannot demonstrate.»
