@@ -8,7 +8,9 @@
 
 > Network failure should not automatically become information failure.
 
-**Boundary:** School infrastructure provides **resilience**. SWI governs **workflow integrity and evidence**. Humans govern **publication and consequential decisions**. Institutional **policy** defines the permitted world before SWI structures any workflow.
+**Boundary:** School infrastructure provides **resilience**. SWI governs **workflow integrity and evidence**. Humans govern **publication and consequential decisions**. Institutional **policy** defines the **institutionally permitted workflow and its governance boundaries** before SWI structures any workflow.
+
+> SWI structures a workflow defined by policy; it does not become the policy-maker.
 
 Related: `docs/SWI_MANIFESTO.md` §1A, §22, §23 · `docs/LOCAL_SCHOOL_RESILIENCE.md`
 
@@ -19,7 +21,7 @@ Related: `docs/SWI_MANIFESTO.md` §1A, §22, §23 · `docs/LOCAL_SCHOOL_RESILIEN
 | Layer | Role |
 |-------|------|
 | **School policy** | Who may publish, what, to whom, which channels, retention, corrections |
-| **Local hub / Wi-Fi / SMS** | Availability and delivery when Internet fails |
+| **Local hub / Wi-Fi / SMS** | Means of delivery when Internet fails |
 | **SWI** | Structure, validate, record evidence, enforce defined transitions |
 | **Human authority** | Consequential approval and accountability |
 
@@ -52,11 +54,11 @@ This is **Intended Use → School Deployment / Local Resilience**, not a sealed 
            STUDENTS / STAFF
 ```
 
+Local Wi-Fi, hub, SMS, or mesh are **means** of carrying out the policy-defined workflow — not independent authority layers.
+
 ### Layer A — Local hub
 
-Local source for authorized information without continuous Internet:
-
-notices; timetable / room changes; assignment metadata; examination information; emergency information; learning resources; sync queues; local audit records.
+Local source for authorized information without continuous Internet: notices; timetable / room changes; assignment metadata; examination information; emergency information; learning resources; sync queues; local audit records.
 
 ```text
 WAN UP   → AUTHORIZED SYNC → LOCAL HUB
@@ -65,8 +67,6 @@ WAN DOWN → LOCAL HUB → LOCAL DELIVERY CONTINUES
 
 ### Layer B — School local network
 
-Example path:
-
 ```text
 SCHOOL-LOCAL → LOCAL DHCP / NETWORK → school.local → LOCAL SCHOOL PORTAL
 ```
@@ -74,10 +74,6 @@ SCHOOL-LOCAL → LOCAL DHCP / NETWORK → school.local → LOCAL SCHOOL PORTAL
 Basic authorized local notices should **not** require a cloud login. Multiple APs may share one hub as the common origin.
 
 ### Layer C — SMS resilience
-
-Short, important messages when school Internet is down (cellular independent of ISP):
-
-emergency; early closure; exam-room change; “check local portal.”
 
 ```text
 HUMAN AUTHORIZED PUBLISHER → MESSAGE VALIDATION → SMS GATEWAY → RECIPIENT
@@ -88,7 +84,7 @@ SMS_RECEIVED ≠ AUTHORIZATION
 
 ### Optional staff mesh
 
-Wi-Fi mesh, store-and-forward, low-bandwidth or LoRa links for **staff / infrastructure** resilience. Student-facing path remains ordinary Wi-Fi + local web.
+Staff / infrastructure resilience only. Student-facing path remains ordinary Wi-Fi + local web.
 
 ---
 
@@ -112,128 +108,63 @@ LOCAL_NODE       ≠ HUMAN_AUTHORITY
 SMS_ACCESS       ≠ HUMAN_AUTHORITY
 ```
 
-Publication restricted to explicitly defined school roles. Record at minimum:
-
-```text
-publisher_id · publisher_role · content_id · content_type
-scope · purpose · created_at · published_at · expiry
-evidence_reference · audit_reference
-```
+Publication restricted to explicitly defined school roles. Record: publisher_id, role, content_id, type, scope, purpose, timestamps, expiry, evidence_reference, audit_reference.
 
 ---
 
 ## 5. Policy-bounded workflow (school example)
 
 ```text
-SCHOOL POLICY
-     ↓
-POLICY INTERPRETATION
-     ↓
-DEFINED WORKFLOW
-     ↓
-SWI STRUCTURES / VALIDATES / RECORDS
-     ↓
-HUMAN AUTHORITY
-     ↓
-AUTHORIZED OPERATION
+POLICY → WHO MAY PUBLISH? → WHAT MAY BE PUBLISHED?
+  → WHO MAY RECEIVE? → WHAT APPROVAL IS REQUIRED?
+  → SWI STRUCTURES THAT WORKFLOW → LOCAL HUB / WIFI / SMS
 ```
 
-**Not:**
+**Not:** `LOCAL WIFI → SWI → SWI DECIDES SCHOOL POLICY`
 
-```text
-LOCAL WIFI → SWI → SWI DECIDES SCHOOL POLICY
-```
-
-School policy defines who may publish, what, receivers, channels, emergency rules, approval requirements, retention, and conflict handling. SWI structures that defined workflow only.
-
-Example:
-
-```text
-SCHOOL POLICY
-  "Authorized teacher may publish timetable change"
-      ↓
-SWI WORKFLOW
-  IDENTIFY PUBLISHER → CHECK ROLE → CHECK SCOPE
-  → CHECK CONTENT REQUIREMENTS → CHECK EVIDENCE
-  → RECORD DECISION → HUMAN AUTHORITY (if required) → PUBLISH TO LOCAL HUB
-```
-
-If policy requires principal approval for emergency SMS, SWI must not drop that step because software can send SMS without it.
+If policy requires principal approval for emergency SMS, SWI must not drop that step because software can send without it.
 
 ---
 
 ## 6. Offline does not change policy
 
 ```text
-INTERNET AVAILABLE   → POLICY-DEFINED WORKFLOW → SWI STRUCTURE → LOCAL/REMOTE OP
-INTERNET UNAVAILABLE → SAME POLICY → SAME AUTHORITY BOUNDARY → LOCAL WORKFLOW
-
+INTERNET DOWN ≠ POLICY DOWN ≠ AUTHORITY DOWN ≠ GOVERNANCE BYPASS
 OFFLINE ≠ POLICY BYPASS
-OFFLINE ≠ NEW AUTHORITY
 LOCAL NODE ≠ POLICY MAKER
 LOCAL NETWORK ≠ AUTHORITY
 ```
 
+Same policy and authority boundary offline as online.
+
 ---
 
-## 7. Offline synchronization
+## 7–8. Sync and privacy
 
 ```text
 LOCAL CONTENT → VALIDATE → STORE → SERVE LOCALLY
-        + INTERNET RETURNS +
-SYNC QUEUE → RECONCILIATION → VERIFY → AUTHORIZED SYNC
+  + INTERNET RETURNS → SYNC QUEUE → RECONCILE → VERIFY → AUTHORIZED SYNC
 ```
 
-Conflicts are surfaced, not silently overwritten.
-
----
-
-## 8. Privacy defaults
-
-Local notice systems should **not** become repositories for unnecessary medical, identity-document, financial, private family, sensitive disciplinary, or other protected personal data.
-
-```text
-LOCAL_ACCESS ≠ UNIVERSAL_ACCESS
-```
+Conflicts surfaced, not silently overwritten. Minimize protected personal data. `LOCAL_ACCESS ≠ UNIVERSAL_ACCESS`.
 
 ---
 
 ## 9. SWI vs infrastructure boundary
 
-| Provides | Owner |
-|----------|--------|
-| Availability, delivery, SMS transport | School local infrastructure |
-| Evidence, provenance, validation, transitions, diagnostics, authorization **boundaries**, auditability | SWI (when deployed against defined workflow) |
-| Publication and consequential decisions | Humans under school policy |
-
 ```text
-NETWORK_UP ≠ AUTHORIZATION
-NETWORK_DOWN ≠ BYPASS
-CI_GREEN ≠ AUTHORIZATION
-LOCAL_NODE ≠ AUTHORITY
-CACHED_DATA ≠ CURRENT_TRUTH
-AUTOMATION ≠ AUTONOMY
-CAPABILITY ≠ POLICY
+CAPABILITY ≠ POLICY ≠ IMPLEMENTATION ≠ EVIDENCE ≠ AUTHORITY ≠ AUTHORIZATION ≠ ACTION
+NETWORK_UP ≠ AUTHORIZATION · NETWORK_DOWN ≠ BYPASS
+CI_GREEN ≠ AUTHORIZATION · LOCAL_NODE ≠ AUTHORITY
+CACHED_DATA ≠ CURRENT_TRUTH · AUTOMATION ≠ AUTONOMY
 ```
 
 ---
 
 ## 10. Success condition
 
-A successful deployment should demonstrate that:
-
-1. external Internet can be disconnected;
-2. students can still access the local school portal;
-3. previously authorized notices remain available;
-4. authorized staff can publish appropriate local updates;
-5. emergency SMS can operate independently where cellular service is available;
-6. publication rights remain human-controlled;
-7. local activity is auditable;
-8. connectivity restoration does not silently overwrite conflicting information;
-9. no offline mechanism creates unauthorized authority or access.
-
-Objective: resilient local information supporting teaching, learning, communication, and safety — **not** a school that operates without people.
+Internet off → portal serves authorized notices; staff publish under roles; SMS works on cellular if configured; rights stay human; audit exists; restore does not silent-overwrite; offline creates no new authority.
 
 ---
 
-**Non-claims:** Does not implement hardware, authorize production, reseal modules, or assert a live school deployment.
+**Non-claims:** Design only; no hardware deployment or production authorization asserted.
