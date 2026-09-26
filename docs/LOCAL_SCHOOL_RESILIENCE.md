@@ -5,222 +5,117 @@
 **Production:** BLOCKED unless separately authorized  
 **Date:** 26 September 2026
 
-> Network unavailable ≠ school workflow unavailable.
+> Network unavailable ≠ school workflow unavailable.  
+> Network failure should not automatically become information failure.
 
-This layer is **not** a replacement for the Internet. It is continuity for **already authorized**, **locally stored**, **purpose-bound** information when external connectivity fails.
+**Not** a replacement for the Internet. Continuity for **already authorized**, **policy-permitted**, **locally stored** information.
 
-Related: `docs/SWI_MANIFESTO.md` §22 · `docs/ZERO_TRUST_RELATIONSHIP.md`
+**Not** a core SWI module. **Intended use / deployment specification:** `docs/SCHOOL_DEPLOYMENT_SPEC.md`.  
+**Manifesto:** §22 Local School Resilience · §23 Policy-Bounded Workflow.
 
 ---
 
-## 1. Architecture
+## Boundary stack
 
 ```text
-INTERNET / CLOUD
-        │
-  ┌─────┴─────┐
-  │ SWI SYNC  │
-  └─────┬─────┘
-        │
-┌───────▼───────────────┐
-│ SCHOOL LOCAL MESH     │
-│ Wi-Fi + Local LAN     │
-│ + SMS Gateway         │
-└───────┬───────────────┘
-        │
-┌───────┼───────────────┐
-│       │               │
-STUDENTS  TEACHERS   SCHOOL SERVICES
-DEVICES   DEVICES
-│       │               │
-└───────┼───────────────┘
-        │
-  LOCAL SWI NODE
-        │
- LOCAL DATA / UPDATES / EVIDENCE / SYNC QUEUE
+SCHOOL POLICY
+     ↓
+DEFINED WORKFLOW
+     ↓
+SWI STRUCTURES / VALIDATES / RECORDS
+     ↓
+HUMAN AUTHORITY
+     ↓
+AUTHORIZED OPERATION
+
+INFRASTRUCTURE (hub / Wi-Fi / SMS) = means of delivery
+SWI = workflow integrity within policy
+HUMANS = publication and consequences
+```
+
+```text
+CAPABILITY ≠ POLICY ≠ AUTHORITY ≠ AUTHORIZATION ≠ ACTION
+LOCAL WIFI ↛ SWI DECIDES SCHOOL POLICY
+OFFLINE ≠ POLICY BYPASS
+LOCAL NODE ≠ POLICY MAKER
 ```
 
 ---
 
-## 2. Core principle
-
-When the external network fails, the school continues providing **locally authorized** updates over the local network (and optional SMS), without inventing new privileges.
-
-**In scope (examples):** timetable updates; notices; assignments metadata; lesson resources; examination schedules; announcements; emergency information; teacher-approved instructional material; local SWI diagnostics/status.
-
-**Out of scope:** offline mode as a governance bypass; treating connectivity loss as permission expansion.
-
----
-
-## 3. Hard boundaries
+## Architecture (three layers)
 
 ```text
-LOCAL_NODE          ≠ HUMAN_AUTHORITY
-LOCAL_WIFI          ≠ AUTHORIZATION
-OFFLINE_MODE        ≠ BYPASS_MODE
-SMS                 ≠ AUTHORITY
-SMS_RECEIVED        ≠ VERIFIED_TRUTH
-CACHED_DATA         ≠ CURRENT_TRUTH
-LOCAL_AVAILABILITY  ≠ PERMISSION
-OFFLINE_LOCAL_MODE  ≠ PRODUCTION_AUTHORIZATION
+EXTERNAL INTERNET → OPTIONAL SYNC → LOCAL SCHOOL HUB
+  (content, API, notices, sync queue, local audit)
+         │              │
+    Wi-Fi / LAN        SMS
+         │              │
+    SCHOOL Wi-Fi    CELLULAR GATEWAY
+         │
+  STUDENTS / STAFF
 ```
 
-Students offline may receive **previously authorized** local information. They must **not** gain additional privileges because external connectivity failed.
+| Layer | Function |
+|-------|----------|
+| **A Hub** | Authorized local source without continuous Internet |
+| **B School network** | `SCHOOL-LOCAL` → `school.local` portal; no cloud login required for basic notices |
+| **C SMS** | Short fallback; independent of school ISP |
+| Optional staff mesh | Building resilience; not primary student UX |
 
 ---
 
-## 4. Connectivity states
+## Hard boundaries
 
 ```text
-ONLINE
-  ↓
-CONNECTIVITY_DEGRADED
-  ↓
-OFFLINE_LOCAL_MODE
-  ↓
-LOCAL_OPERATION
-  ↓
-SYNC_PENDING
-  ↓
-CONNECTIVITY_RESTORED
-  ↓
-RECONCILIATION
-  ↓
-VERIFIED
-  ↓
-SYNCED
+LOCAL_NODE ≠ HUMAN_AUTHORITY · LOCAL_WIFI ≠ AUTHORIZATION
+OFFLINE_MODE ≠ BYPASS_MODE · SMS ≠ AUTHORITY
+SMS_RECEIVED ≠ VERIFIED_TRUTH · CACHED_DATA ≠ CURRENT_TRUTH
+LOCAL_AVAILABILITY ≠ PERMISSION · DEVICE_CONNECTED ≠ PUBLISH_AUTHORITY
+OFFLINE_LOCAL_MODE ≠ PRODUCTION_AUTHORIZATION
 ```
-
-Offline operation must never silently create authority that did not exist while connected.
 
 ---
 
-## 5. Local mesh path
+## Connectivity states
 
 ```text
-STUDENT DEVICE
-      │
-      ▼
-LOCAL WI-FI / LAN
-      │
-      ▼
-SCHOOL LOCAL NODE
-      │
-      ├── LOCAL CONTENT
-      ├── LOCAL UPDATES
-      ├── LOCAL DIAGNOSTICS
-      ├── LOCAL EVIDENCE
-      └── SYNC QUEUE
+ONLINE → CONNECTIVITY_DEGRADED → OFFLINE_LOCAL_MODE → LOCAL_OPERATION
+  → SYNC_PENDING → CONNECTIVITY_RESTORED → RECONCILIATION → VERIFIED → SYNCED
 ```
 
-The local node provides **continuity**, not sovereignty over the wider SWI system.
+Same policy and authority boundary offline as online.
 
 ---
 
-## 6. SMS resilience channel
+## Publication (human, role-bound)
 
-SMS is a **separate** low-bandwidth fallback (cellular independent of school ISP).
+Record: publisher_id, role, content_id, type, scope, purpose, timestamps, expiry, evidence_reference, audit_reference.
+
+---
+
+## Sync
 
 ```text
-AUTHORIZED SCHOOL SOURCE
-        ↓
-MESSAGE VALIDATION
-        ↓
-SMS GATEWAY
-        ↓
-RECIPIENT
-        ↓
-MESSAGE RECEIVED
+LOCAL CHANGE → VALIDATE → EVIDENCE → STORE → SYNC_PENDING
+  → RESTORED → RECONCILE → VERIFY → AUTHORIZED SYNC
 ```
 
-```text
-SMS_RECEIVED ≠ VERIFIED_TRUTH
-SMS_RECEIVED ≠ AUTHORIZATION
-```
-
-Require: authenticated originating school/service, provenance, audit log of sender and template. Prefer opt-in; purpose-bound; minimal PII.
+Conflicts surfaced, not silently overwritten.
 
 ---
 
-## 7. Offline synchronization
+## Privacy
 
-Local storage ≠ synchronized with remote systems.
+Minimize student data on the local notice system. No default dumping of medical, identity documents, financial, private family, or sensitive disciplinary records.
 
-```text
-LOCAL CHANGE
-    ↓
-VALIDATION
-    ↓
-EVIDENCE CAPTURE
-    ↓
-LOCAL STORAGE
-    ↓
-SYNC_PENDING
-    ↓
-CONNECTIVITY RESTORED
-    ↓
-RECONCILIATION
-    ↓
-VERIFICATION
-    ↓
-AUTHORIZED SYNC
-```
-
-Conflicts must be **surfaced**, not silently overwritten.
+`LOCAL_ACCESS ≠ UNIVERSAL_ACCESS`
 
 ---
 
-## 8. Student safety and privacy
+## Success condition
 
-Offline availability is not an excuse for broader distribution.
-
-Continue to apply:
-
-- least privilege;
-- purpose limitation;
-- privacy-domain separation (e.g. EDUCATION ≠ MEDICAL ≠ FAMILY);
-- student safety requirements;
-- teacher and institutional authority boundaries;
-- auditability;
-- data minimization.
-
-Connecting to school Wi-Fi ≠ entitlement to every local resource.
+Internet off → portal still serves authorized notices; staff publish under roles; SMS works on cellular if configured; rights stay human; audit exists; restore does not silent-overwrite; offline creates no new authority.
 
 ---
 
-## 9. Deployment sketch (ops, not seal)
-
-| Layer | Role |
-|-------|------|
-| Local hub (Pi/mini-PC + UPS) | Content, notices, API, sync queue |
-| Campus Wi-Fi / LAN | `SCHOOL-LOCAL` SSID; captive portal → hub |
-| SMS gateway (optional) | USB GSM modem; authorized templates only |
-| Optional radio mesh | Staff resilience (e.g. building links); not primary student UX |
-
-Internet is for **sync in/out** when available—not required for day-to-day local read of authorized content.
-
----
-
-## 10. ATM / test ideas (DESIGN)
-
-| ID | Intent | Expected class |
-|----|--------|----------------|
-| LSR-A01 | Offline mode grants new privilege | BLOCK / REJECT |
-| LSR-A02 | Cached notice treated as live truth after supersession | Surface stale; no silent current claim |
-| LSR-A03 | SMS without provenance treated as authority | BLOCK |
-| LSR-A04 | Local node self-authorizes seal/production | REJECT |
-| LSR-A05 | Sync overwrites conflict without review | BLOCK; surface conflict |
-| LSR-A06 | Student on Wi-Fi accesses wrong privacy domain | BLOCK / ESCALATE |
-
----
-
-## 11. Human-centred objective
-
-> Keep people connected to useful information when infrastructure fails, without removing human responsibility or weakening the boundaries that protect them.
-
-A resilient school is not one that operates without people.  
-It is one that gives people enough reliable **local** infrastructure to continue learning, teaching, communicating, and responding while connectivity is restored.
-
----
-
-**Non-claims:** This document does not implement hardware, authorize production, reseal modules, or claim a deployed school mesh.
+**Non-claims:** Design only; no hardware deployment or production authorization asserted.
