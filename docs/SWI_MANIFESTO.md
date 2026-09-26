@@ -68,7 +68,8 @@ Its intended uses include:
 - providing deterministic diagnostics;
 - supporting human decision-making;
 - preventing unauthorized workflow transitions;
-- maintaining an auditable record of consequential decisions.
+- maintaining an auditable record of consequential decisions;
+- supporting school continuity when external connectivity is unreliable (see §22).
 
 ### What SWI is not intended to be
 
@@ -81,7 +82,8 @@ SWI is **not** intended to be:
 - a system that converts technical verification into human authorization;
 - a mechanism for bypassing accountable people;
 - a universal Zero Trust implementation;
-- a system that treats efficiency as sufficient justification for removing human oversight.
+- a system that treats efficiency as sufficient justification for removing human oversight;
+- a system that treats offline or local-mesh operation as a bypass of governance.
 
 ### Intended relationship
 
@@ -116,47 +118,13 @@ The central design objective is therefore:
 SWI distinguishes:
 
 ```text
-OBSERVATION
-    ≠
-ANALYSIS
-    ≠
-RECOMMENDATION
-    ≠
-DECISION
-    ≠
-AUTHORITY
-    ≠
-AUTHORIZATION
-    ≠
-ACTION
+OBSERVATION ≠ ANALYSIS ≠ RECOMMENDATION ≠ DECISION
+  ≠ AUTHORITY ≠ AUTHORIZATION ≠ ACTION
 ```
 
-SWI may:
+SWI may: observe; collect and structure information; analyse defined conditions; identify conflicts; detect failures; validate requirements; preserve provenance and evidence; replay and reproduce; generate diagnostics; recommend questions or next steps; block unauthorized transitions.
 
-- observe workflow state;
-- collect information;
-- structure information;
-- analyse defined conditions;
-- identify conflicts;
-- detect failures;
-- validate defined requirements;
-- preserve provenance;
-- preserve evidence;
-- replay workflows;
-- reproduce results;
-- generate diagnostics;
-- recommend questions or possible next steps;
-- block unauthorized transitions.
-
-SWI must not manufacture or impersonate:
-
-- human judgment;
-- human consent;
-- human authority;
-- legal authority;
-- policy authority;
-- authorization;
-- production permission.
+SWI must not manufacture or impersonate: human judgment; consent; human, legal, or policy authority; authorization; production permission.
 
 When a consequential decision belongs to a human, the human remains accountable for that decision.
 
@@ -171,17 +139,9 @@ True Zero does not mean zero humans.
 A missing mandatory condition cannot silently become permission.
 
 ```text
-No definition              → REJECT
-No valid transition        → REJECT
-No integrity               → QUARANTINE
-No evidence                → BLOCK
-No admission               → BLOCK
-No verification            → BLOCK
-No human authority         → BLOCK
-No privacy basis           → BLOCK / ESCALATE
-No security basis          → BLOCK
-No safety basis            → BLOCK
-No authorization           → BLOCK
+No definition → REJECT · No valid transition → REJECT · No integrity → QUARANTINE
+No evidence / admission / verification / human authority → BLOCK
+No privacy basis → BLOCK / ESCALATE · No security / safety / authorization → BLOCK
 ```
 
 The system does not fill a missing permission with an assumption.
@@ -190,127 +150,44 @@ The system does not fill a missing permission with an assumption.
 
 ## 4. The Canonical SWI Flow
 
-SWI follows a controlled progression:
-
 ```text
-INPUT
-  ↓
-TOKEN
-  ↓
-IDENTIFIER
-  ↓
-REGISTRY
-  ↓
-NODE
-  ↓
-EDGE
-  ↓
-DEPENDENCY
-  ↓
-VALIDATION
-  ↓
-EVIDENCE
-  ↓
-ADMISSION
-  ↓
-VERIFICATION
-  ↓
-HUMAN AUTHORITY
-  ↓
-PRIVACY
-  ↓
-SECURITY
-  ↓
-SAFETY
-  ↓
-AUTHORIZATION
-  ↓
-ACTION
+INPUT → TOKEN → IDENTIFIER → REGISTRY → NODE → EDGE → DEPENDENCY
+  → VALIDATION → EVIDENCE → ADMISSION → VERIFICATION → HUMAN AUTHORITY
+  → PRIVACY → SECURITY → SAFETY → AUTHORIZATION → ACTION
 ```
 
-Every arrow is a boundary.
-
-Every boundary can fail.
-
-Every boundary can therefore be tested.
-
-A later stage cannot silently satisfy an earlier missing stage.
+Every arrow is a boundary that can fail and can be tested. A later stage cannot silently satisfy an earlier missing stage.
 
 ---
 
 ## 5. Non-Substitution
 
-SWI preserves distinctions between things that may otherwise be incorrectly treated as equivalent.
-
 ```text
 DATA ≠ EVIDENCE ≠ ADMISSION ≠ VERIFICATION
   ≠ HUMAN AUTHORITY ≠ AUTHORIZATION ≠ ACTION
+
+CI_GREEN / SIGNATURE / CERTIFICATE / TPM / HSM / DEVICE_COMPLIANT
+  ↛ HUMAN_AUTHORITY
+ZTA_GRANT ↛ SWI_AUTHORIZATION
 ```
 
-Technical signals do not become human authority merely because they are technically valid.
-
-```text
-CI_GREEN           ↛ HUMAN_AUTHORITY
-SIGNATURE          ↛ HUMAN_AUTHORITY
-CERTIFICATE        ↛ HUMAN_AUTHORITY
-TPM                ↛ HUMAN_AUTHORITY
-HSM                ↛ HUMAN_AUTHORITY
-DEVICE_COMPLIANT   ↛ HUMAN_AUTHORITY
-ZTA_GRANT          ↛ SWI_AUTHORIZATION
-```
-
-Technical controls can provide evidence, integrity information, security context, or other signals.
-
-They do not become the accountable human decision.
+Technical controls can provide evidence or security context. They do not become the accountable human decision.
 
 ---
 
 ## 6. Human Capacity
 
-SWI exists to help people use their capacity more effectively.
+SWI helps people understand complexity, reduce repetition, find primary failures, preserve knowledge, distinguish claims from evidence, and retain responsibility for consequential decisions.
 
-It should help people:
-
-- understand complex systems;
-- reduce repetitive work;
-- identify the primary failure;
-- understand dependencies;
-- find missing evidence;
-- preserve institutional knowledge;
-- distinguish claims from evidence;
-- reproduce results;
-- challenge unsafe assumptions;
-- understand why a workflow was blocked;
-- make decisions with better information;
-- retain responsibility for consequential decisions.
-
-SWI should not reduce people to:
-
-```text
-IDENTITY · SCORE · CREDENTIAL · DATA SOURCE · RISK SCORE · AUTOMATION TARGET
-```
-
-A person is more than the machine-readable representation of that person.
+SWI must not reduce people to identity, score, credential, data source, risk score, or automation target.
 
 ---
 
 ## 7. The Optimization Boundary
 
-SWI may optimize:
+SWI may optimize time, attention, repetition, complexity, error detection, evidence handling, clarity, coordination, and reproducibility.
 
-```text
-TIME · ATTENTION · REPETITION · COMPLEXITY · ERROR DETECTION
-EVIDENCE HANDLING · WORKFLOW CLARITY · COORDINATION · REPRODUCIBILITY
-```
-
-SWI must not optimize away:
-
-```text
-DIGNITY · JUDGMENT · ACCOUNTABILITY · CONSENT
-CONTEXT · HUMAN AUTHORITY · HUMAN OVERSIGHT
-```
-
-Efficiency is valuable only when accountability survives the optimization.
+SWI must not optimize away dignity, judgment, accountability, consent, context, human authority, or oversight.
 
 > «Automating work is not the same as automating responsibility.»
 
@@ -318,36 +195,9 @@ Efficiency is valuable only when accountability survives the optimization.
 
 ## 8. Human Authority
 
-Human authority must be explicit and scoped.
+Human authority must be explicit and scoped (issuer, actor, subject, action, scope, purpose, times, revocation, evidence, policy, audit).
 
-A controlled authority record should identify, as applicable:
-
-```text
-authority_id
-issuer
-accountable_actor
-subject
-action
-scope
-purpose
-decision
-issued_at
-expires_at
-revocation_state
-evidence_reference
-policy_reference
-audit_reference
-```
-
-The following do **not** automatically create authority:
-
-```text
-CODE_OWNER · REPOSITORY_ADMIN · CI_GREEN · SIGNATURE_VALID
-CERTIFICATE_VALID · TPM_VERIFIED · HSM_SIGNED · DEVICE_COMPLIANT
-ZTA_ACCESS_GRANTED
-```
-
-Therefore:
+`CODE_OWNER` / `CI_GREEN` / certificates / TPM / HSM / device compliance / ZTA grants do **not** automatically create authority.
 
 ```text
 CODE_OWNER ≠ HUMAN_AUTHORITY ≠ SEAL_AUTHORITY ≠ PRODUCTION_AUTHORITY
@@ -357,270 +207,222 @@ CODE_OWNER ≠ HUMAN_AUTHORITY ≠ SEAL_AUTHORITY ≠ PRODUCTION_AUTHORITY
 
 ## 9. Evidence Before Promotion
 
-SWI follows an evidence-first progression:
-
 ```text
 CLAIM → IMPLEMENTATION → TEST → RESULT → EVIDENCE
   → REPLAY → REPRODUCTION → VERIFICATION → SEAL REVIEW → SEAL
 ```
 
-Testing does not automatically create a seal.
-
-Verification does not automatically create production authorization.
-
-> «No evidence → no promotion.»  
-> «No verified path → no execution.»
+> «No evidence → no promotion.» · «No verified path → no execution.»
 
 ---
 
 ## 10. Failure Is Information
 
-A failure is not permission to continue.
-
-If `A → B → C → ACTION` and A is the root failure:
-
-```text
-A = PRIMARY FAILURE
-B = SUPPRESSED DESCENDANT
-C = SUPPRESSED DESCENDANT
-ACTION = BLOCKED
-```
-
-Suppression does not mean deletion.
-
-All relevant failures remain available for audit and analysis.
-
-The system must not report a convenient descendant as the primary failure simply because the actual root failure is harder to explain.
+Root failure remains primary; descendants may be suppressed for presentation but retained for audit. Suppression is not deletion. Do not promote a convenient descendant as primary.
 
 ---
 
 ## 11. Deterministic Diagnostics
 
-The same controlled conditions should produce the same decision.
-
-Primary-failure selection must not depend on:
-
-- dictionary order;
-- filesystem order;
-- test insertion order;
-- parallel completion order;
-- arbitrary traversal order;
-- wording of an error message.
-
-Deterministic diagnostics are necessary for meaningful replay and reproduction.
+Same controlled conditions → same diagnostic decision. Primary-failure selection must not depend on dictionary order, filesystem order, test insertion order, parallel completion order, arbitrary traversal, or error wording.
 
 ---
 
 ## 12. Closed Transitions
 
-SWI does not infer permission merely because a state exists.
-
 ```text
 STATE EXISTS ≠ TRANSITION EXISTS ≠ GATES PASS
   ≠ AUTHORITY EXISTS ≠ AUTHORIZATION ≠ ACTION
+
+Undefined transition → REJECT
+Defined + failed gate → BLOCK
+Integrity failure → QUARANTINE
+All required gates pass → ALLOW
 ```
 
-Canonical transition behaviour:
-
-```text
-Undefined transition              → REJECT
-Defined transition + failed gate  → BLOCK
-Integrity failure                 → QUARANTINE
-All required gates pass           → ALLOW
-```
-
-REJECT and BLOCK do not mutate trusted state.
-
-QUARANTINE does not restore trust.
-
-There are no implicit reverse transitions.
+REJECT/BLOCK do not mutate trusted state. No implicit reverse transitions.
 
 ---
 
 ## 13. Tamper and Recovery
 
-Tampering is a trust-boundary event.
-
 ```text
-OBJECT → INTEGRITY CHECK → TAMPER DETECTED → QUARANTINE → NO RE-ENTRY
-  → HUMAN AUTHORITY / ESCALATION → NEW VALIDATION → NEW EVIDENCE
+OBJECT → INTEGRITY CHECK → TAMPER → QUARANTINE → NO RE-ENTRY
+  → HUMAN AUTHORITY → NEW VALIDATION → NEW EVIDENCE
   → NEW ADMISSION → NEW VERIFICATION → SEAL REVIEW
 ```
 
-Old evidence may remain historical evidence.
-
-Old verification does not automatically become current verification after an integrity-affecting change.
-
-A previous signature, certificate, authorization, or successful test must not silently restore trust.
+Old verification does not automatically become current after integrity-affecting change.
 
 ---
 
 ## 14. Privacy
 
-SWI treats private information as domain-bound.
-
-For example:
-
 ```text
-IDENTITY_ACCESS ≠ MEDICAL_ACCESS
-MEDICAL_ACCESS ≠ FAMILY_ACCESS
-EDUCATION_ACCESS ≠ MEDICAL_ACCESS
+IDENTITY_ACCESS ≠ MEDICAL_ACCESS ≠ FAMILY_ACCESS ≠ EDUCATION_ACCESS
 ```
 
-Access must consider:
-
-```text
-SUBJECT · PURPOSE · SCOPE · DOMAIN · AUTHORITY · EVIDENCE
-```
-
-Knowing who someone is does not automatically create permission to access everything about them.
-
-Human consequences matter.
-
-SWI should expose important boundaries rather than hide them behind automation.
+Access considers subject, purpose, scope, domain, authority, evidence. Human consequences matter.
 
 ---
 
 ## 15. Zero Trust and SWI
 
-Zero Trust Architecture provides security context.
-
-SWI is not an implementation of NIST SP 800-207.
-
-The distinction is:
+Zero Trust supplies security context / resource access. SWI supplies workflow integrity / transition control.
 
 ```text
-ZERO TRUST → SECURITY CONTEXT / RESOURCE ACCESS
-SWI        → WORKFLOW INTEGRITY / TRANSITION CONTROL
-```
-
-Zero Trust signals may inform SWI security evaluation.
-
-They do not replace SWI authority.
-
-```text
-ZTA_SIGNAL          ≠ HUMAN_AUTHORITY
+ZTA_SIGNAL ≠ HUMAN_AUTHORITY
 ZTA_ACCESS_DECISION ≠ SWI_AUTHORIZATION
 ```
 
-SWI retains its own evidence, admission, verification, authority, privacy, security, safety, and authorization boundaries.
-
-See also: `docs/ZERO_TRUST_RELATIONSHIP.md`.
+See `docs/ZERO_TRUST_RELATIONSHIP.md`.
 
 ---
 
 ## 16. Common Sense
 
-Common Sense may operate as an observer and analytical capability.
-
-It may: observe; analyse; identify anomalies; question assumptions; propose tests; generate diagnostics; suggest possible paths.
-
-It may **not**: AUTHORIZE; SEAL; PROMOTE; EXECUTE; OVERRIDE LAW; OVERRIDE POLICY; IMPERSONATE HUMAN AUTHORITY.
+May observe, analyse, question, propose tests, diagnose. May not authorize, seal, promote, execute, override law/policy, or impersonate human authority.
 
 ```text
-ANALYSIS ≠ AUTHORIZATION
-RECOMMENDATION ≠ DECISION
+ANALYSIS ≠ AUTHORIZATION · RECOMMENDATION ≠ DECISION
 ```
 
 ---
 
 ## 17. Law and Policy
 
-SWI distinguishes:
-
 ```text
 INGESTED ≠ VALIDATED ≠ APPLICABLE ≠ AUTHORIZED ≠ EXECUTABLE
 ```
 
-A machine-readable rule is not automatically a legal determination.
-
-Ambiguous, conflicting, expired, or inapplicable rules must be surfaced for appropriate human or institutional review.
-
-The system must not manufacture permission from uncertainty.
+Do not manufacture permission from uncertainty.
 
 ---
 
 ## 18. Repository and Ownership
-
-Every controlled SWI unit should identify:
-
-```text
-module_or_unit · repository · branch · path · owner · reviewer
-responsibility · dependencies · evidence_scope · authority_boundary
-seal_status · production_status
-```
-
-| Question | Answered by |
-|----------|-------------|
-| Where is it? | Repository / path |
-| Who is accountable for it? | Ownership |
-| Who may authorize the consequential decision? | Authority |
-
-These are different questions.
 
 ```text
 LOCATION ≠ OWNERSHIP ≠ RESPONSIBILITY ≠ EVIDENCE
   ≠ VERIFICATION ≠ HUMAN AUTHORITY ≠ AUTHORIZATION ≠ ACTION
 ```
 
-Experimental code may generate evidence.
-
-It must not manufacture seal status or production authorization.
-
-See also: `docs/REPOSITORY_OWNERSHIP_MAP.md`.
+See `docs/REPOSITORY_OWNERSHIP_MAP.md`.
 
 ---
 
 ## 19. Human-Centred Implementation Test
 
-Before promoting a new SWI capability, ask:
-
-1. What human capacity does this improve?
-2. What human responsibility does it preserve?
-3. What decision remains with a person?
-4. What can the system refuse or block?
+1. What human capacity does this improve?  
+2. What human responsibility does it preserve?  
+3. What decision remains with a person?  
+4. What can the system refuse or block?  
 5. What evidence proves that the boundary works?
-
-If these questions cannot be answered clearly, the capability is not ready for promotion.
 
 ---
 
 ## 20. Rebuild Philosophy
-
-The SWI rebuild is not a race to make the machine more autonomous.
-
-It is a process of making workflows more understandable, testable, reproducible, accountable, resistant to bypass, and safer for the people who rely on them.
 
 ```text
 CLONE STRUCTURE → REBUILD TRUST → PROVE TRANSITIONS
   → PRESERVE HUMAN ACCOUNTABILITY → CONTROL ACTION
 ```
 
-Historical evidence informs the rebuild.
-
-Historical evidence does not silently become current trust.
+Historical evidence informs rebuild; it does not silently become current trust.
 
 ---
 
 ## 21. The SWI Commitment
 
-SWI will be judged not only by what it can automate, but by what it refuses to automate without the conditions required for accountability.
+SWI is judged by what it refuses to automate without accountability conditions, as much as by what it automates. Keep consequential humans visible, accountable, informed, authorized, and in control.
 
-The system should make people more capable, not less human.
+---
 
-It should make complexity more understandable, not disguise uncertainty as certainty.
+## 22. Local School Resilience
 
-It should make evidence easier to inspect, not manufacture evidence.
+SWI should support schools where external connectivity is unreliable, interrupted, expensive, or unavailable.
 
-It should make failures easier to find, not hide them.
+A school should not become operationally blind solely because its Internet connection has failed.
 
-It should make workflows more controlled, not make authority invisible.
+SWI may therefore support a **local resilience layer**:
 
-And when a consequential decision belongs to a human, SWI should keep that human:
+- local Wi-Fi and LAN;
+- school-local SWI nodes;
+- local content and update services;
+- controlled synchronization;
+- SMS-based fallback where appropriate;
+- offline queues and reconciliation;
+- local evidence and audit records.
+
+The purpose is **continuity of useful, authorized information** — not bypassing governance.
+
+### Offline-First Principle
 
 ```text
-VISIBLE · ACCOUNTABLE · INFORMED · AUTHORIZED · IN CONTROL
+NETWORK DOWN ≠ WORKFLOW DOWN
 ```
+
+When external connectivity is unavailable, the school may continue providing information that has **already been locally authorized** and made available for offline use (timetables, notices, assignments, learning resources, examination schedules, emergency information, teacher-approved material).
+
+### Connectivity states
+
+```text
+ONLINE → CONNECTIVITY_DEGRADED → OFFLINE_LOCAL_MODE → LOCAL_OPERATION
+  → SYNC_PENDING → CONNECTIVITY_RESTORED → RECONCILIATION
+  → VERIFIED → SYNCED
+```
+
+### Hard boundaries
+
+```text
+OFFLINE_MODE ≠ BYPASS_MODE
+LOCAL_NODE ≠ HUMAN_AUTHORITY
+LOCAL_WIFI ≠ AUTHORIZATION
+SMS ≠ AUTHORITY
+SMS_RECEIVED ≠ VERIFIED_TRUTH
+CACHED_DATA ≠ CURRENT_TRUTH
+LOCAL_AVAILABILITY ≠ PERMISSION
+OFFLINE_LOCAL_MODE ≠ PRODUCTION_AUTHORIZATION
+```
+
+### Local mesh (conceptual)
+
+```text
+STUDENT DEVICE → LOCAL WI-FI / LAN → SCHOOL LOCAL NODE
+  → LOCAL CONTENT | UPDATES | DIAGNOSTICS | EVIDENCE | SYNC QUEUE
+```
+
+The local node provides continuity, not sovereignty over the wider system.
+
+### SMS resilience
+
+```text
+AUTHORIZED SCHOOL SOURCE → MESSAGE VALIDATION → SMS GATEWAY → RECIPIENT
+```
+
+Receipt does not establish truth or authority. Preserve provenance; verify independently where required.
+
+### Offline synchronization
+
+```text
+LOCAL CHANGE → VALIDATION → EVIDENCE → LOCAL STORAGE → SYNC_PENDING
+  → CONNECTIVITY RESTORED → RECONCILIATION → VERIFICATION → AUTHORIZED SYNC
+```
+
+Conflicts must be surfaced, not silently overwritten.
+
+### Student safety and privacy
+
+Offline availability must not broaden distribution beyond least privilege, purpose limitation, privacy-domain separation, safety rules, institutional authority, auditability, and data minimization.
+
+Connecting to the school network does not entitle a student to every local resource.
+
+### Human-centred objective
+
+> Keep people connected to useful information when infrastructure fails, without removing human responsibility or weakening the boundaries that protect them.
+
+A resilient school is not one that operates without people. It is one that gives people enough reliable local infrastructure to continue learning, teaching, communicating, and responding while connectivity is restored.
+
+Full architecture: `docs/LOCAL_SCHOOL_RESILIENCE.md`.
 
 ---
 
@@ -633,6 +435,8 @@ HELP PEOPLE           ≠ REPLACE PEOPLE
 AUTOMATE WORK         ≠ AUTOMATE ACCOUNTABILITY
 OPTIMIZE CAPACITY     ≠ REMOVE HUMANITY
 TRUE ZERO             = ZERO UNAUTHORIZED ACTION
+NETWORK DOWN          ≠ WORKFLOW DOWN
+OFFLINE_MODE          ≠ BYPASS_MODE
 ```
 
 **SWI: Structured Workflow Intelligence — technology in service of human capacity, accountability, and agency.**
