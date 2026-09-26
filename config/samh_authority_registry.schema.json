@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi://config/samh_authority_registry.schema.json",
+  "title": "SAMH Authority Registry Entry (DESIGN)",
+  "description": "Schema for role×resource×detail×purpose permissions. Not production-authorized. No real student data.",
+  "type": "object",
+  "required": ["role", "resource", "scope", "detail_level", "purpose", "actions", "prohibited", "audit"],
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": ["student", "parent", "teacher", "school_admin", "counselling", "community", "district", "ministry", "government"]
+    },
+    "resource": { "type": "string" },
+    "scope": {
+      "type": "string",
+      "description": "e.g. self, linked_children, assigned_students, school, district_aggregate, national_aggregate"
+    },
+    "detail_level": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8"]
+    },
+    "purpose": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "actions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "prohibited": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "approval": { "type": "string" },
+    "audit": { "type": "boolean" },
+    "relationship_required": { "type": "boolean", "default": true },
+    "production": { "type": "boolean", "const": false }
+  },
+  "additionalProperties": false
+}
