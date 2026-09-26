@@ -7,26 +7,28 @@
 | Execution | 🚫 BLOCKED |
 | Production / seal | NOT CLAIMED |
 
-## Primary references
+## Design docs (this branch)
 
 | Document | Role |
 |----------|------|
-| [`SWI_REBUILD_IMPLEMENTATION_GUIDE.md`](SWI_REBUILD_IMPLEMENTATION_GUIDE.md) | **Normative rebuild guide** — GUIDE STATUS ACTIVE; floor defined |
-| [`COMPARATIVE_TEST_FRAMEWORK.md`](COMPARATIVE_TEST_FRAMEWORK.md) | SWI vs The Shift — **floor** distinction (not mere assumptions) |
-| [`SWI_MANIFESTO.md`](SWI_MANIFESTO.md) | Human-capacity; policy-bounded; school resilience |
-| [`SCHOOL_DEPLOYMENT_SPEC.md`](SCHOOL_DEPLOYMENT_SPEC.md) | School intended use |
+| [`SWI_REBUILD_IMPLEMENTATION_GUIDE.md`](SWI_REBUILD_IMPLEMENTATION_GUIDE.md) | Normative rebuild guide; floor defined |
+| [`PROGRAM_PROOF_BOUNDARY.md`](PROGRAM_PROOF_BOUNDARY.md) | Scoped proof only; not universal correctness |
+| [`EDUCATIONAL_FRONTIER.md`](EDUCATIONAL_FRONTIER.md) | Build-from-repo learning path (DRAFT) |
+| [`INSTITUTIONAL_GOVERNANCE_VISIBILITY.md`](INSTITUTIONAL_GOVERNANCE_VISIBILITY.md) | Role×detail×purpose; explain ≠ grant |
+| [`COMPARATIVE_TEST_FRAMEWORK.md`](COMPARATIVE_TEST_FRAMEWORK.md) | Floor distinction vs The Shift |
+| [`SCHOOL_DEPLOYMENT_SPEC.md`](SCHOOL_DEPLOYMENT_SPEC.md) | Local resilience intended use |
 
 ```text
-GUIDE ACTIVE ≠ IMPLEMENTATION VERIFIED ≠ SEALED ≠ PRODUCTION AUTHORIZED
-HARDENING SWI ≠ CHANGING SWI'S FLOOR
-DIFFERENT FLOOR = DIFFERENT SYSTEM
+PROGRAM ≠ PROOF · TEST PASS ≠ UNIVERSAL PROOF
+AI EXPLAINS AUTHORITY ≠ AI CREATES AUTHORITY
+UPSTREAM ≠ AUTHORITY ESCALATION
+Authority graph before dashboards
 ```
-
-**SWI floor:** inherited computational floor  
-**The Shift floor:** as stated by its proponents (corrected floor chain) — not validated or invalidated by SWI docs alone
 
 ## Experimental kernel
 
 Privacy · Transition engine — EXPERIMENTAL · NOT SEALED
+
+**Next (when authorized):** educational `doctor/demo` contract + examples — or actor/relationship registries for institutional graph — not more architecture prose alone.
 
 «Do not claim what the code cannot demonstrate.»
