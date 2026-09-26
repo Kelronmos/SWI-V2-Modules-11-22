@@ -64,6 +64,7 @@ SCHOOL POLICY → DEFINED WORKFLOW → SWI STRUCTURES / VALIDATES / RECORDS
   → HUMAN AUTHORITY → AUTHORIZED OPERATION
 
 LOCAL WIFI ↛ SWI DECIDES SCHOOL POLICY
+INTERNET DOWN ≠ POLICY DOWN ≠ AUTHORITY DOWN ≠ GOVERNANCE BYPASS
 ```
 
 ### What SWI is not intended to be
@@ -120,6 +121,9 @@ Every arrow is a testable boundary.
 ```text
 DATA ≠ EVIDENCE ≠ ADMISSION ≠ VERIFICATION ≠ HUMAN AUTHORITY ≠ AUTHORIZATION ≠ ACTION
 CI_GREEN / SIGNATURE / CERT / TPM / HSM / DEVICE / ZTA_GRANT ↛ HUMAN_AUTHORITY / SWI_AUTHORIZATION
+TESTED ≠ SEALED
+SIGNATURE ≠ AUTHORITY
+CI_GREEN ≠ PRODUCTION_AUTHORIZATION
 ```
 
 ---
@@ -185,9 +189,13 @@ Five human-centred questions before promotion. Rebuild preserves accountability.
 
 ## 22. Local School Resilience
 
-Support schools when external connectivity fails. Local Wi-Fi/LAN, local nodes, content services, controlled sync, optional SMS, offline queues, local evidence.
+Support schools when external connectivity fails. Local Wi-Fi, hub, SMS, or mesh are **means** of carrying out a **policy-defined** workflow — not independent authority.
 
 ```text
+POLICY → WHO MAY PUBLISH? → WHAT? → WHO RECEIVES? → WHAT APPROVAL?
+  → SWI STRUCTURES THAT WORKFLOW → LOCAL HUB / WIFI / SMS
+
+INTERNET DOWN ≠ POLICY DOWN ≠ AUTHORITY DOWN ≠ GOVERNANCE BYPASS
 NETWORK DOWN ≠ WORKFLOW DOWN
 OFFLINE_MODE ≠ BYPASS_MODE
 LOCAL_NODE ≠ HUMAN_AUTHORITY
@@ -202,14 +210,34 @@ Details: `docs/LOCAL_SCHOOL_RESILIENCE.md` · `docs/SCHOOL_DEPLOYMENT_SPEC.md`.
 
 ## 23. Policy-Bounded Workflow
 
-SWI structures workflows around policies defined by the **responsible institution**.
+> SWI structures a workflow defined by policy; it does not become the policy-maker.
 
-SWI does **not** create institutional policy merely because a workflow can be implemented technically.
+SWI structures workflows around policies defined by the **responsible institution**. SWI does **not** create institutional policy merely because a workflow can be implemented technically.
+
+### Hierarchy
 
 ```text
-POLICY → PURPOSE → SCOPE → ROLES → RESPONSIBILITIES
-  → PERMITTED WORKFLOW → SWI STRUCTURE → VALIDATION → EVIDENCE
-  → HUMAN AUTHORITY → AUTHORIZED ACTION
+HUMAN / INSTITUTIONAL PURPOSE
+        ↓
+POLICY
+        ↓
+POLICY-DEFINED WORKFLOW
+        ↓
+SWI STRUCTURE
+        ↓
+VALIDATION
+        ↓
+EVIDENCE
+        ↓
+ADMISSION
+        ↓
+VERIFICATION
+        ↓
+HUMAN AUTHORITY
+        ↓
+AUTHORIZATION
+        ↓
+ACTION
 ```
 
 ### Policy comes before workflow
@@ -234,20 +262,39 @@ Where policy is undefined or insufficient, the workflow enters **REVIEW / BLOCK 
 
 (Policy development is a separate human institutional activity when explicitly defined as such.)
 
-### Fundamental boundary
+### Fundamental boundary (refined)
+
+> **POLICY DEFINES THE INSTITUTIONALLY PERMITTED WORKFLOW AND ITS GOVERNANCE BOUNDARIES.**
+
+Policy does not necessarily define every possible action in the world; it defines the rules and boundaries **relevant to the institution**.
 
 ```text
-POLICY DEFINES THE PERMITTED WORLD.
-SWI STRUCTURES THE WORKFLOW WITHIN THAT WORLD.
+POLICY DEFINES THE INSTITUTIONALLY PERMITTED WORKFLOW AND ITS GOVERNANCE BOUNDARIES.
+SWI STRUCTURES THE WORKFLOW WITHIN THOSE BOUNDARIES.
 HUMANS RETAIN AUTHORITY OVER CONSEQUENCES.
 INFRASTRUCTURE PROVIDES THE MEANS OF OPERATION.
 
 NONE OF THESE BECOME THE OTHER.
+```
 
-CAPABILITY ≠ POLICY
-POLICY ≠ AUTHORITY
-AUTHORITY ≠ AUTHORIZATION
-AUTHORIZATION ≠ ACTION
+### Strongest non-substitution chain
+
+```text
+CAPABILITY      ≠ POLICY
+POLICY          ≠ IMPLEMENTATION
+IMPLEMENTATION  ≠ EVIDENCE
+EVIDENCE        ≠ AUTHORITY
+AUTHORITY       ≠ AUTHORIZATION
+AUTHORIZATION   ≠ ACTION
+```
+
+Connected to existing doctrine:
+
+```text
+DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
+TESTED ≠ SEALED
+SIGNATURE ≠ AUTHORITY
+CI_GREEN ≠ PRODUCTION_AUTHORIZATION
 ```
 
 Offline and local networks change **connectivity**, not institutional authority.
@@ -256,7 +303,10 @@ Offline and local networks change **connectivity**, not institutional authority.
 OFFLINE ≠ POLICY BYPASS
 LOCAL NODE ≠ POLICY MAKER
 LOCAL NETWORK ≠ AUTHORITY
+INTERNET DOWN ≠ POLICY DOWN ≠ AUTHORITY DOWN ≠ GOVERNANCE BYPASS
 ```
+
+This states where SWI’s responsibility **starts** (structuring a policy-defined workflow) and where it **stops** (it does not invent policy or hold consequential authority).
 
 ---
 
@@ -271,10 +321,16 @@ OPTIMIZE CAPACITY  ≠ REMOVE HUMANITY
 TRUE ZERO          = ZERO UNAUTHORIZED ACTION
 NETWORK DOWN       ≠ WORKFLOW DOWN
 OFFLINE_MODE       ≠ BYPASS_MODE
+INTERNET DOWN      ≠ POLICY DOWN ≠ AUTHORITY DOWN ≠ GOVERNANCE BYPASS
+
 CAPABILITY         ≠ POLICY
-POLICY             ≠ AUTHORITY
+POLICY             ≠ IMPLEMENTATION
+IMPLEMENTATION     ≠ EVIDENCE
+EVIDENCE           ≠ AUTHORITY
 AUTHORITY          ≠ AUTHORIZATION
 AUTHORIZATION      ≠ ACTION
+
+TESTED ≠ SEALED · SIGNATURE ≠ AUTHORITY · CI_GREEN ≠ PRODUCTION_AUTHORIZATION
 ```
 
 **SWI: Structured Workflow Intelligence — technology in service of human capacity, accountability, and agency.**
