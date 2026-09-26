@@ -19,5 +19,23 @@
 | Lifecycle manual | `docs/SWI_MODULE_LIFECYCLE_MANUAL.md` |
 | Latest local regression | `docs/REGRESSION_RECORD_2026-09-19.md` |
 
+## Experimental rebuild kernel (`experimental/privacy-domain` branch)
+
+| Component | Path | Status |
+|-----------|------|--------|
+| Privacy domain boundary | `experimental/privacy/` | **EXPERIMENTAL** · implemented · **NOT SEALED** · **PRODUCTION BLOCKED** |
+| Transition engine (State/Transition/Gate) | `experimental/repair/transition_engine.py` | **EXPERIMENTAL** · implemented · **NOT SEALED** · **PRODUCTION BLOCKED** |
+| Privacy adversarial tests | `tests/law/test_privacy_domain.py` (on branch) | Reported on branch; independent capture required before promotion claims |
+| Transition adversarial tests | `tests/experimental/test_transition_engine_adversarial.py` (on branch) | Reported on branch; independent capture required before promotion claims |
+| ZTA relationship | `docs/ZERO_TRUST_RELATIONSHIP.md` | DESIGN reference only |
+| Ownership / rebuild map | `docs/REPOSITORY_OWNERSHIP_MAP.md` | DESIGN / rebuild contract |
+
+**Rules:**
+
+- Experimental code does **not** alter M11 seal.
+- Green experimental tests ≠ SEALED ≠ production authorization.
+- Privacy is a **gate**, not a state-transition permission by itself.
+- Technical signals (cert, TPM, HSM, CI, ZTA grant) never become human authority.
+
 Canonical memory-web freeze: `docs/V2_MEMORY_WEB_STATUS.md`  
 SCAR→Firefly entry point: `docs/SCAR_FIREFLY_INDEX.md`
