@@ -9,32 +9,40 @@ Production: **NOT AUTHORIZED**
 Seal: **NO**  
 Runtime: **NOT INTEGRATED**  
 M11: **UNTOUCHED**  
+Architecture: **FROZEN** (failing tests fix experiment or evidence, not SWI design)
 
-## Evidence chronology
+## Evidence chronology (do not overwrite)
 
 | State | Result |
 |-------|--------|
-| LOCAL_SANDBOX | up to 489 PASS (full local tree) |
-| CLEAN_CLONE (earlier) | 371 PASS |
-| **CLEAN_CLONE (current tip `c0f5ef7`)** | **451 PASS** — no file injection |
-| FULL_SWI_REGRESSION (prior) | 621 PASS, 1 FAIL `tests/law/test_evidence_freshness.py` (also on main) |
-| CI PR #5 | PENDING |
-| INDEPENDENT REVIEW | PENDING |
+| LOCAL_SANDBOX_EXECUTION | up to 489 PASS |
+| CLEAN_CLONE_REPRODUCTION (tip `ee2f87e` / suite land) | **451 PASS** — `pytest tests/cek_alignment_monitor -q`, no injection |
+| FULL_SWI_REGRESSION (same clean clone) | **644 PASS, 1 FAIL** |
+| Failure | `tests/law/test_evidence_freshness.py::test_evidence_source_tip_reachable_from_head` |
+| Attribution | Evidence tip vs branch HEAD (pre-existing class of failure; not CEK package assertion) |
+| STATIC_INSPECTION (cek package) | No `eval`/`exec`/`pickle`/`subprocess`/`os.system`/`shell=True` matches |
+| HIDDEN_PATHS | None under experimental CEK or its tests |
+| CI (PR #5) | **PENDING** (draft; workflow triggers on PR to main; status total_count 0) |
+| INDEPENDENT REVIEW | **PENDING** |
 
-## Suite composition (repository)
+## Scenario wording
 
-- Stage 1–2 unit tests (vector, distance, measurement, …)
-- Authority matrix (45 forbidden cells)
-- **300 defined adversarial scenarios** (12 categories x 25)
-- Injection / HALT-REJECT / signature / serialization / concurrency / isolation
+The experimental suite contains **300 defined adversarial scenarios** within a **451-case** clean-clone verification suite (local host may show higher counts when extra modules are present).
 
-Do not write “451 adversarial scenarios.” Write: 300 defined scenarios within a 451-case verification suite (clean clone).
+Categories: 001–025 vector · 026–050 numeric · 051–075 weights · 076–100 measurement · 101–125 provenance · 126–150 visibility · 151–175 UNKNOWN · 176–200 evidence→authority · 201–225 signature · 226–250 HALT/REJECT · 251–275 replay · 276–300 observation→execution.
 
-## Branch
+## Declared reproduce command
 
-`experimental/cek-alignment-monitor`  
-PR: https://github.com/Kelronmos/SWI-V2-Modules-11-22/pull/5
+```bash
+git clone -b experimental/cek-alignment-monitor https://github.com/Kelronmos/SWI-V2-Modules-11-22.git
+cd SWI-V2-Modules-11-22
+pip install -r requirements.txt   # pytest>=7, cryptography>=41
+python -m pytest tests/cek_alignment_monitor -q
+```
+
+ZIP is transfer-only; repository is the source of truth.
 
 ## Non-claims
 
-TESTED ≠ SEALED · CI PASS ≠ SEAL · EVIDENCE ≠ AUTHORITY · OBSERVATION ≠ AUTHORIZATION
+TESTED ≠ SEALED · CI PASS ≠ SEAL · EVIDENCE ≠ AUTHORITY · OBSERVATION ≠ AUTHORIZATION  
+No claim of production security, universal safety, or runtime authorization.
