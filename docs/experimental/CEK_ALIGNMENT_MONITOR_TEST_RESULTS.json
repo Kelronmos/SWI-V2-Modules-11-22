@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-27",
+  "classification": "RESEARCH / EXPERIMENTAL",
+  "production_authorized": false,
+  "sealed": false,
+  "runtime_integrated": false,
+  "m11_modified": false,
+  "architecture_frozen": true,
+  "local_sandbox": {"cek_pass": 489, "note": "host full tree; not repository-verified alone"},
+  "clean_clone": {
+    "commit": "ee2f87ed1ac3d55aea47dc058cb5857e336636cd",
+    "cek_command": "python -m pytest tests/cek_alignment_monitor -q",
+    "cek_passed": 451,
+    "cek_failed": 0,
+    "full_swi_passed": 644,
+    "full_swi_failed": 1,
+    "full_swi_failure": "tests/law/test_evidence_freshness.py::test_evidence_source_tip_reachable_from_head",
+    "full_swi_failure_attribution": "pre-existing evidence tip vs HEAD; not CEK package"
+  },
+  "static_inspection": {
+    "dangerous_primitives_matched": [],
+    "hidden_local_paths": [],
+    "wording": "No identified use of the inspected dangerous primitives was found within the examined CEK package."
+  },
+  "scenarios_defined": 300,
+  "ci": "PENDING",
+  "independent_review": "PENDING"
+}
