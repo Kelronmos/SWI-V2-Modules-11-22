@@ -10,33 +10,30 @@ Seal: **NO**
 Runtime: **NOT INTEGRATED**  
 M11: **UNTOUCHED**  
 
-## Evidence chronology (do not overwrite)
+## Evidence chronology
 
 | State | Result |
 |-------|--------|
-| LOCAL_SANDBOX_EXECUTION | 489 PASS (full local suite including extra modules) |
-| CLEAN_CLONE_REPRODUCTION | **371 PASS** at tip with `tests/cek_alignment_monitor/` (no file injection) |
-| Includes | authority matrix (45 cells), 300 scenario plan, hidden-edge, invariants, determinism |
-| FULL_SWI_REGRESSION | Prior: 621 PASS, 1 FAIL (`tests/law/test_evidence_freshness.py`, also on main) |
-| CI (PR #5) | PENDING (draft; total_count 0 when last checked) |
+| LOCAL_SANDBOX | up to 489 PASS (full local tree) |
+| CLEAN_CLONE (earlier) | 371 PASS |
+| **CLEAN_CLONE (current tip `c0f5ef7`)** | **451 PASS** — no file injection |
+| FULL_SWI_REGRESSION (prior) | 621 PASS, 1 FAIL `tests/law/test_evidence_freshness.py` (also on main) |
+| CI PR #5 | PENDING |
 | INDEPENDENT REVIEW | PENDING |
 
-## Wording
+## Suite composition (repository)
 
-The experimental suite contains **300 defined adversarial scenarios** within a larger verification suite (clean-clone **371** pytest cases at last measurement; local host **489** when extra modules present).
+- Stage 1–2 unit tests (vector, distance, measurement, …)
+- Authority matrix (45 forbidden cells)
+- **300 defined adversarial scenarios** (12 categories x 25)
+- Injection / HALT-REJECT / signature / serialization / concurrency / isolation
 
-Do **not** write: “489 adversarial scenarios passed.”
+Do not write “451 adversarial scenarios.” Write: 300 defined scenarios within a 451-case verification suite (clean clone).
 
-## Architecture freeze
+## Branch
 
-From this point: failing tests correct experimental implementation or evidence — not SWI architecture to make tests pass.
-
-## Invariant
-
-```
-MEASURE → OBSERVE → TRACE → REPORT
-                      X → AUTHORITY | BINDING | EXECUTION | SEAL
-```
+`experimental/cek-alignment-monitor`  
+PR: https://github.com/Kelronmos/SWI-V2-Modules-11-22/pull/5
 
 ## Non-claims
 
