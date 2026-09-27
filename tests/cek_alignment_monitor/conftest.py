@@ -2,6 +2,16 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Ensure repo-root experimental/ wins over tests/experimental path shadowing.
+_ROOT = Path(__file__).resolve().parents[2]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+# Drop accidental tests/ entries that would shadow the package name "experimental".
+sys.path[:] = [p for p in sys.path if Path(p).resolve() != (_ROOT / "tests").resolve()]
+
 import pytest
 
 from experimental.cek_alignment_monitor.monitor import AlignmentMonitor
