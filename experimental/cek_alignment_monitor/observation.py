@@ -79,17 +79,42 @@ class CEKObservation:
                 ]
             )
 
-        ctx = dict(context or {})
-        for forbidden in (
-            "authorized",
-            "permit",
-            "execute",
-            "seal",
-            "admit",
-            "approved",
-            "authority",
-        ):
-            ctx.pop(forbidden, None)
+        # Strip any injected authority claims — flat and nested.
+        # Stage 3 expanded set: systematic denial of smuggled authorization surface.
+        _FORBIDDEN_AUTH_KEYS = frozenset(
+            {
+                "authorized",
+                "permit",
+                "execute",
+                "seal",
+                "admit",
+                "approved",
+                "authority",
+                "authority_id",
+                "decision",
+                "status",
+                "human_approval",
+                "binding",
+                "permitted",
+                "allow",
+                "approve",
+                "dispatch",
+                "invoke",
+            }
+        )
+
+        def _strip_auth(obj: Any) -> Any:
+            if isinstance(obj, dict):
+                return {
+                    k: _strip_auth(v)
+                    for k, v in obj.items()
+                    if k not in _FORBIDDEN_AUTH_KEYS
+                }
+            if isinstance(obj, list):
+                return [_strip_auth(x) for x in obj]
+            return obj
+
+        ctx = _strip_auth(dict(context or {}))
 
         return cls(
             observation_id=observation_id or str(uuid.uuid4()),
