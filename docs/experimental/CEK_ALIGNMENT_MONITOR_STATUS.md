@@ -5,29 +5,31 @@ Date: 2026-09-27
 ## Classification
 
 RESEARCH / EXPERIMENTAL  
-Production: NOT AUTHORIZED  
-Seal: NO  
-Runtime: NOT INTEGRATED  
-M11: UNTOUCHED  
+Production: **NOT AUTHORIZED**  
+Seal: **NO**  
+Runtime: **NOT INTEGRATED**  
+M11: **UNTOUCHED**  
 
-## Evidence classes
+## Evidence chronology (do not overwrite)
 
-| Class | Status |
+| State | Result |
 |-------|--------|
-| LOCAL sandbox 489 PASS | YES |
-| CLEAN CLONE (no injection) | **PARTIAL — 9 passed** at tip `a08d80d` under `tests/cek_alignment_monitor/` |
-| Full Stage 3–4 matrix/scenario on branch | **NOT YET** (sources in ZIP/sandbox) |
-| CI PR #5 | PENDING (draft; verify after full sources) |
-| Independent review | PENDING |
+| LOCAL_SANDBOX_EXECUTION | 489 PASS (full local suite including extra modules) |
+| CLEAN_CLONE_REPRODUCTION | **371 PASS** at tip with `tests/cek_alignment_monitor/` (no file injection) |
+| Includes | authority matrix (45 cells), 300 scenario plan, hidden-edge, invariants, determinism |
+| FULL_SWI_REGRESSION | Prior: 621 PASS, 1 FAIL (`tests/law/test_evidence_freshness.py`, also on main) |
+| CI (PR #5) | PENDING (draft; total_count 0 when last checked) |
+| INDEPENDENT REVIEW | PENDING |
 
-## G17 findings fixed on branch
+## Wording
 
-1. pytest basename collision → `test_cek_*`
-2. `tests/experimental` shadowed package `experimental` → tests moved to `tests/cek_alignment_monitor/`; `pytest.ini` pythonpath=.; conftest forces repo-root on sys.path
+The experimental suite contains **300 defined adversarial scenarios** within a larger verification suite (clean-clone **371** pytest cases at last measurement; local host **489** when extra modules present).
 
-## Full SWI regression (prior clean-clone with injected full suite)
+Do **not** write: “489 adversarial scenarios passed.”
 
-621 passed, 1 failed: `tests/law/test_evidence_freshness.py` (also fails on main)
+## Architecture freeze
+
+From this point: failing tests correct experimental implementation or evidence — not SWI architecture to make tests pass.
 
 ## Invariant
 
