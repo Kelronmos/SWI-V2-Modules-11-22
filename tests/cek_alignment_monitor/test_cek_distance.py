@@ -11,9 +11,11 @@ def test_identical_zero_distance():
     assert m.classification == Classification.STABLE
 
 def test_single_axis_deviation():
+    """Equal weights are normalized (sum=1); one-axis 0.1 delta => sqrt(0.01/6)."""
     mon = AlignmentMonitor()
     m = mon.measure([0.9, 1, 1, 1, 1, 1])
-    assert math.isclose(m.distance, 0.1, abs_tol=1e-9)
+    expected = math.sqrt((0.1 ** 2) / 6)
+    assert math.isclose(m.distance, expected, abs_tol=1e-9)
 
 def test_negative_weight_rejected():
     with pytest.raises(DistanceError):
