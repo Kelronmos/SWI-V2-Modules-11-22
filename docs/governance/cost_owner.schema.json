@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.cost_owner.v1",
+  "title": "SWI Cost Owner Record v1",
+  "description": "Measurement structure for cost ownership and first-user authority divergence. Does NOT grant authority, create entitlement, or authorize production. authority_level is descriptive metadata only — never interpreted as a capability. Reuse existing authority.py / H boundary for actual authority checks.",
+  "type": "object",
+  "required": [
+    "schema",
+    "path_id",
+    "cost_owner",
+    "cost",
+    "first_user",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "swi.cost_owner.v1"
+    },
+    "path_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "cost_owner": {
+      "type": "object",
+      "required": [
+        "identity",
+        "authority_status",
+        "same_as_system_default"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "identity": { "type": "string", "minLength": 1 },
+        "role": { "type": "string" },
+        "organization": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "authority_source": {
+          "type": "string",
+          "description": "Declared source of the owner's acting authority. Declarative only."
+        },
+        "authority_level": {
+          "type": "string",
+          "enum": [
+            "operator",
+            "reviewer",
+            "domain",
+            "institutional",
+            "statutory",
+            "other",
+            "UNRESOLVED"
+          ],
+          "description": "Descriptive metadata only. MUST NOT be interpreted by this schema or loaders as a runtime capability."
+        },
+        "authority_scope": { "type": "string" },
+        "authority_instrument": {
+          "type": "string",
+          "description": "Reference to external instrument (contract, policy, statute). Not validated by SWI runtime."
+        },
+        "authority_status": {
+          "type": "string",
+          "enum": [
+            "DECLARED_ONLY",
+            "INSTRUMENT_REFERENCED",
+            "VERIFIED",
+            "MISSING",
+            "CONFLICT",
+            "UNRESOLVED"
+          ]
+        },
+        "same_as_system_default": { "type": "boolean" },
+        "divergence_reason": {
+          "type": ["string", "null"],
+          "description": "Required in practice when same_as_system_default is false."
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "required": ["borne_by"],
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "COMPUTE",
+              "STORAGE",
+              "REVIEW_TIME",
+              "LEGAL",
+              "AUDIT",
+              "INFRASTRUCTURE",
+              "BENEFIT_ALLOCATION",
+              "OTHER",
+              "UNRESOLVED"
+            ]
+          }
+        },
+        "estimate": { "type": ["number", "null"] },
+        "currency": { "type": ["string", "null"] },
+        "borne_by": { "type": "string" },
+        "rechargeable": { "type": "boolean" },
+        "recharge_rules_ref": { "type": ["string", "null"] }
+      }
+    },
+    "first_user": {
+      "type": "object",
+      "required": [
+        "is_first_user",
+        "differs_from_path_required_authority"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "is_first_user": {
+          "type": "boolean",
+          "description": "Observational flag only. Does not grant privileges or exemptions."
+        },
+        "user_id": { "type": "string" },
+        "entry_context": { "type": "string" },
+        "authority_at_entry": { "type": "string" },
+        "differs_from_path_required_authority": { "type": "boolean" }
+      }
+    },
+    "baseline_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string" },
+        "commit": { "type": "string" },
+        "integrity_required": { "type": "boolean" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW",
+        "NEEDS_EVIDENCE",
+        "CONFLICT",
+        "BLOCKED",
+        "CLOSED",
+        "UNRESOLVED"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NOT_STARTED",
+            "OPEN",
+            "IN_REVIEW",
+            "PASS",
+            "FAIL",
+            "BLOCKED",
+            "UNRESOLVED"
+          ]
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
