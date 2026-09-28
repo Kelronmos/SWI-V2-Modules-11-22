@@ -25,33 +25,15 @@ E(a) ≠ ∅  is reported separately from evidence adequacy
 (relevant ∧ fresh ∧ scoped ∧ provenance ∧ integrity)
 ```
 
-Counterexamples X1–X10 remain design obligations.  
-`UNKNOWN` never becomes `PASS`.
+`UNKNOWN` never becomes `PASS`.  
+`Harness PASS` does not imply S9 proof.
 
-## Module layout
+## Build
 
-```text
-swi_v2/s9/   inventory · constraints · evidence · evaluator · reconciliation
-             replay · manifest · package · diagnostics
-tests/s9/
+```bash
+python scripts/s9_build_package.py --commit aa62042888886f5252e2b80e7aec8dce49e4bab3 --out /tmp/s9_out
 ```
 
-## Reproduction
-
-1. Verify package zip SHA-256.  
-2. Verify `source_commit` matches intended tip.  
-3. Validate `00_MANIFEST.json`.  
-4. Load evaluation JSON.  
-5. Recalculate constraint mapping and evidence adequacy.  
-6. Run negative cases (tests/s9).  
-7. Replay pure evaluation; compare.  
-8. Produce independent conclusion — do not trust SWI’s label alone.
-
-## Final gate
-
-```text
-SATISFIED ≠ SEALED ≠ PRODUCTION ≠ LEGAL ADMISSIBILITY
-s9_proven remains False at package level until closed programme says otherwise
-```
+Default system action is expected **BLOCKED** (H missing).
 
 «Do not claim what the code cannot demonstrate.»
