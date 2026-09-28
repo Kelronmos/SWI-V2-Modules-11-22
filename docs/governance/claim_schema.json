@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.claim.v1",
+  "title": "SWI Claim Record v1",
+  "description": "Measurement and evidence structure only. Does not grant authority or royalty entitlement. Do not use authorized/permit/execute fields as permission mechanisms.",
+  "type": "object",
+  "required": [
+    "schema",
+    "claim_id",
+    "path_id",
+    "claim_type",
+    "claim_level",
+    "statement",
+    "evidence",
+    "dependencies",
+    "risk_level",
+    "consequence_level",
+    "experimental",
+    "replay",
+    "proof",
+    "review",
+    "royalty"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "swi.claim.v1"
+    },
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "STRUCTURE",
+        "IMPLEMENTATION",
+        "EVIDENCE",
+        "PROVENANCE",
+        "DEPENDENCY",
+        "TEST",
+        "EXPERIMENT",
+        "REPLAY",
+        "FORMAL",
+        "SECURITY",
+        "AUTHORITY",
+        "HUMAN_IMPACT",
+        "CONSEQUENCE",
+        "GOVERNANCE",
+        "REMEDY"
+      ]
+    },
+    "claim_level": {
+      "type": "string",
+      "enum": ["ASSERTION", "SUPPORTED", "TESTED", "REPRODUCED", "FORMALLY_CHECKED", "INDEPENDENTLY_VERIFIED"]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["S0", "S1", "S2", "S3", "S4", "S5", "UNRESOLVED"]
+    },
+    "consequence_level": {
+      "type": "string",
+      "enum": ["C0", "C1", "C2", "C3", "C4", "C5", "UNRESOLVED"]
+    },
+    "experimental": {
+      "type": "boolean"
+    },
+    "replay": {
+      "type": "object",
+      "required": ["available"],
+      "additionalProperties": false,
+      "properties": {
+        "available": { "type": "boolean" },
+        "replay_id": { "type": ["string", "null"] }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["NONE", "OBSERVED", "TESTED", "REPRODUCED", "FORMALLY_CHECKED", "INDEPENDENTLY_VERIFIED"]
+        },
+        "reference": { "type": ["string", "null"] }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["OPEN", "IN_REVIEW", "NEEDS_EVIDENCE", "BLOCKED", "CLOSED", "UNRESOLVED"]
+        },
+        "reviewers": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "royalty": {
+      "type": "object",
+      "required": ["eligible", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "eligible": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "enum": ["UNRESOLVED", "NOT_APPLICABLE", "RECORDED", "ALLOCATED", "AUDITED", "BLOCKED"]
+        }
+      }
+    },
+    "baseline_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string" },
+        "commit": { "type": "string" },
+        "integrity_required": { "type": "boolean" }
+      }
+    },
+    "tamper_status": {
+      "type": "string",
+      "enum": ["UNVERIFIED", "VERIFIED", "FAILED"]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "swi.proof_registry.v1",
+  "status": "DESIGN",
+  "production_authorized": false,
+  "seal": "NOT_REQUESTED",
+  "baseline_binding": {
+    "repository": "Kelronmos/SWI-V2-Modules-11-22",
+    "commit": "aa62042888886f5252e2b80e7aec8dce49e4bab3",
+    "integrity_required": true
+  },
+  "categories": {
+    "NONE": "No proof classification claimed",
+    "OBSERVED": "Observation recorded without independent verification",
+    "TESTED": "Concrete test result (e.g. pytest PASS) — not system-wide proof",
+    "REPRODUCED": "Independent replay matched recorded decision under declared environment",
+    "FORMALLY_CHECKED": "Formal model (e.g. Z3 property) with tip binding and stated assumptions",
+    "INDEPENDENTLY_VERIFIED": "Independent correspondence between model/code/evidence established"
+  },
+  "mapping_examples": [
+    {
+      "result": "pytest PASS",
+      "classification": "TESTED",
+      "limitation": "Does not prove full runtime, H, or production authorization"
+    },
+    {
+      "result": "independent replay MATCH",
+      "classification": "REPRODUCED",
+      "limitation": "Bound to declared inputs, rules, and environment"
+    },
+    {
+      "result": "Z3 F-001…F-006 PASS at source tip",
+      "classification": "FORMALLY_CHECKED",
+      "limitation": "Model-only; not Python proof; not HEAD currency unless re-bound"
+    }
+  ],
+  "non_claims": [
+    "TESTED ≠ FORMALLY_CHECKED ≠ SEALED ≠ PRODUCTION",
+    "FORMALLY_CHECKED ≠ PYTHON PROOF",
+    "FORMALLY_CHECKED ≠ H CLOSED",
+    "Registry entry ≠ automatic authority"
+  ],
+  "entries": []
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "swi.review_matrix.v1",
+  "status": "DESIGN",
+  "production_authorized": false,
+  "seal": "NOT_REQUESTED",
+  "baseline_binding": {
+    "repository": "Kelronmos/SWI-V2-Modules-11-22",
+    "commit": "aa62042888886f5252e2b80e7aec8dce49e4bab3",
+    "integrity_required": true
+  },
+  "description": "Risk/consequence class determines required review depth only. Numerical class does not grant permission.",
+  "classes": {
+    "S0_C0": {
+      "label": "Minimal",
+      "required_depth": ["identity", "basic_record"]
+    },
+    "S1_C1": {
+      "label": "Evidence + test",
+      "required_depth": ["identity", "evidence", "test"]
+    },
+    "S2_C2": {
+      "label": "Dependency + verification",
+      "required_depth": ["identity", "evidence", "test", "dependency_closure", "verification"]
+    },
+    "S3_C3": {
+      "label": "Authority + consequence + replay",
+      "required_depth": [
+        "identity",
+        "evidence",
+        "test",
+        "dependency_closure",
+        "verification",
+        "consequence_review",
+        "authority_class_recorded",
+        "replay_where_applicable"
+      ]
+    },
+    "S4_C4": {
+      "label": "Independent multidisciplinary review",
+      "required_depth": [
+        "all_of_S3_C3",
+        "independent_review",
+        "human_safety_review",
+        "affected_party_review",
+        "decision_vote_impact_review"
+      ]
+    },
+    "S5_C5": {
+      "label": "Maximum applicable controls",
+      "required_depth": [
+        "all_of_S4_C4",
+        "formal_check_where_applicable",
+        "adversarial_review",
+        "legal_policy_escalation_as_required"
+      ]
+    }
+  },
+  "invariants": [
+    "Class determines review depth, not permission",
+    "MISSING depth → status NEEDS_EVIDENCE or BLOCKED, not PASS",
+    "UNKNOWN authority class → no consequential execution",
+    "EXPERIMENTAL evidence does not satisfy production depth"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.evidence_inventory.v1",
+  "title": "SWI Evidence Inventory Item v1",
+  "description": "Evidence measurement structure. Experimental ≠ verified. Does not authorize production.",
+  "type": "object",
+  "required": [
+    "schema",
+    "evidence_id",
+    "source",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "swi.evidence_inventory.v1"
+    },
+    "evidence_id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "source_tip": { "type": ["string", "null"] },
+    "timestamp": { "type": ["string", "null"] },
+    "hash": { "type": ["string", "null"] },
+    "provenance": { "type": ["string", "null"] },
+    "freshness": {
+      "type": "string",
+      "enum": ["CURRENT", "HISTORICAL", "UNKNOWN", "STALE", "UNRESOLVED"]
+    },
+    "claim_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dependency_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "test_reference": { "type": ["string", "null"] },
+    "experiment_reference": { "type": ["string", "null"] },
+    "replay_reference": { "type": ["string", "null"] },
+    "formal_reference": { "type": ["string", "null"] },
+    "type": {
+      "type": "string",
+      "enum": ["OBSERVED", "TEST", "EXPERIMENTAL", "REPLAY", "FORMAL", "DOCUMENT", "OTHER"]
+    },
+    "claim_support": {
+      "type": "string",
+      "enum": ["NONE", "PARTIAL", "FULL", "UNRESOLVED"]
+    },
+    "production_authorized": {
+      "type": "boolean",
+      "description": "Must remain false unless a separate, higher gate explicitly authorizes. Default false."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "VALID_CURRENT",
+        "VALID_HISTORICAL",
+        "EXPERIMENTAL",
+        "STALE",
+        "CONTRADICTORY",
+        "UNRESOLVED",
+        "UNTRUSTED",
+        "MISSING"
+      ]
+    }
+  }
+}

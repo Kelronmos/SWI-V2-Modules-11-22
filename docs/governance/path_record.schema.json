@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.path_record.v1",
+  "title": "SWI Path Record v1",
+  "description": "Path measurement structure. Does not authorize execution or create royalty entitlement.",
+  "type": "object",
+  "required": [
+    "schema",
+    "path_id",
+    "path_version",
+    "source",
+    "purpose",
+    "scope",
+    "size_class",
+    "risk_class",
+    "consequence_class",
+    "dependencies",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "swi.path_record.v1"
+    },
+    "path_id": { "type": "string", "minLength": 1 },
+    "path_version": { "type": "string", "minLength": 1 },
+    "parent_path": { "type": ["string", "null"] },
+    "source": { "type": "string" },
+    "purpose": { "type": "string" },
+    "scope": { "type": "string" },
+    "size_class": {
+      "type": "string",
+      "enum": ["LOCAL", "MODULE", "CROSS_MODULE", "CROSS_REPO", "INSTITUTIONAL", "UNRESOLVED"]
+    },
+    "risk_class": {
+      "type": "string",
+      "enum": ["S0", "S1", "S2", "S3", "S4", "S5", "UNRESOLVED"]
+    },
+    "consequence_class": {
+      "type": "string",
+      "enum": ["C0", "C1", "C2", "C3", "C4", "C5", "UNRESOLVED"]
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "affected_parties": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "affected_decisions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "affected_votes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "experiments": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tests": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "replay": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "formal_checks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "security_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["NOT_STARTED", "OPEN", "IN_REVIEW", "PASS", "FAIL", "BLOCKED", "UNRESOLVED"]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "authority_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required_authority": { "type": "string" },
+        "authority_reference": { "type": ["string", "null"] },
+        "authority_scope": { "type": "string" },
+        "authority_status": {
+          "type": "string",
+          "enum": ["NOT_REQUIRED", "REQUIRED", "PRESENT", "MISSING", "UNRESOLVED", "BLOCKED"]
+        }
+      }
+    },
+    "human_safety_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["NOT_STARTED", "OPEN", "IN_REVIEW", "PASS", "FAIL", "BLOCKED", "UNRESOLVED"]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "OPEN",
+        "IN_REVIEW",
+        "NEEDS_EVIDENCE",
+        "REVALIDATION_REQUIRED",
+        "BLOCKED",
+        "CLOSED",
+        "UNRESOLVED"
+      ]
+    },
+    "baseline_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string" },
+        "commit": { "type": "string" },
+        "integrity_required": { "type": "boolean" }
+      }
+    }
+  }
+}
