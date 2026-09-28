@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "document_type": "S9_X1_TEST_CONTRACT",
+  "obligation_id": "X1",
+  "title": "Irrelevant Evidence",
+  "purpose": "SPECIFICATION ONLY — not an implementation",
+  "baseline_scope_matrix_commit": "fa6a061f161eeee62aa24cde09c932f12e9d86ab",
+  "source_attack": "docs/formal/S9_MATHEMATICAL_ATTACK_2026-09-24.md",
+  "source_obligation_binding": "docs/formal/S9_360_PHASE_OBLIGATION_BINDING.md",
+  "source_matrix": "docs/formal/S9_PROCESS_SCOPE_MATRIX.json",
+  "equation_fragment_under_attack": "E(a) ≠ ∅",
+  "counterexample": {
+    "C_a_nonempty": true,
+    "E_nonempty": true,
+    "E_supports_C_a": false,
+    "statement": "E ≠ ∅  ⇏  E ⊨ C(a)"
+  },
+  "required_behaviour": {
+    "allowed_outcomes": ["BLOCK", "UNRESOLVED", "REJECT", "HALT"],
+    "forbidden_outcomes": ["PERMIT", "AUTHORIZED", "EXECUTABLE", "OPERABLE", "SEALED"]
+  },
+  "isolation": {
+    "do_not_attribute_block_to": ["X2_staleness", "X4_scope", "X5_identity", "X6_missing_authority"],
+    "sole_intended_defect": "evidence exists but does not support the claim"
+  },
+  "failure_receipt_required_fields": [
+    "test_id",
+    "baseline_sha",
+    "action_id",
+    "claim_summary",
+    "evidence_id",
+    "relevance_verdict",
+    "system_outcome",
+    "forbidden_outcome_observed",
+    "timestamp_utc",
+    "runner",
+    "notes"
+  ],
+  "weakness_recording_rule": "If the system incorrectly permits, record the weakness; do not patch in the same change that records it.",
+  "current_status": {
+    "contract": "FROZEN",
+    "implementation": "NOT_IMPLEMENTED",
+    "test_run": "NOT_RUN",
+    "x1_closed": false,
+    "s9_proven": false,
+    "runtime": "NOT_IMPLEMENTED",
+    "binding": "NOT_BINDABLE",
+    "execution_authorized": false,
+    "production_authorized": false
+  },
+  "non_claims": [
+    "Does not implement X1",
+    "Does not implement Permit(a), SufficientEvidence(a), or Authorized(a)",
+    "Does not implement runtime, binding, or execution eligibility",
+    "Does not authorize Phase 0",
+    "Does not close X1",
+    "Does not change S9_PROVEN"
+  ]
+}
