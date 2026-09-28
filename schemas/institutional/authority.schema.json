@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AuthorityRecord",
+  "type": "object",
+  "required": ["authority_id", "actor_id", "role", "subject_scope", "resource_scope", "action_scope", "jurisdiction", "authority_source", "valid_from", "status"],
+  "properties": {
+    "authority_id": {"type": "string"},
+    "actor_id": {"type": "string"},
+    "role": {"type": "string", "description": "Descriptive only — role ≠ authority"},
+    "subject_scope": {"type": "array", "items": {"type": "string"}},
+    "resource_scope": {"type": "array", "items": {"type": "string"}},
+    "action_scope": {"type": "array", "items": {"type": "string"}},
+    "jurisdiction": {"type": "string"},
+    "authority_source": {"type": "string"},
+    "valid_from": {"type": "string"},
+    "valid_until": {"type": ["string", "null"]},
+    "status": {"enum": ["VALID", "EXPIRED", "REVOKED", "UNKNOWN", "PENDING", "CONFLICTING"]},
+    "human_authority_required": {"type": "boolean"},
+    "evidence_required": {"type": "boolean"},
+    "privacy_constraints": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
