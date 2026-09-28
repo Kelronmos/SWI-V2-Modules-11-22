@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.junction_receipt.v1",
+  "title": "SWI Junction Receipt v1",
+  "description": "Auditable receipt at a controlled SWI junction. Reconstructs what entered, was measured, decided, authority applied, what changed, and what followed. A receipt is NOT proof beyond the evidence it references. A receipt does NOT grant authority, authorization, or production status.",
+  "type": "object",
+  "required": [
+    "schema",
+    "receipt_id",
+    "junction",
+    "status",
+    "source_tip"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "swi.junction_receipt.v1"
+    },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "junction": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "PROVENANCE",
+        "CLAIM",
+        "EVIDENCE",
+        "ADMISSION",
+        "MEASUREMENT",
+        "VERIFICATION",
+        "AUTHORITY",
+        "BINDING",
+        "RUNTIME_RESERVATION",
+        "EXECUTION_ELIGIBILITY",
+        "EXECUTION",
+        "OBSERVATION",
+        "RECONCILIATION",
+        "DRIFT",
+        "FAILURE",
+        "BLOCK",
+        "UNKNOWN",
+        "OTHER"
+      ]
+    },
+    "path_id": { "type": "string" },
+    "request_id": { "type": "string" },
+    "claim_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "input_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "output_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "authority_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dependency_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "measurement_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "expected_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "observed_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "OBSERVED",
+        "MEASURED",
+        "TESTED",
+        "VERIFIED",
+        "REPRODUCED",
+        "FORMALLY_CHECKED",
+        "INDEPENDENTLY_VERIFIED",
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "HALTED",
+        "UNRESOLVED",
+        "UNKNOWN",
+        "DRIFT",
+        "INCOMPLETE"
+      ]
+    },
+    "reason": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "source_tip": { "type": "string", "minLength": 1 },
+    "replay_ref": { "type": ["string", "null"] },
+    "parent_receipt": { "type": ["string", "null"] },
+    "child_receipts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "previous_receipt_hash": {
+      "type": ["string", "null"],
+      "description": "Hash of prior receipt in chain. Hash-chain integrity ≠ truth."
+    },
+    "current_receipt_hash": {
+      "type": ["string", "null"],
+      "description": "SHA-256 of canonical form of this receipt body (excluding this field when computed)."
+    },
+    "proof_level": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "OBSERVED",
+        "TESTED",
+        "REPRODUCED",
+        "FORMALLY_CHECKED",
+        "INDEPENDENTLY_VERIFIED",
+        "UNRESOLVED"
+      ],
+      "description": "Evidence-state indicator only. Not an authorization score."
+    },
+    "authority_state": {
+      "type": "string",
+      "enum": [
+        "NOT_REQUIRED",
+        "REQUIRED_MISSING",
+        "DECLARED_ONLY",
+        "INSTRUMENT_REFERENCED",
+        "VERIFIED",
+        "CONFLICT",
+        "UNRESOLVED"
+      ],
+      "description": "Descriptive. Does not issue or satisfy H."
+    },
+    "binding_state": {
+      "type": "string",
+      "enum": [
+        "UNBOUND",
+        "BOUND",
+        "INVALIDATED",
+        "UNRESOLVED"
+      ]
+    },
+    "runtime_state": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "RESERVED",
+        "ELIGIBLE",
+        "EXECUTING",
+        "RELEASED",
+        "BLOCKED",
+        "UNRESOLVED"
+      ]
+    },
+    "frontier_note": {
+      "type": "string",
+      "description": "What remains unknown or not yet generated at this junction."
+    }
+  }
+}
