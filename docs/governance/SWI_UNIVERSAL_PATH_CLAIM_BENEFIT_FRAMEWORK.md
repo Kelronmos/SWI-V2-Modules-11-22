@@ -10,13 +10,15 @@ This framework defines how new or edited SWI paths are classified, investigated,
 
 It does **not** create authority merely by recording authority fields.  
 It does **not** convert experimental evidence into proof.  
-It does **not** create automatic ownership or royalty entitlement.
+It does **not** create automatic ownership or royalty entitlement.  
+It does **not** force adoption of any benefit-allocation term.
 
 ```text
 REVIEW ≠ APPROVAL
 EVIDENCE ≠ AUTHORITY
 EXPERIMENT PASS ≠ PRODUCTION
 TEST PASS ≠ CLOSED ≠ SEALED ≠ AUTHORIZED ≠ EXECUTED
+PRODUCTION-READY ≠ FORCED BENEFIT TERM
 ```
 
 ---
@@ -30,7 +32,8 @@ TEST PASS ≠ CLOSED ≠ SEALED ≠ AUTHORIZED ≠ EXECUTED
 | Flag CLAIM_IMBALANCE, MISSING evidence, STALE | Auto-repair history or invent claims |
 | Map affected parties / decisions / votes | Political persuasion or vote manipulation |
 | Record required authority class | Manufacture human capability (H remains open) |
-| Record royalty/benefit *allocation target* | Automatic payment or contractual entitlement |
+| Offer optional benefit-allocation term for voluntary adoption | Force 75% (or any %) on all projects |
+| Record royalty/benefit *measurement* when a term is adopted | Automatic payment or contractual entitlement without legal instrument |
 
 **M11:** untouched. Historical seal records are not rewritten by this framework.
 
@@ -170,17 +173,27 @@ Material dependency change invalidates inherited verification. Do not inherit ol
 
 ---
 
-## 9. Future-generations benefit policy
+## 9. Future-generations benefit — optional term
 
 See `docs/governance/FUTURE_GENERATIONS_BENEFIT_POLICY.md`.
 
-Proposed objective (design only): **75%** of the designated SWI royalty/benefit allocation is targeted toward programs benefiting children and preparing future generations.
+**Adoption model: OPTIONAL.**
+
+SWI offers a voluntary production-governance term for parties who want a transparent, auditable future-generations commitment. Reaching production readiness does **not** force adoption.
+
+Where the term is **voluntarily adopted**, the agreed percentage, beneficiaries, qualifying uses, governance mechanism, and audit requirements must be explicitly recorded before production authorization. Reference allocation (when adopted): 75% of the *defined* benefit/royalty pool toward verified future-generations benefit, subject to the applicable agreement and legal review.
+
+```text
+DESIGN → EXPERIMENTAL → TESTED → VERIFIED → PRODUCTION-READY
+  → OPTIONAL TERMS (if chosen) → AUTHORIZED PRODUCTION
+```
 
 ```text
 75% ALLOCATED ≠ 75% BENEFIT PROVEN
+OPTIONAL TERM OFFERED ≠ TERM ADOPTED ≠ PAYMENT EXECUTED
 ```
 
-**Status of policy:** DESIGN · HUMAN / LEGAL REVIEW REQUIRED · **NOT AUTOMATICALLY CONTRACTUAL** · not an automatic payment mechanism.
+**Status:** DESIGN · HUMAN / LEGAL REVIEW REQUIRED · **NOT AUTOMATICALLY CONTRACTUAL** · not an automatic payment mechanism · not forced on all projects.
 
 ---
 
@@ -201,13 +214,14 @@ A first implementation of this framework is successful only when SWI can answer,
 11. What authority is required?  
 12. What remains unknown?  
 13. What must be revalidated?  
-14. What benefit/royalty event occurred?  
-15. Where did the 75% future-generations allocation go?  
-16. Can all of this be audited?
+14. Was any optional benefit term adopted? If so, under which instrument?  
+15. What benefit/royalty event occurred (if any)?  
+16. Where did any agreed future-generations allocation go?  
+17. Can all of this be audited?
 
 Only after those answers are structured and evidenced should the framework itself be reviewed for sealing.
 
-**For this first implementation:** do not touch M11, do not activate production execution, and do not make the 75% benefit allocation an automatic authority or payment mechanism.
+**For this first implementation:** do not touch M11, do not activate production execution, and do not make any benefit allocation an automatic authority or payment mechanism.
 
 ---
 
