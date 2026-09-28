@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "document_type": "ZKVM_FUTURE_EVIDENCE_TECHNIQUE",
+  "purpose": "Record zkVM as candidate evidence-generation technology only",
+  "integration_status": "FROZEN",
+  "implementation_status": "NOT_IMPLEMENTED",
+  "parent_commits": {
+    "x1_contract": "301163c4c13d011c14059247e5f846bf392e7a7c",
+    "process_scope_matrix": "fa6a061f161eeee62aa24cde09c932f12e9d86ab",
+    "baseline": "aa62042888886f5252e2b80e7aec8dce49e4bab3"
+  },
+  "institutional_path": [
+    "CLAIM",
+    "EVIDENCE",
+    "VERIFICATION",
+    "PROVEN",
+    "CONSEQUENCE_ANALYSIS",
+    "ALERT_BLOCK_ESCALATE_AWAIT",
+    "AUTHORITY",
+    "AUTHORIZATION",
+    "ACTION"
+  ],
+  "invariants": [
+    "PROVEN ≠ SAFE",
+    "PROVEN ≠ AUTHORIZED",
+    "PROVEN ≠ EXECUTABLE",
+    "PROVEN ≠ OPERABLE",
+    "PROVEN ≠ SEALED",
+    "PROVEN ≠ CONSEQUENCE-FREE"
+  ],
+  "core_rule": "PROVEN establishes the boundary of what was demonstrated. It does not grant permission to cross that boundary.",
+  "separations": {
+    "PROOF": "≠ MEANING ≠ CONSEQUENCE ≠ AUTHORITY ≠ ACTION"
+  },
+  "zkvm_placement": {
+    "layer": "evidence_verification_only",
+    "may_support": "PROVEN (scoped: program, version, inputs, result, time)",
+    "must_not_produce": ["AUTHORIZED", "EXECUTABLE", "OPERABLE", "SEALED", "SAFE"]
+  },
+  "x1_link": {
+    "statement": "ValidCryptographicProof(E) is still insufficient when E ⊭ C(a)",
+    "x1_contract_status": "FROZEN_UNCHANGED"
+  },
+  "architecture_rule": "Cryptography can strengthen evidence. It cannot manufacture relevance, authority, or permission.",
+  "non_claims": [
+    "Does not integrate any zkVM",
+    "Does not implement prover/verifier path",
+    "Does not implement X1–X10",
+    "Does not change S9_PROVEN",
+    "Does not authorize execution or production",
+    "Does not amend the frozen X1 contract"
+  ],
+  "s9_proven": false,
+  "execution_authorized": false,
+  "production_authorized": false
+}
