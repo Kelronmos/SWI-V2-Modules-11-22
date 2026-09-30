@@ -22,6 +22,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
+from swi_v2.kernel.halt import HaltRecord, HaltedWorkflow
+
 
 class NodeState(str, Enum):
     QUARANTINED = "QUARANTINED"
@@ -143,13 +145,7 @@ class CheckResult:
 
 
 class _ExecutionPermit:
-    """
-    Opaque single-use permit minted only by ExecutionIntegrityGate after PASS.
-
-    External construction of a usable permit is not supported: the gate binds
-    permits to (gate identity, internal nonce). A forged or stale permit is rejected.
-    This is library-level enforcement for the supported API — not OS isolation.
-    """
+    """Opaque single-use permit minted only after integrity PASS."""
 
     __slots__ = ("_gate_id", "_nonce", "_consumed")
 
@@ -160,14 +156,7 @@ class _ExecutionPermit:
 
 
 class ExecutionIntegrityGate:
-    """
-    Node → Quarantine → Check Pipe → Workflow/Route/Input/Policy/Admission
-    → Last-Execution Match → Time Continuity → Execute or Halt.
-
-    Supported execution entry point: execute() / check() (PASS path only).
-    Protected operation requires an internal _ExecutionPermit; direct calls
-    without a valid permit do not execute.
-    """
+    """Node quarantine + check pipe; supported API check()/execute()."""
 
     def __init__(
         self,
@@ -191,7 +180,6 @@ class ExecutionIntegrityGate:
         return _ExecutionPermit(gate_id=id(self), nonce=self._permit_nonce)
 
     def _demo_action(self, permit: Optional[_ExecutionPermit] = None) -> str:
-        """Harmless protected operation. Requires a valid, unconsumed permit."""
         if permit is None:
             raise PermissionError(
                 "protected operation requires a valid integrity permit; "
@@ -323,6 +311,39 @@ class ExecutionIntegrityGate:
             execution_occurred=False,
             node_state=self.node_state,
         )
+
+    def to_halt_record(self, result: CheckResult) -> HaltRecord:
+        """Map integrity CheckResult to common kernel HaltRecord (HALT/ESCALATE only)."""
+        if result.decision == Decision.EXECUTION_ALLOWED:
+            raise ValueError("to_halt_record requires HALT or ESCALATE decision")
+        primary = result.reasons[0].value if result.reasons else "INTEGRITY_FAILURE"
+        reason_codes = [r.value for r in result.reasons]
+        rec = HaltRecord(
+            module="execution_integrity",
+            reason_code=primary,
+            stage="CHECK_PIPE",
+            detail=";".join(reason_codes) if reason_codes else None,
+            workflow_id=result.evidence.workflow_id,
+            route_id=result.evidence.expected.get("route_hash"),
+            node_id=result.evidence.node_id,
+            input_id=result.evidence.expected.get("input_hash"),
+            policy_id=result.evidence.expected.get("policy_hash"),
+            admission_id=result.evidence.expected.get("admission_hash"),
+            decision=result.decision.value,
+            reason=primary,
+            expected_state=dict(result.evidence.expected),
+            received_state=dict(result.evidence.received),
+            execution_allowed=False,
+            execution_occurred=bool(result.execution_occurred),
+            retry_count=result.evidence.retry_count,
+            retry_required=result.evidence.retry_required,
+            escalation_required=result.evidence.escalated,
+            evidence_reference=result.evidence.evidence_hash or None,
+        )
+        return rec.with_evidence_hash()
+
+    def to_halted_workflow(self, result: CheckResult) -> HaltedWorkflow:
+        return HaltedWorkflow(self.to_halt_record(result))
 
     def execute(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
         """Supported execution boundary: integrity check is mandatory."""
