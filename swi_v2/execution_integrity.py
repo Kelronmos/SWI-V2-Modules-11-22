@@ -1,9 +1,10 @@
 """
 SWI Execution Integrity / Node Quarantine — bounded component.
 
-Status: IMPLEMENTED + TESTED (bounded component).
+Status: IMPLEMENTED + TESTED (bounded component + boundary hardening).
 Does NOT modify M11, Security Maze, B1, or CRTG.
-Does NOT claim production readiness or universal safety.
+Does NOT claim production readiness, process-wide OS isolation, or universal safety.
+Supported API: check()/execute(); direct _demo_action without permit is blocked.
 
 Claim under test:
   An arriving node remains quarantined until SWI verifies that its
@@ -141,10 +142,31 @@ class CheckResult:
     node_state: NodeState
 
 
+class _ExecutionPermit:
+    """
+    Opaque single-use permit minted only by ExecutionIntegrityGate after PASS.
+
+    External construction of a usable permit is not supported: the gate binds
+    permits to (gate identity, internal nonce). A forged or stale permit is rejected.
+    This is library-level enforcement for the supported API — not OS isolation.
+    """
+
+    __slots__ = ("_gate_id", "_nonce", "_consumed")
+
+    def __init__(self, gate_id: int, nonce: int) -> None:
+        self._gate_id = gate_id
+        self._nonce = nonce
+        self._consumed = False
+
+
 class ExecutionIntegrityGate:
     """
     Node → Quarantine → Check Pipe → Workflow/Route/Input/Policy/Admission
     → Last-Execution Match → Time Continuity → Execute or Halt.
+
+    Supported execution entry point: execute() / check() (PASS path only).
+    Protected operation requires an internal _ExecutionPermit; direct calls
+    without a valid permit do not execute.
     """
 
     def __init__(
@@ -156,25 +178,38 @@ class ExecutionIntegrityGate:
     ):
         self.admitted = admitted
         self.last_execution = last_execution
-        # Experimental configured threshold only — NOT a universal SWI standard.
-        # Semantic meaning (seconds / sim units / drift) must be defined before
-        # any normative claim.
         self.time_tolerance = time_tolerance
         self.max_retries = max_retries
         self.retry_count = 0
-        self.execution_counter = 0  # proves whether protected op ran
+        self.execution_counter = 0
         self.evidence_log: List[IntegrityEvidence] = []
         self.node_state = NodeState.QUARANTINED
+        self._permit_nonce = 0
 
-    def _demo_action(self) -> str:
-        """Harmless protected operation. Counter proves reachability."""
+    def _mint_permit(self) -> _ExecutionPermit:
+        self._permit_nonce += 1
+        return _ExecutionPermit(gate_id=id(self), nonce=self._permit_nonce)
+
+    def _demo_action(self, permit: Optional[_ExecutionPermit] = None) -> str:
+        """Harmless protected operation. Requires a valid, unconsumed permit."""
+        if permit is None:
+            raise PermissionError(
+                "protected operation requires a valid integrity permit; "
+                "use check()/execute() — direct invocation is blocked"
+            )
+        if not isinstance(permit, _ExecutionPermit):
+            raise PermissionError("invalid permit type")
+        if permit._gate_id != id(self) or permit._nonce != self._permit_nonce:
+            raise PermissionError("stale or foreign integrity permit")
+        if permit._consumed:
+            raise PermissionError("permit already consumed")
+        permit._consumed = True
         self.execution_counter += 1
         return "DEMO_ACTION_EXECUTED"
 
     def _compare(self, incoming: IncomingNode) -> List[FailureReason]:
         reasons: List[FailureReason] = []
         adm = self.admitted
-
         if incoming.admission_hash is None or incoming.admission_hash != adm.admission_hash:
             reasons.append(
                 FailureReason.ADMISSION_MISMATCH
@@ -191,7 +226,6 @@ class ExecutionIntegrityGate:
             reasons.append(FailureReason.INPUT_CHANGED)
         if incoming.policy_hash != adm.policy_hash:
             reasons.append(FailureReason.POLICY_CHANGED)
-
         if self.last_execution is not None:
             le = self.last_execution
             if (
@@ -203,13 +237,11 @@ class ExecutionIntegrityGate:
             t = incoming.current_time if incoming.current_time is not None else time.time()
             if abs(t - le.timestamp) > self.time_tolerance:
                 reasons.append(FailureReason.TIME_CONTINUITY_EXCEEDED)
-
         return reasons
 
     def check(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
         self.node_state = NodeState.CHECKING
         reasons = self._compare(incoming)
-
         expected = {
             "workflow_id": self.admitted.workflow_id,
             "route_hash": self.admitted.route_hash,
@@ -226,10 +258,10 @@ class ExecutionIntegrityGate:
             "policy_hash": incoming.policy_hash,
             "admission_hash": incoming.admission_hash,
         }
-
         if not reasons:
             self.node_state = NodeState.MATCH
-            self._demo_action()
+            permit = self._mint_permit()
+            self._demo_action(permit)
             evidence = IntegrityEvidence(
                 event="EXECUTION_INTEGRITY_PASS",
                 workflow_id=self.admitted.workflow_id,
@@ -254,15 +286,11 @@ class ExecutionIntegrityGate:
                 execution_occurred=True,
                 node_state=self.node_state,
             )
-
-        # Failure path
         self.node_state = NodeState.HALTED
         escalated = False
         retry_required = True
-
         if attempt_retry:
             self.retry_count += 1
-            # Retry does NOT grant authority — re-run verification only.
             reasons_after = self._compare(incoming)
             if reasons_after:
                 if self.retry_count >= self.max_retries:
@@ -272,7 +300,6 @@ class ExecutionIntegrityGate:
                     retry_required = False
                 else:
                     reasons = reasons_after
-
         evidence = IntegrityEvidence(
             event="EXECUTION_INTEGRITY_FAILURE",
             workflow_id=self.admitted.workflow_id,
@@ -289,7 +316,6 @@ class ExecutionIntegrityGate:
             escalated=escalated,
         ).finalize()
         self.evidence_log.append(evidence)
-
         return CheckResult(
             decision=Decision.ESCALATE if escalated else Decision.HALT,
             reasons=reasons,
@@ -297,3 +323,7 @@ class ExecutionIntegrityGate:
             execution_occurred=False,
             node_state=self.node_state,
         )
+
+    def execute(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
+        """Supported execution boundary: integrity check is mandatory."""
+        return self.check(incoming, attempt_retry=attempt_retry)
