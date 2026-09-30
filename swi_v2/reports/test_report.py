@@ -1,4 +1,8 @@
-"""Mandatory test-report / evidence layer for SWI verification runs.\n\nHASH != AUTHORITY != TRUTH\nCanonical bytes hashed = JSON of report dict WITHOUT the report_hash field.\n"""
+"""Mandatory test-report / evidence layer for SWI verification runs.
+
+HASH != AUTHORITY != TRUTH
+Time-stable canonical bytes = structural outcomes without wall-clock fields.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -113,8 +117,44 @@ class TestReportBuilder:
             "not_proven": self.not_proven,
         }
 
+    def content_for_hash(self) -> Dict[str, Any]:
+        """Time-stable payload for hashing.
+
+        Excludes wall-clock and per-run volatile fields so the same
+        structural outcomes at the same commit produce the same SHA-256:
+          - generated_at
+          - per-test timestamp
+          - evidence_hash (depends on IntegrityEvidence.timestamp)
+          - nested halt evidence timestamps
+
+        Outcome fields kept: decisions, counters, status, reason codes.
+        HASH != AUTHORITY != TRUTH
+        """
+        data = self.to_dict()
+        data.pop("generated_at", None)
+        for t in data.get("tests", []):
+            if isinstance(t, dict):
+                t.pop("timestamp", None)
+                t.pop("evidence_hash", None)
+        stable_halts = []
+        for h in data.get("halt_results", []):
+            if not isinstance(h, dict):
+                continue
+            stable_halts.append({
+                k: h.get(k)
+                for k in (
+                    "module", "reason_code", "decision", "execution_allowed",
+                    "execution_occurred", "workflow_id", "node_id", "route_id",
+                )
+                if k in h
+            })
+        data["halt_results"] = stable_halts
+        return data
+
     def canonical_bytes(self) -> bytes:
-        return json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+        return json.dumps(
+            self.content_for_hash(), sort_keys=True, separators=(",", ":"), default=str
+        ).encode("utf-8")
 
     def sha256(self) -> str:
         return hashlib.sha256(self.canonical_bytes()).hexdigest()
@@ -126,7 +166,11 @@ def write_reports(builder: TestReportBuilder, out_dir: Path) -> Dict[str, Path]:
     data = builder.to_dict()
     report_hash = builder.sha256()
     data["report_hash"] = report_hash
-    data["hash_note"] = "SHA-256 of canonical JSON without report_hash field. HASH != AUTHORITY != TRUTH"
+    data["hash_note"] = (
+        "SHA-256 of time-stable canonical JSON (excludes generated_at, test timestamps, "
+        "volatile evidence_hash; excludes report_hash field itself). "
+        "HASH != AUTHORITY != TRUTH"
+    )
     json_path = out_dir / f"{sha}.json"
     latest_json = out_dir / "latest.json"
     md_path = out_dir / f"{sha}.md"
@@ -136,13 +180,27 @@ def write_reports(builder: TestReportBuilder, out_dir: Path) -> Dict[str, Path]:
     json_path.write_bytes(payload)
     latest_json.write_bytes(payload)
     hash_path.write_text(report_hash + "\n")
-    # minimal md
-    lines = ["# SWI TEST REPORT", "", f"Commit: `{sha}`", f"Hash: `{report_hash}`", f"Passed: {builder.summary['passed']}/{builder.summary['total']}", ""]
+    lines = [
+        "# SWI TEST REPORT",
+        "",
+        f"Commit: `{sha}`",
+        f"Hash: `{report_hash}`",
+        f"Passed: {builder.summary['passed']}/{builder.summary['total']}",
+        "",
+    ]
     for t in builder.tests:
-        lines.append(f"- {t.test_name}: {t.status} decision={t.actual_decision} exec={t.actual_execution_occurred}")
+        lines.append(
+            f"- {t.test_name}: {t.status} decision={t.actual_decision} exec={t.actual_execution_occurred}"
+        )
     lines.append("")
     lines.append("HASH != AUTHORITY != TRUTH")
     md = "\n".join(lines)
     md_path.write_text(md)
     latest_md.write_text(md)
-    return {"json": json_path, "md": md_path, "sha256": hash_path, "latest_json": latest_json, "latest_md": latest_md}
+    return {
+        "json": json_path,
+        "md": md_path,
+        "sha256": hash_path,
+        "latest_json": latest_json,
+        "latest_md": latest_md,
+    }
