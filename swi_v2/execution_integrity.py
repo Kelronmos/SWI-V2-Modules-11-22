@@ -12,6 +12,8 @@ Claim under test:
   node, expected route, relevant policy, and last verified execution.
   On mismatch: HALT → RECORD → REVALIDATE/RETRY → ESCALATE.
   Retry does not grant authority. Execution counter proves non-execution.
+  New information that affects the evidence boundary INVALIDATES prior
+  decisions; without bound authority the result is UNKNOWN (no execution).
 """
 from __future__ import annotations
 
@@ -30,6 +32,7 @@ class NodeState(str, Enum):
     CHECKING = "CHECKING"
     MATCH = "MATCH"
     HALTED = "HALTED"
+    PAUSED = "PAUSED"
     EXECUTING = "EXECUTING"
     ESCALATED = "ESCALATED"
 
@@ -38,6 +41,7 @@ class Decision(str, Enum):
     EXECUTION_ALLOWED = "EXECUTION_ALLOWED"
     HALT = "HALT"
     ESCALATE = "ESCALATE"
+    UNKNOWN = "UNKNOWN"
 
 
 class FailureReason(str, Enum):
@@ -51,6 +55,10 @@ class FailureReason(str, Enum):
     TIME_CONTINUITY_EXCEEDED = "TIME_CONTINUITY_EXCEEDED"
     RETRY_LIMIT_EXCEEDED = "RETRY_LIMIT_EXCEEDED"
     NOT_ADMITTED = "NOT_ADMITTED"
+    NEW_INFORMATION_INVALIDATES = "NEW_INFORMATION_INVALIDATES"
+    BOUNDARY_INSUFFICIENT = "BOUNDARY_INSUFFICIENT"
+    AUTHORITY_REQUIRED = "AUTHORITY_REQUIRED"
+    AUTHORITY_INVALID = "AUTHORITY_INVALID"
 
 
 @dataclass(frozen=True)
@@ -93,6 +101,54 @@ class IncomingNode:
     policy_hash: str
     admission_hash: Optional[str] = None
     current_time: Optional[float] = None
+
+
+@dataclass(frozen=True)
+class NewInformation:
+    """Candidate new information. Does not mutate AdmittedRoute."""
+    description: str
+    affects_evidence_boundary: bool
+    information_id: str = ""
+    proposed_route_hash: Optional[str] = None
+    proposed_input_hash: Optional[str] = None
+    proposed_policy_hash: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class HumanAuthority:
+    authority_id: str
+    workflow_id: str
+    action_id: str
+    token: str
+
+
+@dataclass(frozen=True)
+class ValidatedAuthority:
+    authority_id: str
+    workflow_id: str
+    action_id: str
+    bound: bool = True
+
+    def covers(self, workflow_id: str, action_id: str) -> bool:
+        return self.bound and self.workflow_id == workflow_id and self.action_id == action_id
+
+
+def validate_human_authority(
+    authority: HumanAuthority, *, workflow_id: str, action_id: str
+) -> ValidatedAuthority:
+    """Bind human authority to exact workflow/action. Library-level only."""
+    if not isinstance(authority, HumanAuthority):
+        raise ValueError("authority must be HumanAuthority")
+    if not authority.authority_id or not authority.token:
+        raise ValueError("authority_id and token required")
+    if authority.workflow_id != workflow_id or authority.action_id != action_id:
+        raise ValueError("authority not bound to requested workflow/action")
+    return ValidatedAuthority(
+        authority_id=authority.authority_id,
+        workflow_id=workflow_id,
+        action_id=action_id,
+        bound=True,
+    )
 
 
 @dataclass
@@ -145,8 +201,6 @@ class CheckResult:
 
 
 class _ExecutionPermit:
-    """Opaque single-use permit minted only after integrity PASS."""
-
     __slots__ = ("_gate_id", "_nonce", "_consumed")
 
     def __init__(self, gate_id: int, nonce: int) -> None:
@@ -156,8 +210,6 @@ class _ExecutionPermit:
 
 
 class ExecutionIntegrityGate:
-    """Node quarantine + check pipe; supported API check()/execute()."""
-
     def __init__(
         self,
         admitted: AdmittedRoute,
@@ -174,6 +226,10 @@ class ExecutionIntegrityGate:
         self.evidence_log: List[IntegrityEvidence] = []
         self.node_state = NodeState.QUARANTINED
         self._permit_nonce = 0
+        self._decision_invalidated: bool = False
+        self._boundary_insufficient: bool = False
+        self._bound_authority: Optional[ValidatedAuthority] = None
+        self._pending_new_information: Optional[NewInformation] = None
 
     def _mint_permit(self) -> _ExecutionPermit:
         self._permit_nonce += 1
@@ -227,7 +283,164 @@ class ExecutionIntegrityGate:
                 reasons.append(FailureReason.TIME_CONTINUITY_EXCEEDED)
         return reasons
 
+    def apply_new_information(
+        self, info: NewInformation, *, action_id: str = "default_action"
+    ) -> CheckResult:
+        """Invalidate current decision when new information arrives.
+
+        If it affects the evidence boundary and required authority is absent,
+        result is UNKNOWN — execution must not proceed.
+        """
+        if not isinstance(info, NewInformation):
+            raise TypeError("info must be NewInformation")
+        self._decision_invalidated = True
+        self._pending_new_information = info
+        self._permit_nonce += 1
+        expected = {
+            "workflow_id": self.admitted.workflow_id,
+            "route_hash": self.admitted.route_hash,
+            "node_id": self.admitted.node_id,
+            "input_hash": self.admitted.input_hash,
+            "policy_hash": self.admitted.policy_hash,
+            "admission_hash": self.admitted.admission_hash,
+        }
+        received = {
+            "information_id": info.information_id,
+            "description": info.description,
+            "affects_evidence_boundary": info.affects_evidence_boundary,
+            "proposed_route_hash": info.proposed_route_hash,
+            "proposed_input_hash": info.proposed_input_hash,
+            "proposed_policy_hash": info.proposed_policy_hash,
+        }
+        if not info.affects_evidence_boundary:
+            evidence = IntegrityEvidence(
+                event="NEW_INFORMATION_NO_BOUNDARY_IMPACT",
+                workflow_id=self.admitted.workflow_id,
+                node_id=self.admitted.node_id,
+                expected=expected,
+                received=received,
+                decision=Decision.HALT.value,
+                execution_allowed=False,
+                execution_occurred=False,
+                reasons=[FailureReason.NEW_INFORMATION_INVALIDATES.value],
+                node_state=NodeState.QUARANTINED.value,
+                retry_count=self.retry_count,
+                retry_required=True,
+                escalated=False,
+            ).finalize()
+            self.evidence_log.append(evidence)
+            self.node_state = NodeState.QUARANTINED
+            return CheckResult(
+                decision=Decision.HALT,
+                reasons=[FailureReason.NEW_INFORMATION_INVALIDATES],
+                evidence=evidence,
+                execution_occurred=False,
+                node_state=self.node_state,
+            )
+        self._boundary_insufficient = True
+        auth_ok = self._bound_authority is not None and self._bound_authority.covers(
+            self.admitted.workflow_id, action_id
+        )
+        if not auth_ok:
+            reasons = [
+                FailureReason.NEW_INFORMATION_INVALIDATES,
+                FailureReason.BOUNDARY_INSUFFICIENT,
+                FailureReason.AUTHORITY_REQUIRED,
+            ]
+            self.node_state = NodeState.PAUSED
+            evidence = IntegrityEvidence(
+                event="NEW_INFORMATION_BOUNDARY_INSUFFICIENT",
+                workflow_id=self.admitted.workflow_id,
+                node_id=self.admitted.node_id,
+                expected=expected,
+                received=received,
+                decision=Decision.UNKNOWN.value,
+                execution_allowed=False,
+                execution_occurred=False,
+                reasons=[r.value for r in reasons],
+                node_state=NodeState.PAUSED.value,
+                retry_count=self.retry_count,
+                retry_required=True,
+                escalated=False,
+            ).finalize()
+            self.evidence_log.append(evidence)
+            return CheckResult(
+                decision=Decision.UNKNOWN,
+                reasons=reasons,
+                evidence=evidence,
+                execution_occurred=False,
+                node_state=self.node_state,
+            )
+        self.node_state = NodeState.QUARANTINED
+        evidence = IntegrityEvidence(
+            event="NEW_INFORMATION_AUTHORITY_PRESENT_RECHECK_REQUIRED",
+            workflow_id=self.admitted.workflow_id,
+            node_id=self.admitted.node_id,
+            expected=expected,
+            received=received,
+            decision=Decision.HALT.value,
+            execution_allowed=False,
+            execution_occurred=False,
+            reasons=[FailureReason.NEW_INFORMATION_INVALIDATES.value],
+            node_state=NodeState.QUARANTINED.value,
+            retry_count=self.retry_count,
+            retry_required=True,
+            escalated=False,
+        ).finalize()
+        self.evidence_log.append(evidence)
+        return CheckResult(
+            decision=Decision.HALT,
+            reasons=[FailureReason.NEW_INFORMATION_INVALIDATES],
+            evidence=evidence,
+            execution_occurred=False,
+            node_state=self.node_state,
+        )
+
+    def bind_authority(self, authority: ValidatedAuthority, *, action_id: str) -> None:
+        if not isinstance(authority, ValidatedAuthority) or not authority.bound:
+            raise ValueError("ValidatedAuthority required")
+        if not authority.covers(self.admitted.workflow_id, action_id):
+            raise ValueError("authority does not cover this workflow/action")
+        self._bound_authority = authority
+        if self._boundary_insufficient:
+            self._boundary_insufficient = False
+
+    def recheck(
+        self,
+        incoming: IncomingNode,
+        *,
+        authority: Optional[ValidatedAuthority] = None,
+        action_id: str = "default_action",
+        attempt_retry: bool = False,
+    ) -> CheckResult:
+        if authority is not None:
+            self.bind_authority(authority, action_id=action_id)
+        if self._boundary_insufficient:
+            auth_ok = self._bound_authority is not None and self._bound_authority.covers(
+                self.admitted.workflow_id, action_id
+            )
+            if not auth_ok:
+                return self.apply_new_information(
+                    self._pending_new_information
+                    or NewInformation(description="pending", affects_evidence_boundary=True),
+                    action_id=action_id,
+                )
+        result = self.check(incoming, attempt_retry=attempt_retry)
+        if result.decision == Decision.EXECUTION_ALLOWED:
+            self._decision_invalidated = False
+            self._pending_new_information = None
+        return result
+
     def check(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
+        if self._boundary_insufficient:
+            auth_ok = self._bound_authority is not None and self._bound_authority.covers(
+                self.admitted.workflow_id, "default_action"
+            )
+            if not auth_ok:
+                info = self._pending_new_information or NewInformation(
+                    description="boundary_insufficient", affects_evidence_boundary=True
+                )
+                return self.apply_new_information(info, action_id="default_action")
         self.node_state = NodeState.CHECKING
         reasons = self._compare(incoming)
         expected = {
@@ -313,9 +526,8 @@ class ExecutionIntegrityGate:
         )
 
     def to_halt_record(self, result: CheckResult) -> HaltRecord:
-        """Map integrity CheckResult to common kernel HaltRecord (HALT/ESCALATE only)."""
         if result.decision == Decision.EXECUTION_ALLOWED:
-            raise ValueError("to_halt_record requires HALT or ESCALATE decision")
+            raise ValueError("to_halt_record requires HALT, ESCALATE, or UNKNOWN decision")
         primary = result.reasons[0].value if result.reasons else "INTEGRITY_FAILURE"
         reason_codes = [r.value for r in result.reasons]
         rec = HaltRecord(
@@ -346,5 +558,4 @@ class ExecutionIntegrityGate:
         return HaltedWorkflow(self.to_halt_record(result))
 
     def execute(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
-        """Supported execution boundary: integrity check is mandatory."""
         return self.check(incoming, attempt_retry=attempt_retry)
