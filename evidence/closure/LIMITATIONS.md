@@ -1,0 +1,7 @@
+- No inherited proof across trees or SHAs
+- V1 full pytest blocked without jsonschema for 2 test modules
+- Execution integrity only on feature freeze 37d418a, not main
+- CI check-runs at exact SHAs not observed in this environment
+- Quantitative external benchmark scores NOT_REPRODUCED (no original datasets claimed here)
+- INDEPENDENTLY_VERIFIED requires separate environment by definition — this run is first-pass closure
+- FM-038/039/040 full formation contracts not fully reconstructed as executable harnesses in this pass
