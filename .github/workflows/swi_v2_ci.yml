@@ -48,6 +48,14 @@ jobs:
         run: python -m compileall -q swi_v2
       - name: Module 11 and contract tests
         run: python -m pytest -q test/test_module11_admission.py test/test_foundation_contract.py
+      - name: Execution integrity adversarial
+        run: python -m pytest -q test/adversarial/test_execution_integrity.py
+      - name: Universal halt contract
+        run: python -m pytest -q test/adversarial/test_universal_halt.py
+      - name: Gate PASS/FAIL system-error matrix
+        run: python -m pytest -q test/adversarial/test_gate_pass_fail_matrix.py
+      - name: Generate execution-integrity reports
+        run: python3 scripts/generate_execution_integrity_report.py
       - name: Full suite
         run: python -m pytest -q
       - name: verify.sh
