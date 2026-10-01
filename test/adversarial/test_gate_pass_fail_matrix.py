@@ -57,7 +57,7 @@ def _node(admitted, **kw):
 
 def _assert_no_execution(gate, result, code=None):
     """Downstream consequence of FAIL — not just return value."""
-    assert result.decision in (Decision.HALT, Decision.ESCALATE)
+    assert result.decision in (Decision.HALT, Decision.ESCALATE, Decision.UNKNOWN)
     assert result.execution_occurred is False
     assert result.evidence.execution_allowed is False
     assert gate.execution_counter == 0
@@ -226,3 +226,105 @@ def test_report_gate_generator_runs():
         assert paths["md"].exists()
         assert paths["sha256"].exists()
         assert len(paths["sha256"].read_text().strip()) == 64
+
+
+def test_new_information_boundary_insufficient_unknown_no_execution(admitted, last_exec):
+    from swi_v2.execution_integrity import NewInformation
+
+    gate = ExecutionIntegrityGate(admitted, last_exec)
+    r0 = gate.execute(_node(admitted))
+    assert r0.decision == Decision.EXECUTION_ALLOWED
+    assert gate.execution_counter == 1
+    prior_count = gate.execution_counter
+    info = NewInformation(
+        description="external regulation change affecting evidence scope",
+        affects_evidence_boundary=True,
+        information_id="NI-1",
+        proposed_policy_hash="P-REG-NEW",
+    )
+    r = gate.apply_new_information(info, action_id="approve_file")
+    assert r.decision == Decision.UNKNOWN
+    assert r.execution_occurred is False
+    assert r.evidence.execution_allowed is False
+    assert gate.execution_counter == prior_count
+    assert FailureReason.BOUNDARY_INSUFFICIENT in r.reasons
+    assert FailureReason.AUTHORITY_REQUIRED in r.reasons
+    assert len(r.evidence.evidence_hash) == 64
+    with pytest.raises(PermissionError):
+        gate._demo_action()
+
+
+def test_new_information_attempt_execute_without_authority_blocked(admitted, last_exec):
+    from swi_v2.execution_integrity import NewInformation
+
+    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate.execute(_node(admitted))
+    gate.apply_new_information(
+        NewInformation(
+            description="boundary shift",
+            affects_evidence_boundary=True,
+            information_id="NI-2",
+        ),
+        action_id="approve_file",
+    )
+    r = gate.execute(_node(admitted))
+    assert r.decision == Decision.UNKNOWN
+    assert r.execution_occurred is False
+    assert gate.execution_counter == 1
+
+
+def test_new_information_invalid_authority_remains_unknown(admitted, last_exec):
+    from swi_v2.execution_integrity import HumanAuthority, NewInformation, validate_human_authority
+
+    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate.execute(_node(admitted))
+    gate.apply_new_information(
+        NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-3"),
+        action_id="approve_file",
+    )
+    with pytest.raises(ValueError):
+        validate_human_authority(
+            HumanAuthority("H1", workflow_id="W-OTHER", action_id="approve_file", token="tok"),
+            workflow_id="W-104",
+            action_id="approve_file",
+        )
+    r = gate.recheck(_node(admitted), action_id="approve_file")
+    assert r.decision == Decision.UNKNOWN
+    assert gate.execution_counter == 1
+
+
+def test_new_information_valid_authority_then_recheck_may_execute(admitted, last_exec):
+    from swi_v2.execution_integrity import HumanAuthority, NewInformation, validate_human_authority
+
+    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate.execute(_node(admitted))
+    assert gate.execution_counter == 1
+    gate.apply_new_information(
+        NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-4"),
+        action_id="approve_file",
+    )
+    validated = validate_human_authority(
+        HumanAuthority("H1", workflow_id="W-104", action_id="approve_file", token="human-ok"),
+        workflow_id="W-104",
+        action_id="approve_file",
+    )
+    assert validated.bound is True
+    r = gate.recheck(_node(admitted), authority=validated, action_id="approve_file")
+    assert r.decision == Decision.EXECUTION_ALLOWED
+    assert r.execution_occurred is True
+    assert gate.execution_counter == 2
+
+
+def test_new_information_revalidation_alone_does_not_restore_execution(admitted, last_exec):
+    from swi_v2.execution_integrity import NewInformation
+
+    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate.execute(_node(admitted))
+    gate.apply_new_information(
+        NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-5"),
+        action_id="approve_file",
+    )
+    r = gate.recheck(_node(admitted), action_id="approve_file")
+    assert r.decision == Decision.UNKNOWN
+    assert r.execution_occurred is False
+    assert gate.execution_counter == 1
