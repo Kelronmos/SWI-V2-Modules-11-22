@@ -1,0 +1,19 @@
+{
+  "recovery_status": "LOCAL_READY_REMOTE_PLACEHOLDER",
+  "local_files": {
+    "swi_v2/execution_integrity.py": {
+      "sha256": "ca4a67e48b93041a5515965bd7fad67a00c2061f0fcad627125c1856404d1184",
+      "size": 23379,
+      "contains_placeholder": false
+    },
+    "test/adversarial/test_execution_integrity.py": {
+      "sha256": "35fc591497732511e53e60f3c64f90420bd7dc09f538c08b140bea0c41605dfd",
+      "size": 13615,
+      "contains_placeholder": false
+    }
+  },
+  "remote_head_at_report": "921598492fc72c604b63ec780322bd104069c139",
+  "action_required": "Replace remote PLACEHOLDER bodies with local file contents matching sha256",
+  "production_authorized": false,
+  "proven": false
+}
