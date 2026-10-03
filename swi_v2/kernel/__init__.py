@@ -16,6 +16,14 @@ from .admission import admit_foundation_input
 from .replay_guard import ReplayGuard
 from .enforcement import require_admitted, halt, KERNEL_STATES
 from .halt import HaltRecord, HaltedWorkflow
+from .structural_lifecycle import (
+    LifecycleState,
+    OperatingStatus,
+    StructuralStatus,
+    trigger_99_9_review_pause,
+    create_authority_request,
+    material_change_requires_revalidation,
+)
 from .governing_permit import (
     PermitOutcome,
     GoverningEvaluation,
@@ -60,4 +68,10 @@ __all__ = [
     "GoverningEvaluation",
     "evaluate_governing_permit",
     "require_governing_permit_for_action",
+    "LifecycleState",
+    "OperatingStatus",
+    "StructuralStatus",
+    "trigger_99_9_review_pause",
+    "create_authority_request",
+    "material_change_requires_revalidation",
 ]
