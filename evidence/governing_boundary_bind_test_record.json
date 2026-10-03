@@ -1,0 +1,23 @@
+{
+  "test_name": "SWI Governing Permit Spine Binding (require_authorization_for_action)",
+  "boundary_modified": "swi_v2/kernel/authority.py::require_authorization_for_action",
+  "predicate": "swi_v2/kernel/governing_permit.py::evaluate_governing_permit",
+  "tests_path": "test/test_governing_boundary_bind.py",
+  "command": "python -m pytest test/test_governing_boundary_bind.py test/test_authority_non_escalation.py test/test_governing_formula.py test/test_governing_spine_bind.py -q",
+  "tests": {"total": 49, "passed": 49, "failed": 0, "skipped": 0, "exit_code": 0},
+  "python": "3.12.3",
+  "os": "Linux",
+  "timestamp_utc": "2026-10-03T11:46:00Z",
+  "binding_status": "IMPLEMENTED_AND_TESTED",
+  "b18_predicate_called": true,
+  "production_authorized": false,
+  "proven": false,
+  "sealed": false,
+  "s9": "NOT_PROVEN",
+  "limitations": [
+    "L/G/S lattices not fabricated; caller-supplied or UNKNOWN",
+    "E non-empty is not full X1-X10 sufficiency",
+    "Runtime revalidation still partial",
+    "Legacy path without governing_conditions remains for backward compatibility"
+  ]
+}
