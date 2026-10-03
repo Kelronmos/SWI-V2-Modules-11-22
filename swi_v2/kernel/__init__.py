@@ -16,6 +16,11 @@ from .admission import admit_foundation_input
 from .replay_guard import ReplayGuard
 from .enforcement import require_admitted, halt, KERNEL_STATES
 from .halt import HaltRecord, HaltedWorkflow
+from .governing_permit import (
+    PermitOutcome,
+    GoverningEvaluation,
+    evaluate_governing_permit,
+)
 from .authority import (
     AuthorityLayer,
     AuthorityDecision,
@@ -50,4 +55,7 @@ __all__ = [
     "require_no_authority_escalation",
     "require_authorization_for_action",
     "scan_undeclared_authority",
+    "PermitOutcome",
+    "GoverningEvaluation",
+    "evaluate_governing_permit",
 ]
