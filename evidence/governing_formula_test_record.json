@@ -1,27 +1,32 @@
 {
-  "test_name": "SWI Governing Formula",
+  "test_name": "SWI Governing Formula + Spine Bind",
   "formula": "Permit(a) ⟺ ∀L,G,S,H: C(a) ⊆ L∩G∩S∩H ∧ E(a) ≠ ∅",
   "base_commit_sha": "7590657dd5670752aae8b9ce7c66b2b2532ec21b",
-  "implementation": "swi_v2/kernel/governing_permit.py",
-  "tests_path": "test/test_governing_formula.py",
+  "implementation": [
+    "swi_v2/kernel/governing_permit.py",
+    "swi_v2/kernel/authority.py::require_governing_permit_for_action"
+  ],
+  "tests_path": [
+    "test/test_governing_formula.py",
+    "test/test_governing_spine_bind.py"
+  ],
   "tests": {
-    "total": 11,
-    "passed": 11,
+    "command": "python -m pytest test/test_governing_formula.py test/test_governing_spine_bind.py test/test_authority_non_escalation.py -q",
+    "total": 31,
+    "passed": 31,
     "failed": 0,
-    "skipped": 0
-  },
-  "broader_suite_with_authority": {
-    "total": 25,
-    "passed": 25,
-    "failed": 0,
-    "skipped": 0
+    "skipped": 0,
+    "exit_code": 0,
+    "python": "3.12.3",
+    "os": "Linux",
+    "timestamp_utc": "2026-10-03T11:39:00Z",
+    "note": "Local executable run against implementation matching remote spine-bind commits"
   },
   "result": "PASS",
-  "exit_code": 0,
-  "timestamp_utc": "2026-10-03T11:28:08Z",
-  "runtime": "python3 + pytest",
   "production_authorized": false,
   "proven": false,
   "sealed": false,
-  "notes": "Executable tests against governing_permit predicate. TESTED ≠ PROVEN. Does not authorize production."
+  "s9": "NOT_PROVEN",
+  "durable_replay": "NOT_IMPLEMENTED",
+  "maturity_model": "docs/SWI_PRODUCTION_MATURITY_MODEL.md (DESIGN ONLY)"
 }
