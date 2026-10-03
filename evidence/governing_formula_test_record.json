@@ -1,0 +1,27 @@
+{
+  "test_name": "SWI Governing Formula",
+  "formula": "Permit(a) ⟺ ∀L,G,S,H: C(a) ⊆ L∩G∩S∩H ∧ E(a) ≠ ∅",
+  "base_commit_sha": "7590657dd5670752aae8b9ce7c66b2b2532ec21b",
+  "implementation": "swi_v2/kernel/governing_permit.py",
+  "tests_path": "test/test_governing_formula.py",
+  "tests": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0
+  },
+  "broader_suite_with_authority": {
+    "total": 25,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0
+  },
+  "result": "PASS",
+  "exit_code": 0,
+  "timestamp_utc": "2026-10-03T11:28:08Z",
+  "runtime": "python3 + pytest",
+  "production_authorized": false,
+  "proven": false,
+  "sealed": false,
+  "notes": "Executable tests against governing_permit predicate. TESTED ≠ PROVEN. Does not authorize production."
+}
