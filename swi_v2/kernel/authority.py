@@ -159,3 +159,53 @@ def layer_non_implication_matrix() -> dict[str, tuple[str, ...]]:
         "authorization": ("action_beyond_scope",),
         "action": (),
     }
+
+
+def require_governing_permit_for_action(
+    *,
+    conditions: Iterable[str],
+    L: Optional[Iterable[str]] = None,
+    G: Optional[Iterable[str]] = None,
+    S: Optional[Iterable[str]] = None,
+    H: Optional[Iterable[str]] = None,
+    evidence: Any = None,
+    requested_action: str = "action",
+) -> AuthorityDecision:
+    """Spine bind: evaluate governing formula on the existing authority path.
+
+    Does NOT replace require_authorization_for_action.
+    Does NOT create L/G/S/H sources — callers supply sets or leave UNKNOWN.
+    Does NOT set production_authorized.
+    Does NOT claim S9 proven or sealed.
+
+    Mapping to existing fail-closed semantics:
+      PERMITTED → AuthorityDecision CONTINUE
+      REJECTED  → AuthorityError (next=REJECT)
+      UNKNOWN   → AuthorityHalt (next=HALT)
+    """
+    from .governing_permit import PermitOutcome, evaluate_governing_permit
+
+    evaluation = evaluate_governing_permit(
+        conditions=conditions, L=L, G=G, S=S, H=H, evidence=evidence
+    )
+    if evaluation.outcome is PermitOutcome.UNKNOWN:
+        raise AuthorityHalt(
+            f"action={requested_action!r} governing_permit UNKNOWN "
+            f"reason={evaluation.reason!r}; next=HALT; "
+            f"production_authorized=false"
+        )
+    if evaluation.outcome is PermitOutcome.REJECTED:
+        raise AuthorityError(
+            f"action={requested_action!r} governing_permit REJECTED "
+            f"reason={evaluation.reason!r} failed={list(evaluation.failed_layers)}; "
+            f"next=REJECT; production_authorized=false"
+        )
+    return AuthorityDecision(
+        allowed=True,
+        layer=AuthorityLayer.ACTION,
+        reason=f"governing_permit_ok:{evaluation.reason}",
+        entered_keys=tuple(sorted(evaluation.conditions)),
+        rejected_fields=(),
+        next_state="CONTINUE",
+        contract_id="governing_permit_spine_bind_v0",
+    )
