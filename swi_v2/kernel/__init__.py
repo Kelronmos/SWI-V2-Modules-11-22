@@ -27,6 +27,7 @@ from .authority import (
     require_no_authority_escalation,
     require_authorization_for_action,
     scan_undeclared_authority,
+    require_governing_permit_for_action,
 )
 
 __all__ = [
@@ -58,4 +59,5 @@ __all__ = [
     "PermitOutcome",
     "GoverningEvaluation",
     "evaluate_governing_permit",
+    "require_governing_permit_for_action",
 ]
