@@ -124,8 +124,19 @@ def require_authorization_for_action(
     authorization_scope: Optional[str],
     requested_action: str,
     declared_scopes: Optional[Iterable[str]] = None,
+    governing_conditions: Optional[Iterable[str]] = None,
+    L: Optional[Iterable[str]] = None,
+    G: Optional[Iterable[str]] = None,
+    S: Optional[Iterable[str]] = None,
+    H: Optional[Iterable[str]] = None,
+    evidence: Any = None,
 ) -> AuthorityDecision:
-    """ACTION requires explicit authorization; missing → HALT; out of scope → REJECT."""
+    """ACTION requires explicit authorization; missing → HALT; out of scope → REJECT.
+
+    Optional governing bind: when governing_conditions is supplied, evaluates
+    evaluate_governing_permit before CONTINUE. Does not invent L/G/S/H.
+    production_authorized remains false.
+    """
     if not authorization_present:
         raise AuthorityHalt(
             f"action={requested_action!r} missing authorization; next=HALT"
@@ -140,6 +151,37 @@ def require_authorization_for_action(
             f"action={requested_action!r} scope={authorization_scope!r} "
             f"exceeds declared scopes {sorted(scopes)}; next=REJECT"
         )
+
+    # Optional spine bind — only when caller supplies conditions (no fabrication)
+    if governing_conditions is not None:
+        from .governing_permit import PermitOutcome, evaluate_governing_permit
+
+        evaluation = evaluate_governing_permit(
+            conditions=governing_conditions, L=L, G=G, S=S, H=H, evidence=evidence
+        )
+        if evaluation.outcome is PermitOutcome.UNKNOWN:
+            raise AuthorityHalt(
+                f"action={requested_action!r} governing_permit UNKNOWN "
+                f"reason={evaluation.reason!r}; next=HALT; "
+                f"production_authorized=false"
+            )
+        if evaluation.outcome is PermitOutcome.REJECTED:
+            raise AuthorityError(
+                f"action={requested_action!r} governing_permit REJECTED "
+                f"reason={evaluation.reason!r} failed={list(evaluation.failed_layers)}; "
+                f"next=REJECT; production_authorized=false"
+            )
+        return AuthorityDecision(
+            allowed=True,
+            layer=AuthorityLayer.ACTION,
+            reason=f"authorization_scope_ok+governing_permit:{evaluation.reason}",
+            entered_keys=(authorization_scope or "",)
+            + tuple(sorted(evaluation.conditions)),
+            rejected_fields=(),
+            next_state="CONTINUE",
+            contract_id="authority_boundary_v0+governing_permit_bind",
+        )
+
     return AuthorityDecision(
         allowed=True,
         layer=AuthorityLayer.ACTION,
@@ -171,17 +213,10 @@ def require_governing_permit_for_action(
     evidence: Any = None,
     requested_action: str = "action",
 ) -> AuthorityDecision:
-    """Spine bind: evaluate governing formula on the existing authority path.
+    """Spine bind helper: evaluate governing formula on the authority path.
 
-    Does NOT replace require_authorization_for_action.
     Does NOT create L/G/S/H sources — callers supply sets or leave UNKNOWN.
     Does NOT set production_authorized.
-    Does NOT claim S9 proven or sealed.
-
-    Mapping to existing fail-closed semantics:
-      PERMITTED → AuthorityDecision CONTINUE
-      REJECTED  → AuthorityError (next=REJECT)
-      UNKNOWN   → AuthorityHalt (next=HALT)
     """
     from .governing_permit import PermitOutcome, evaluate_governing_permit
 
