@@ -1,0 +1,16 @@
+{
+  "test_name": "SWI Execution Authority Gate - no-shortcut",
+  "file": "swi_v2/execution_integrity.py",
+  "invariant": "EXECUTE iff FLOW_BIND and RUNTIME_MATCH and HUMAN_AUTHORITY_BOUND and AUTHORIZATION_VALID",
+  "command": "python -m pytest test/adversarial/test_execution_integrity.py test/adversarial/test_new_information_boundary_attacks.py -q",
+  "tests": {"total": 33, "passed": 33, "failed": 0, "exit_code": 0},
+  "production_authorized": false,
+  "proven": false,
+  "sealed": false,
+  "limitations": [
+    "Closes MATCH to EXECUTE shortcut only",
+    "Does not prove full runtime revalidation",
+    "Does not prove medical-domain compliance",
+    "S9 remains NOT PROVEN"
+  ]
+}
