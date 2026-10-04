@@ -5,9 +5,7 @@ SWI Universal Test / Demonstration Runner — entry point.
 Usage:
     python -m runner.main
     python -m runner.main --cases 100
-    python -m runner.main --mode smoke
-    python -m runner.main --mode full
-    python -m runner.main --mode audit
+    python -m runner.main --mode smoke|full|audit
 """
 
 from __future__ import annotations
@@ -24,8 +22,10 @@ from runner.repositories import materialize_repositories
 from runner.build import build_repositories
 from runner.tests import test_repositories
 from runner.firefly import run_firefly_tests
+from runner.inventory import run_inventory, evaluate_components
+from runner.simulation import run_simulation
 from runner.evidence import EvidenceLedger, FINAL_CLAIMS
-from runner.reporting import write_final_status, write_json_report
+from runner.reporting import write_final_status, write_json_report, write_html_report
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -33,22 +33,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         description="SWI Universal Test / Demonstration Runner (TEST_ONLY)"
     )
     parser.add_argument(
-        "--cases",
-        type=int,
-        default=100,
+        "--cases", type=int, default=100,
         choices=[10, 100, 1000, 8000],
-        help="Number of demonstration cases to generate (default: 100)",
+        help="Number of synthetic demonstration cases (default: 100)",
     )
     parser.add_argument(
-        "--mode",
-        choices=["smoke", "full", "audit"],
-        default="smoke",
+        "--mode", choices=["smoke", "full", "audit"], default="smoke",
         help="Execution mode (default: smoke)",
     )
     parser.add_argument(
-        "--packages",
-        type=Path,
-        default=None,
+        "--packages", type=Path, default=None,
         help="Path to packages.json (default: ./packages.json)",
     )
     return parser.parse_args(argv)
@@ -59,14 +53,9 @@ def banner() -> None:
     print(RUNNER_NAME)
     print("=" * 60)
     print()
-    print("MODE:")
-    print("  TEST + SIMULATION + EVIDENCE COLLECTION")
-    print()
-    print("REAL-WORLD ACTION:")
-    print("  NONE")
-    print()
-    print("PRODUCTION AUTHORIZATION:")
-    print("  NO")
+    print("MODE:                  TEST + SIMULATION + EVIDENCE COLLECTION")
+    print("REAL-WORLD ACTION:     NONE")
+    print("PRODUCTION AUTHORIZATION: NO")
     print()
     print("=" * 60)
     print()
@@ -77,11 +66,9 @@ def load_packages(path: Path) -> dict:
         raise FileNotFoundError(f"packages.json not found: {path}")
     with path.open(encoding="utf-8") as f:
         data = json.load(f)
-    if data.get("schema") not in (
-        "swi.online.test.rebuild.packages.v1",
-        "swi.online.test.rebuild.packages.v2",
-    ):
-        raise ValueError(f"Unsupported packages.json schema: {data.get('schema')}")
+    schema = data.get("schema", "")
+    if not schema.startswith("swi.online.test.rebuild.packages."):
+        raise ValueError(f"Unsupported packages.json schema: {schema}")
     return data
 
 
@@ -108,123 +95,133 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FATAL: Cannot load packages.json — {exc}")
         return 1
 
-    # 2. Environment detection
     print("[2/10] Detecting environment...")
     env = detect_environment()
     ledger.record_environment(env)
-    print(f"       OS      : {env.get('os')}")
-    print(f"       Python  : {env.get('python')}")
-    print(f"       Git     : {env.get('git')}")
-    print(f"       Node    : {env.get('node') or 'not found'}")
-    print(f"       Rust    : {env.get('rust') or 'not found'}")
+    print(f"       OS={env.get('os')}  Python={env.get('python')}  Git={env.get('git')}")
+    print(f"       Node={env.get('node') or 'not found'}  Rust={env.get('rust') or 'not found'}")
     print()
 
-    # 3. Workspace
     print("[3/10] Ensuring workspace...")
     workspace = ensure_workspace(script_dir, packages.get("workspace", {}))
-    print(f"       Root    : {workspace['root']}")
+    print(f"       {workspace['root']}")
     print()
 
-    # 4. Materialize repositories
     print("[4/10] Materializing repositories...")
     try:
         repo_results = materialize_repositories(
-            packages=packages,
-            workspace=workspace,
-            mode=args.mode,
-            ledger=ledger,
+            packages=packages, workspace=workspace, mode=args.mode, ledger=ledger,
         )
     except Exception as exc:
         print(f"FATAL during materialization: {exc}")
         ledger.record_failure("materialization", str(exc))
         write_final_status(workspace["reports"], ledger)
         return 1
-
     materialized = sum(1 for r in repo_results if r.get("status") == "MATERIALIZED")
     print(f"       Materialized: {materialized}/{len(repo_results)}")
     print()
 
-    # 5. Inventory (still stub)
-    print("[5/10] Inventory          — stub (NOT_RUN)")
+    print("[5/10] Inventory + component evaluation...")
+    inventory = run_inventory(packages, repo_results, workspace)
+    components = evaluate_components(packages, repo_results, inventory)
+    present = sum(1 for c in components if c["status"]["present"])
+    print(f"       Components declared={len(components)}  present={present}")
     print()
 
-    # 6. Build phase
     print("[6/10] Building repositories...")
     if args.mode == "audit":
         build_results = []
         print("       Skipped (audit mode)")
     else:
         build_results = build_repositories(
-            packages=packages,
-            repo_results=repo_results,
-            workspace=workspace,
-            env=env,
-            ledger=ledger,
+            packages, repo_results, workspace, env, ledger,
         )
-    build_pass = sum(1 for b in build_results if b.get("status") == "PASS")
-    build_fail = sum(1 for b in build_results if b.get("status") == "FAIL")
-    print(f"       Build PASS: {build_pass}  FAIL: {build_fail}")
+    print(f"       Build PASS={sum(1 for b in build_results if b.get('status')=='PASS')}  "
+          f"FAIL={sum(1 for b in build_results if b.get('status')=='FAIL')}")
     print()
 
-    # 7. Test phase
     print("[7/10] Running repository tests...")
     if args.mode == "audit":
         test_results = []
         print("       Skipped (audit mode)")
     else:
         test_results = test_repositories(
-            packages=packages,
-            repo_results=repo_results,
-            build_results=build_results,
-            workspace=workspace,
-            env=env,
-            ledger=ledger,
+            packages, repo_results, build_results, workspace, env, ledger,
         )
-    test_pass = sum(1 for t in test_results if t.get("status") == "PASS")
-    test_fail = sum(1 for t in test_results if t.get("status") == "FAIL")
-    print(f"       Test PASS: {test_pass}  FAIL: {test_fail}")
+    print(f"       Test PASS={sum(1 for t in test_results if t.get('status')=='PASS')}  "
+          f"FAIL={sum(1 for t in test_results if t.get('status')=='FAIL')}")
     print()
 
-    # 8. Firefly tests
-    print("[8/10] Running Firefly demonstration suite...")
+    print("[8/10] Firefly demonstration suite...")
     if args.mode == "audit":
         firefly_results = {"status": "SKIPPED", "reason": "audit mode"}
-        print("       Skipped (audit mode)")
     else:
-        firefly_results = run_firefly_tests(
-            packages=packages,
-            repo_results=repo_results,
-            workspace=workspace,
-            ledger=ledger,
-        )
+        firefly_results = run_firefly_tests(packages, repo_results, workspace, ledger)
     print()
 
-    # 9. Demonstrations still stub
-    print("[9/10] Demonstrations / 8K cases — stub (NOT_RUN)")
+    print("[9/10] Synthetic simulation...")
+    if args.mode == "audit":
+        simulation_results = {"status": "SKIPPED", "reason": "audit mode"}
+    else:
+        simulation_results = run_simulation(args.cases, packages, ledger)
     print()
 
-    # 10. Reporting
     print("[10/10] Generating reports...")
-    write_json_report(workspace["reports"], "ENVIRONMENT.json", env)
-    write_json_report(workspace["reports"], "REPOSITORIES.json", repo_results)
-    write_json_report(workspace["reports"], "BUILD_RESULTS.json", build_results)
-    write_json_report(workspace["reports"], "TEST_RESULTS.json", test_results)
-    write_json_report(workspace["reports"], "FIREFLY_RESULTS.json", firefly_results)
-    write_final_status(workspace["reports"], ledger)
+    reports = workspace["reports"]
+    write_json_report(reports, "ENVIRONMENT.json", env)
+    write_json_report(reports, "REPOSITORIES.json", repo_results)
+    write_json_report(reports, "inventory.json", inventory)
+    write_json_report(reports, "component_status.json", components)
+    write_json_report(reports, "BUILD_RESULTS.json", build_results)
+    write_json_report(reports, "TEST_RESULTS.json", test_results)
+    write_json_report(reports, "FIREFLY_RESULTS.json", firefly_results)
+    write_json_report(reports, "simulation_results.json", simulation_results)
+
+    final_report = {
+        "schema": "swi.execution.report.v3",
+        "execution": {
+            "run_id": run_id,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "platform": env.get("os"),
+            "python": env.get("python"),
+            "runner_version": __version__,
+            "mode": args.mode,
+            "cases_requested": args.cases,
+        },
+        "claims": FINAL_CLAIMS.copy(),
+        "repositories": repo_results,
+        "components": components,
+        "toolchain": env,
+        "inventory": {"repositories_inventoried": inventory.get("repositories_inventoried")},
+        "build": build_results,
+        "tests": test_results,
+        "firefly": firefly_results,
+        "simulation": {
+            "summary": simulation_results.get("summary") if isinstance(simulation_results, dict) else None,
+            "seed": simulation_results.get("seed") if isinstance(simulation_results, dict) else None,
+            "note": "SIMULATION ≠ PROOF",
+        },
+        "limitations": [
+            "Component paths that are null remain NOT_FOUND",
+            "Successful builds/tests do not upgrade claims",
+            "Simulation is synthetic only",
+        ],
+    }
+    write_json_report(reports, "final_report.json", final_report)
+    write_html_report(reports, final_report)
+    write_final_status(reports, ledger, components=components, simulation=simulation_results)
 
     print()
     print("=" * 60)
-    print("SWI UNIVERSAL TEST — FIREFLY PHASE COMPLETE")
+    print("SWI UNIVERSAL TEST — RUN COMPLETE")
     print("=" * 60)
     print()
-    print("Reports written under:", workspace["reports"])
+    print("Reports:", reports)
     print()
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
     print()
-    print("NOTE: Successful Firefly tests do not upgrade evidence claims.")
-    print("      SIMULATION ≠ PROOF")
-    print("      MEMORY ≠ AUTHORIZATION")
+    print("BUILD/TEST/SIMULATION INFRASTRUCTURE ≠ SWI PROOF")
     print()
 
     return 0
