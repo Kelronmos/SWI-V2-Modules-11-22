@@ -1,0 +1,51 @@
+{
+  "schema": "swi.online.test.rebuild.packages.v1",
+  "project": "SWI V1 + V2 Online Test Rebuild",
+  "mode": "TEST_ONLY",
+  "repositories": {
+    "v1": {
+      "url": "https://github.com/Kelronmos/SWI-V1-Module-1-10.git",
+      "branch": "main",
+      "dependency_file": "requirements.txt",
+      "rebuild": "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt",
+      "test": "python -m pytest -q",
+      "verify": "./scripts/verify.sh"
+    },
+    "v2": {
+      "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22.git",
+      "branch": "main",
+      "dependency_file": "requirements.txt",
+      "rebuild": "tools/rebuild_swi.sh (or tools/rebuild_swi.bat)",
+      "test": "python -m pytest -q"
+    }
+  },
+  "runtime": {
+    "language": "python",
+    "minimum": "3.10",
+    "recommended": "3.12",
+    "virtual_environment": ".venv"
+  },
+  "workspace": {
+    "root": "swi-test-workspace",
+    "v1": "swi-test-workspace/v1",
+    "v2": "swi-test-workspace/v2",
+    "artifacts": "swi-test-workspace/artifacts",
+    "reports": "swi-test-workspace/reports",
+    "logs": "swi-test-workspace/logs",
+    "downloads": "swi-test-workspace/downloads"
+  },
+  "online_sync": {
+    "enabled": true,
+    "method": "git",
+    "strategy": "ff-only",
+    "remote": "origin",
+    "destructive_commands_forbidden": true
+  },
+  "claims": {
+    "rebuild": "IMPLEMENTED",
+    "system_completion": "INCOMPLETE",
+    "proven": false,
+    "sealed": false,
+    "production_authorized": false
+  }
+}
