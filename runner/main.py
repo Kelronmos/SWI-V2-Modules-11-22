@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-SWI Universal Test / Demonstration Runner — structural diagnostic entry.
+SWI Universal Test / Demonstration Runner — rebuild / boot diagnostic.
 
 V1 = mandatory admission boundary, not the endpoint.
-Pipeline continues through all independent diagnostics.
-Status engine: YES/NO/UNKNOWN/CONFLICT — never collapse.
+ENVIRONMENT/ACQUISITION/TOOLCHAIN ≠ SWI architecture failure.
 """
 
 from __future__ import annotations
@@ -30,6 +29,7 @@ from runner.reporting import write_final_status, write_json_report, write_html_r
 from runner.component_discovery import discover_components
 from runner.status_engine import repository_status_object, overall_swi_ceiling
 from runner.hash_manifest import write_sha256_manifest
+from runner.failure_domains import classify_all, rebuild_report_header
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -46,6 +46,7 @@ def banner() -> None:
     print("=" * 60)
     print(RUNNER_NAME)
     print("=" * 60)
+    print("RUN TYPE:                 SWI REBUILD / BOOT DIAGNOSTIC")
     print("MODE:                     TEST + SIMULATION + EVIDENCE")
     print("REAL-WORLD ACTION:        NONE")
     print("PRODUCTION AUTHORIZATION: NO")
@@ -154,10 +155,9 @@ def main(argv: list[str] | None = None) -> int:
     print("[05b] Evidence-based component discovery...")
     try:
         discovery = discover_components(packages=packages, repo_results=repo_results, workspace=workspace)
-        n_impl = sum(1 for d in discovery if d["classification"] == "IMPLEMENTED")
-        n_doc = sum(1 for d in discovery if d["classification"] == "DOCUMENTED_ONLY")
-        n_miss = sum(1 for d in discovery if d["classification"] == "PATH_NOT_ESTABLISHED")
-        print(f"     Map={len(discovery)} IMPLEMENTED={n_impl} DOC_ONLY={n_doc} PATH_NOT_ESTABLISHED={n_miss}")
+        n_found = sum(1 for d in discovery if d.get("discovery", {}).get("status") == "FOUND" or d.get("classification") == "FOUND")
+        n_miss = sum(1 for d in discovery if d.get("classification") in ("PATH_NOT_ESTABLISHED",) or d.get("discovery", {}).get("status") == "PATH_NOT_ESTABLISHED")
+        print(f"     Map={len(discovery)} FOUND~={n_found} PATH_NOT_ESTABLISHED~={n_miss}")
     except Exception as exc:
         discovery = []
         print(f"     Discovery error: {exc}")
@@ -249,10 +249,10 @@ def main(argv: list[str] | None = None) -> int:
     print(f"     Status: {primary_status}  established={admission_ok}  mode={admission_mode}")
     print()
 
-    v1_to_v2_handoff = "NOT_FOUND"  # discovery only — do not invent
+    v1_to_v2_handoff = "NOT_FOUND"
     downstream_flow = "REACHED" if (admission_ok and v1_to_v2_handoff == "FOUND") else "NOT_REACHED"
 
-    print(f"[09] V1→V2 HANDOFF: {v1_to_v2_handoff}")
+    print(f"[09] V1	oV2 HANDOFF: {v1_to_v2_handoff}")
     print(f"[09] V2 BUILD: {v2_build_status}  V2 TEST: {v2_test_status}  continuation={downstream_flow}")
     print()
 
@@ -281,7 +281,7 @@ def main(argv: list[str] | None = None) -> int:
         simulation_results = {"status": "SKIPPED"}
     print()
 
-    print("[13–14] Reports + status engine + SHA-256...")
+    print("[13–14] Reports + failure domains + SHA-256...")
     reports = workspace["reports"]
 
     stage_status = {
@@ -322,8 +322,11 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     ceiling = overall_swi_ceiling()
+    failure_domains = classify_all(repo_results, build_results, test_results)
+    rebuild_header = rebuild_report_header(env, run_id, __version__, args.mode)
 
     write_json_report(reports, "ENVIRONMENT.json", env)
+    write_json_report(reports, "REBUILD_CONTEXT.json", rebuild_header)
     write_json_report(reports, "REPOSITORIES.json", repo_results)
     write_json_report(reports, "inventory.json", inventory)
     write_json_report(reports, "component_status.json", components)
@@ -332,6 +335,7 @@ def main(argv: list[str] | None = None) -> int:
     write_json_report(reports, "SWI_CEILING.json", ceiling)
     write_json_report(reports, "BUILD_RESULTS.json", build_results)
     write_json_report(reports, "TEST_RESULTS.json", test_results)
+    write_json_report(reports, "FAILURE_DOMAINS.json", failure_domains)
     write_json_report(reports, "ADMISSION_RESULTS.json", admission)
     write_json_report(reports, "FIREFLY_RESULTS.json", firefly_results)
     write_json_report(reports, "simulation_results.json", simulation_results)
@@ -339,7 +343,8 @@ def main(argv: list[str] | None = None) -> int:
 
     report_section = admission.get("report_section", {})
     final_report = {
-        "schema": "swi.execution.report.v4",
+        "schema": "swi.execution.report.v5",
+        "rebuild_context": rebuild_header,
         "execution": {
             "run_id": run_id,
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -348,8 +353,10 @@ def main(argv: list[str] | None = None) -> int:
             "runner_version": __version__,
             "mode": args.mode,
             "cases_requested": args.cases,
+            "real_world_action": "NONE",
         },
         "stage_status": stage_status,
+        "failure_domains": failure_domains,
         "swi_ceiling": ceiling,
         "repository_status": repo_status_list,
         "component_discovery": discovery,
@@ -374,11 +381,10 @@ def main(argv: list[str] | None = None) -> int:
             "note": "SIMULATION ≠ PROOF",
         },
         "limitations": [
-            "V1 is entrance, not endpoint",
+            "RUN TYPE = SWI REBUILD / BOOT DIAGNOSTIC — not production proof",
+            "SOURCE_DIRTY / missing toolchain = ENVIRONMENT/ACQUISITION, not SWI defect",
+            "Executed TEST FAIL = INVESTIGATION_REQUIRED, not automatic architecture failure",
             "CHECK_PASSED ≠ authority ADMITTED",
-            "UNKNOWN remains UNKNOWN; CONFLICT remains CONFLICT",
-            "TESTED ≠ PROVEN ≠ SEALED ≠ PRODUCTION_READY ≠ AUTHORIZED",
-            "BOOT_PASS ≠ PRODUCTION_READY",
             "v1_to_v2_handoff NOT_FOUND — not invented",
             runner_error_detail,
         ],
@@ -389,64 +395,65 @@ def main(argv: list[str] | None = None) -> int:
     hash_manifest = write_sha256_manifest(reports)
 
     mat = sum(1 for r in repo_results if r.get("status") == "MATERIALIZED")
+    dirty = sum(1 for r in repo_results if r.get("status") == "SOURCE_DIRTY")
     bp = sum(1 for b in build_results if b.get("status") == "PASS")
     bf = sum(1 for b in build_results if b.get("status") == "FAIL")
     tp = sum(1 for x in test_results if x.get("status") == "PASS")
     tf = sum(1 for x in test_results if x.get("status") == "FAIL")
     sim_sum = simulation_results.get("summary") if isinstance(simulation_results, dict) else {}
+    inv_req = failure_domains.get("summary", {}).get("investigation_required", 0)
+    env_blk = failure_domains.get("summary", {}).get("environment_blocked", 0)
 
     print()
     print("=" * 60)
-    print("SWI FULL STRUCTURAL DIAGNOSTIC")
+    print("SWI REBUILD / BOOT DIAGNOSTIC")
     print("=" * 60)
     print()
-    print("Repositories:")
+    print("ENVIRONMENT")
+    print(f"  RUN TYPE        : SWI REBUILD / BOOT DIAGNOSTIC")
+    print(f"  PLATFORM        : {env.get('os')}")
+    print(f"  PYTHON          : {env.get('python')}")
+    print(f"  GIT             : {env.get('git')}")
+    print(f"  NODE            : {env.get('node')}")
+    print(f"  RUST            : {env.get('rust')}")
+    print(f"  MODE            : {args.mode}")
+    print(f"  REAL-WORLD      : NONE")
+    print(f"  RUN_ID          : {run_id}")
+    print(f"  RUNNER VERSION  : {__version__}")
+    print()
+    print("NOTE: ENVIRONMENT/ACQUISITION/TOOLCHAIN ≠ SWI architecture failure")
+    print("      Executed TEST FAIL → INVESTIGATION_REQUIRED (not auto 'SWI failed')")
+    print()
+    print("ACQUISITION")
     print(f"  Materialized:            {mat}/{len(repo_results)}")
-    print(f"  Build PASS:              {bp}")
-    print(f"  Build FAIL:              {bf}")
-    print(f"  Test PASS:               {tp}")
-    print(f"  Test FAIL:               {tf}")
+    print(f"  SOURCE_DIRTY:            {dirty}")
     print()
-    print("Components:")
-    print(f"  Discovery map:           {len(discovery)}")
-    print(f"  Implemented (code):      {sum(1 for d in discovery if d.get('classification')=='IMPLEMENTED')}")
-    print(f"  Documented only:         {sum(1 for d in discovery if d.get('classification')=='DOCUMENTED_ONLY')}")
-    print(f"  Path not established:    {sum(1 for d in discovery if d.get('classification')=='PATH_NOT_ESTABLISHED')}")
+    print("BUILD")
+    print(f"  PASS:                    {bp}")
+    print(f"  FAIL:                    {bf}")
     print()
-    print("V1 Admission:")
-    print(f"  Found:                   {report_section.get('V1', {}).get('FOUND')}")
+    print("TEST")
+    print(f"  PASS:                    {tp}")
+    print(f"  FAIL:                    {tf}")
+    print()
+    print("FAILURE DOMAINS")
+    print(f"  Environment/acquisition blocked: {env_blk}")
+    print(f"  Investigation required:          {inv_req}")
+    print(f"  SWI defect proven by runner:     0 (never auto)")
+    print()
+    print("V1 Admission (live API assertions, not rebuild-only):")
     print(f"  Executed:                {report_section.get('V1', {}).get('EXECUTED')}")
     print(f"  Live PASS/FAIL:          {admission.get('execution', {}).get('live_pass', 0)}/{admission.get('execution', {}).get('live_fail', 0)}")
     print(f"  Mode:                    {admission_mode}")
     print()
-    print("V1 → V2 Handoff:")
-    print(f"  Status:                  {v1_to_v2_handoff}")
-    print()
-    print("V2:")
-    print(f"  Build:                   {v2_build_status}")
-    print(f"  Test:                    {v2_test_status}")
-    print(f"  Continuation:            {downstream_flow}")
-    print()
-    print("Simulation:")
-    print(f"  Passed:                  {(sim_sum or {}).get('pass', 0)}")
-    print(f"  Failed:                  {(sim_sum or {}).get('fail', 0)}")
-    print(f"  Synthetic Only:          YES")
+    print(f"V1	oV2 Handoff:           {v1_to_v2_handoff}")
+    print(f"Downstream:                {downstream_flow}")
     print()
     print("Evidence:")
-    print(f"  JSON:                    {reports / 'final_report.json'}")
-    print(f"  HTML:                    {reports / 'final_report.html'}")
-    print(f"  SHA-256:                 {reports / 'sha256-manifest.json'} ({hash_manifest.get('count', 0)} files)")
-    print(f"  PDF:                     NOT_GENERATED")
-    print()
-    print("STAGE STATUS")
-    print(f"  runner_error        : {runner_error}")
-    print(f"  v1_build            : {v1_build_status}")
-    print(f"  v1_test             : {v1_test_status}")
-    print(f"  v1_admission        : {primary_status}")
-    print(f"  v1_to_v2_handoff    : {v1_to_v2_handoff}")
-    print(f"  downstream_flow     : {downstream_flow}")
-    print(f"  v2_build            : {v2_build_status}")
-    print(f"  v2_test             : {v2_test_status}")
+    print(f"  FAILURE_DOMAINS.json     : {reports / 'FAILURE_DOMAINS.json'}")
+    print(f"  REBUILD_CONTEXT.json     : {reports / 'REBUILD_CONTEXT.json'}")
+    print(f"  final_report.json        : {reports / 'final_report.json'}")
+    print(f"  SHA-256                  : {reports / 'sha256-manifest.json'} ({hash_manifest.get('count', 0)} files)")
     print()
     print("=" * 60)
     print("SYSTEM COMPLETION:         INCOMPLETE")
@@ -455,9 +462,8 @@ def main(argv: list[str] | None = None) -> int:
     print("PRODUCTION AUTHORIZED:     NO")
     print("=" * 60)
     print()
-    print("UNKNOWN remains UNKNOWN | CONFLICT remains CONFLICT")
-    print("TESTED ≠ PROVEN ≠ SEALED ≠ PRODUCTION_READY ≠ AUTHORIZED")
-    print("BOOT_PASS ≠ PRODUCTION_READY")
+    print("Windows rebuild result ≠ SWI architecture failed")
+    print("BUILD ≠ TEST ≠ ASSERTION ≠ PROOF ≠ PRODUCTION READINESS")
     print()
 
     return 1 if runner_error else 0
