@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from runner.domains import (
     FOUND, PATH_NOT_ESTABLISHED, DOCUMENTED_ONLY,
-    PASS, FAIL, NOT_RUN, NO_TEST_SUITE_FOUND,
+    PASS, FAIL, ERROR, NOT_RUN, NO_TEST_SUITE_FOUND,
     make_discovery_record, make_assertion_record,
     DISCOVERY_STATUSES, ASSERTION_STATUSES,
 )
@@ -40,7 +40,6 @@ def test_d03_suite_found_does_not_mean_pass():
         test_suite_found=True,
     )
     assert r["discovery"]["test_suite_found"] is True
-    # Discovery alone: tests still NOT_RUN until executed
     assert r["tests"]["executed"] is False
     assert r["tests"]["status"] != PASS
 
@@ -89,7 +88,6 @@ def test_d07_execution_pass_is_assertion_not_discovery():
 
 def test_d08_handoff_not_found_is_discovery_not_fail():
     r = make_discovery_record("v1_v2_handoff", status=PATH_NOT_ESTABLISHED)
-    # Use NOT_FOUND semantics via path not established
     assert r["discovery"]["status"] == PATH_NOT_ESTABLISHED
     assert r["tests"]["status"] == NOT_RUN
     assert r["tests"]["status"] != FAIL
@@ -117,13 +115,12 @@ def test_d10_discovered_impl_with_failing_assertion():
     )
     assert r["discovery"]["status"] == FOUND
     assert a["result"] == FAIL
-    # Both can coexist without collapsing discovery into fail
     assert r["discovery"]["status"] != FAIL
 
 
-def test_discovery_statuses_not_in_assertion_column():
-    for s in DISCOVERY_STATUSES:
-        assert s not in {PASS, FAIL, ERROR} or s in ASSERTION_STATUSES  # overlap only if intentionally shared
-    # FOUND must never be used as test result in our records
+def test_discovery_statuses_not_used_as_test_result():
     r = make_discovery_record("x", status=FOUND, implementation_found=True)
     assert r["tests"]["status"] != FOUND
+    assert r["tests"]["status"] in ASSERTION_STATUSES
+    for s in DISCOVERY_STATUSES:
+        assert s not in {PASS, FAIL, ERROR}
