@@ -1,0 +1,16 @@
+{
+  "swi_header": "SWI-TEST-VALID-001",
+  "source_id": "TEST-VALID-001",
+  "source_type": "standard",
+  "publisher": "Example Standards Body",
+  "reference": "EX-STD-1:2026",
+  "provenance": "fixture path only",
+  "trusted_for": "information",
+  "policy_version": "1.0.0",
+  "policy_status": "draft",
+  "policy_scope": "test fixtures only",
+  "jurisdiction": "none_declared",
+  "evidence": "test/fixtures/trusted_source/valid_record.json",
+  "boundary": "structural test only; SOURCE != AUTHORIZATION",
+  "claim": "Informational reference for inspector unit tests"
+}

@@ -1,0 +1,16 @@
+{
+  "swi_header": "SWI-TEST-FORBIDDEN-001",
+  "source_id": "TEST-FORBIDDEN-001",
+  "source_type": "reference",
+  "publisher": "Example",
+  "reference": "REF-API-1",
+  "provenance": "fixture",
+  "trusted_for": "information",
+  "policy_version": "1.0.0",
+  "policy_status": "draft",
+  "policy_scope": "test",
+  "jurisdiction": "none_declared",
+  "evidence": "test/fixtures/trusted_source/forbidden_api_authority.json",
+  "boundary": "should halt",
+  "claim": "API authorization is granted by network access; source is authorization"
+}

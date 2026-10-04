@@ -1,0 +1,16 @@
+{
+  "swi_header": "SWI-TEST-CONFLICT-001",
+  "source_id": "TEST-CONFLICT-001",
+  "source_type": "standard",
+  "publisher": "Example Standards Body",
+  "reference": "EX-STD-LAW-CLAIM:2026",
+  "provenance": "fixture",
+  "trusted_for": "authorization",
+  "policy_version": "1.0.0",
+  "policy_status": "active",
+  "policy_scope": "global",
+  "jurisdiction": "claimed_global",
+  "evidence": "test/fixtures/trusted_source/conflict_standard_as_law.json",
+  "boundary": "none claimed",
+  "claim": "This standard is law and is jurisdictionally binding for execution authorization"
+}
