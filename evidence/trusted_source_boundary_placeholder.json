@@ -1,0 +1,30 @@
+{
+  "swi_header": "SWI-TRUSTED-SOURCE-BOUNDARY-PLACEHOLDER-v0",
+  "swi": "SWI V2 trusted-source spine placeholder",
+  "source_id": "SWI-TSB-PLACEHOLDER-001",
+  "source_type": "reference",
+  "publisher": "SWI project (placeholder record)",
+  "reference": "docs/SWI_TRUSTED_SOURCE_BOUNDARY_PLACEHOLDER.md",
+  "provenance": "repository path evidence/trusted_source_boundary_placeholder.json; not externally authenticated",
+  "trusted_for": "information and structural inspection only",
+  "policy_version": "0.0.0-placeholder",
+  "policy_status": "draft",
+  "policy_scope": "SWI V2 repository structural checks; no operational jurisdiction claimed",
+  "jurisdiction": "none_declared",
+  "evidence": "evidence/trusted_source_boundary_placeholder.json",
+  "boundary": "Stops at structural record validity. Does not authorize action. STANDARD != LAW. SOURCE != AUTHORIZATION. API != AUTHORIZATION. VPN != AUTHORIZATION. SIGNATURE != AUTHORITY. CI_GREEN != PRODUCTION_AUTHORIZATION.",
+  "claim": "This record exists so the spine inspector can validate field presence. It does not assert legal binding, human authority, or production authorization.",
+  "invariants": [
+    "STANDARD != LAW",
+    "LAW != POLICY",
+    "POLICY != HUMAN_AUTHORITY",
+    "SOURCE != AUTHORIZATION",
+    "OBSERVATION != AUTHORITY",
+    "SIGNATURE != AUTHORITY",
+    "API != AUTHORIZATION",
+    "VPN != AUTHORIZATION",
+    "CI_GREEN != PRODUCTION_AUTHORIZATION"
+  ],
+  "production_authorized": false,
+  "notes": "PLACEHOLDER PIPELINE GREEN != TRUSTED SOURCE PROVEN != AUTHORITY PROVEN != SWI PRODUCTION AUTHORIZED"
+}
