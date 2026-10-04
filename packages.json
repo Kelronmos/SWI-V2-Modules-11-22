@@ -1,22 +1,90 @@
 {
-  "schema": "swi.online.test.rebuild.packages.v1",
-  "project": "SWI V1 + V2 Online Test Rebuild",
+  "schema": "swi.online.test.rebuild.packages.v2",
+  "project": "SWI Online Test Rebuild + Full Repository Pack",
   "mode": "TEST_ONLY",
   "repositories": {
     "v1": {
       "url": "https://github.com/Kelronmos/SWI-V1-Module-1-10.git",
       "branch": "main",
+      "role": "ACTIVE_CORE_V1",
+      "required_for": ["v1_tests", "node_access_boundary_tests"],
+      "toolchain": ["git", "python>=3.10"],
       "dependency_file": "requirements.txt",
-      "rebuild": "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt",
+      "rebuild": "python -m venv .venv; pip install -r requirements.txt",
       "test": "python -m pytest -q",
-      "verify": "./scripts/verify.sh"
+      "verify": "scripts/verify.sh"
     },
     "v2": {
       "url": "https://github.com/Kelronmos/SWI-V2-Modules-11-22.git",
       "branch": "main",
+      "role": "ACTIVE_CORE_V2",
+      "required_for": ["v2_tests"],
+      "toolchain": ["git", "python>=3.10"],
       "dependency_file": "requirements.txt",
-      "rebuild": "tools/rebuild_swi.sh (or tools/rebuild_swi.bat)",
+      "rebuild": "tools/rebuild_swi.sh or tools/rebuild_swi.bat",
       "test": "python -m pytest -q"
+    },
+    "node_access_boundary": {
+      "url": "https://github.com/Kelronmos/SWI-Node-Access-Boundary.git",
+      "branch": "main",
+      "role": "RELATED_TEST_PACKAGE",
+      "required_for": ["distributed_node_boundary_tests"],
+      "depends_on": ["v1"],
+      "toolchain": ["git", "python>=3.10"],
+      "build": "python -m pytest --collect-only -q",
+      "test": "python -m pytest test/test_access_boundary.py -v"
+    },
+    "mathematical_evidence_engine": {
+      "url": "https://github.com/Kelronmos/SWI-Mathematical-Evidence-Engine.git",
+      "branch": "main",
+      "role": "RELATED_EVIDENCE_ENGINE",
+      "required_for": ["mathematical_evidence_engine_tests"],
+      "toolchain": ["git", "node>=18"],
+      "dependency_file": "package.json",
+      "build": "npm install; npm run build",
+      "test": "npm run lint"
+    },
+    "firefly_memory": {
+      "url": "https://github.com/Kelronmos/swi-firefly-memory.git",
+      "branch": "main",
+      "role": "RELATED_MEMORY_ENGINE",
+      "required_for": ["firefly_memory_tests", "firefly_memory_simulation"],
+      "toolchain": ["git", "node>=18"],
+      "dependency_file": "package.json",
+      "build": "npm install; npm run build",
+      "test": "npm run lint",
+      "status": "DEVELOPMENT_SUSPENDED"
+    },
+    "structured_workflow_intelligence": {
+      "url": "https://github.com/Kelronmos/Structured-Workflow-Intelligence.git",
+      "branch": "main",
+      "role": "LEGACY_RELATED_PLATFORM",
+      "required_for": [],
+      "toolchain": ["git", "node>=18"],
+      "dependency_file": "package.json",
+      "build": "npm install; npm run build",
+      "test": "npm run test",
+      "verify": "npm run verify"
+    },
+    "rust_governance_engine": {
+      "url": "https://github.com/Kelronmos/structured-workflow-intelligence-rust.git",
+      "branch": "main",
+      "role": "RELATED_RUST_PROTOTYPE",
+      "required_for": [],
+      "toolchain": ["git", "rust>=1.70", "cargo"],
+      "dependency_file": "Cargo.toml",
+      "build": "cargo build --release",
+      "test": "cargo test"
+    },
+    "v103_api_foundation": {
+      "url": "https://github.com/Kelronmos/SWI_V103_API_Foundation.git",
+      "branch": "main",
+      "role": "LEGACY_API_STUB",
+      "required_for": [],
+      "toolchain": ["git"],
+      "build": "NO_BUILD_CLAIM",
+      "test": "NO_TEST_CLAIM",
+      "status": "LEGACY_STUB"
     }
   },
   "runtime": {
@@ -25,10 +93,17 @@
     "recommended": "3.12",
     "virtual_environment": ".venv"
   },
+  "toolchains": {
+    "python": ">=3.10",
+    "node": ">=18",
+    "rust": ">=1.70",
+    "git": "required"
+  },
   "workspace": {
     "root": "swi-test-workspace",
     "v1": "swi-test-workspace/v1",
     "v2": "swi-test-workspace/v2",
+    "repositories": "swi-test-workspace/repos",
     "artifacts": "swi-test-workspace/artifacts",
     "reports": "swi-test-workspace/reports",
     "logs": "swi-test-workspace/logs",
@@ -39,7 +114,47 @@
     "method": "git",
     "strategy": "ff-only",
     "remote": "origin",
-    "destructive_commands_forbidden": true
+    "destructive_commands_forbidden": true,
+    "fresh_clone_preferred": true,
+    "dirty_checkout_action": "STOP_AND_REPORT"
+  },
+  "execution_policy": {
+    "missing_toolchain": "RECORD_NOT_RUN",
+    "dependency_failure": "RECORD_FAILURE",
+    "build_failure": "RECORD_FAILURE",
+    "test_failure": "RECORD_FAILURE",
+    "missing_source": "RECORD_MISSING",
+    "no_result_promotion": true,
+    "v1_runtime_imported_into_v2": false,
+    "simulation_is_not_proof": true,
+    "production_authorization": false
+  },
+  "test_matrix": {
+    "smoke": 10,
+    "standard": 100,
+    "extended": 1000,
+    "full": 8000,
+    "deterministic_seed_required": true
+  },
+  "reporting": {
+    "json": true,
+    "pdf": true,
+    "html": true,
+    "sha256_manifest": true,
+    "outputs": [
+      "GLOBAL_REPORT.json",
+      "NODE_INVENTORY.json",
+      "BUILD_RESULTS.json",
+      "TEST_RESULTS.json",
+      "FIREFLY_RESULTS.json",
+      "SIMULATION_RESULTS.json",
+      "CASE_RESULTS.json",
+      "FAILURE_REPORT.json",
+      "HASH_MANIFEST.json",
+      "GLOBAL_REPORT.pdf",
+      "GLOBAL_REPORT.html",
+      "FINAL_STATUS.txt"
+    ]
   },
   "claims": {
     "rebuild": "IMPLEMENTED",
