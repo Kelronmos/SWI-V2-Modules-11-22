@@ -23,6 +23,7 @@ from runner.bootstrap import detect_environment, ensure_workspace
 from runner.repositories import materialize_repositories
 from runner.build import build_repositories
 from runner.tests import test_repositories
+from runner.firefly import run_firefly_tests
 from runner.evidence import EvidenceLedger, FINAL_CLAIMS
 from runner.reporting import write_final_status, write_json_report
 
@@ -184,9 +185,22 @@ def main(argv: list[str] | None = None) -> int:
     print(f"       Test PASS: {test_pass}  FAIL: {test_fail}")
     print()
 
-    # 8–9 still stubs
-    print("[8/10] Firefly tests      — stub (NOT_RUN)")
-    print("[9/10] Demonstrations     — stub (NOT_RUN)")
+    # 8. Firefly tests
+    print("[8/10] Running Firefly demonstration suite...")
+    if args.mode == "audit":
+        firefly_results = {"status": "SKIPPED", "reason": "audit mode"}
+        print("       Skipped (audit mode)")
+    else:
+        firefly_results = run_firefly_tests(
+            packages=packages,
+            repo_results=repo_results,
+            workspace=workspace,
+            ledger=ledger,
+        )
+    print()
+
+    # 9. Demonstrations still stub
+    print("[9/10] Demonstrations / 8K cases — stub (NOT_RUN)")
     print()
 
     # 10. Reporting
@@ -195,11 +209,12 @@ def main(argv: list[str] | None = None) -> int:
     write_json_report(workspace["reports"], "REPOSITORIES.json", repo_results)
     write_json_report(workspace["reports"], "BUILD_RESULTS.json", build_results)
     write_json_report(workspace["reports"], "TEST_RESULTS.json", test_results)
+    write_json_report(workspace["reports"], "FIREFLY_RESULTS.json", firefly_results)
     write_final_status(workspace["reports"], ledger)
 
     print()
     print("=" * 60)
-    print("SWI UNIVERSAL TEST — BUILD + TEST PHASE COMPLETE")
+    print("SWI UNIVERSAL TEST — FIREFLY PHASE COMPLETE")
     print("=" * 60)
     print()
     print("Reports written under:", workspace["reports"])
@@ -207,8 +222,9 @@ def main(argv: list[str] | None = None) -> int:
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
     print()
-    print("NOTE: Successful builds/tests do not upgrade evidence claims.")
-    print("      BUILD/TEST INFRASTRUCTURE ≠ SWI PROOF")
+    print("NOTE: Successful Firefly tests do not upgrade evidence claims.")
+    print("      SIMULATION ≠ PROOF")
+    print("      MEMORY ≠ AUTHORIZATION")
     print()
 
     return 0
