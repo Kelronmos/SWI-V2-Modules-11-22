@@ -2,10 +2,24 @@
 """
 SWI Universal Test / Demonstration Runner — entry point.
 
-Usage:
-    python -m runner.main
-    python -m runner.main --cases 100
-    python -m runner.main --mode smoke|full|audit
+Architectural order:
+  01 TOOLCHAIN
+  02 MANIFEST
+  03 MATERIALIZE
+  04 SHA / COMMIT
+  05 V1 BUILD
+  06 V1 TEST
+  07 V1 ADMISSION TEST
+  08 V2 BUILD
+  09 V2 TEST
+  10 COMPONENT / CROSS TESTS
+  11 FIREFLY
+  12 SIMULATION
+  13 EVIDENCE / REPORTS
+  14 FINAL STATUS
+
+If V1 admission is not established, downstream admission-dependent
+stages are marked NOT_REACHED (not false PASS).
 """
 
 from __future__ import annotations
@@ -21,6 +35,7 @@ from runner.bootstrap import detect_environment, ensure_workspace
 from runner.repositories import materialize_repositories
 from runner.build import build_repositories
 from runner.tests import test_repositories
+from runner.admission import run_admission_tests
 from runner.firefly import run_firefly_tests
 from runner.inventory import run_inventory, evaluate_components
 from runner.simulation import run_simulation
@@ -32,19 +47,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="SWI Universal Test / Demonstration Runner (TEST_ONLY)"
     )
-    parser.add_argument(
-        "--cases", type=int, default=100,
-        choices=[10, 100, 1000, 8000],
-        help="Number of synthetic demonstration cases (default: 100)",
-    )
-    parser.add_argument(
-        "--mode", choices=["smoke", "full", "audit"], default="smoke",
-        help="Execution mode (default: smoke)",
-    )
-    parser.add_argument(
-        "--packages", type=Path, default=None,
-        help="Path to packages.json (default: ./packages.json)",
-    )
+    parser.add_argument("--cases", type=int, default=100, choices=[10, 100, 1000, 8000])
+    parser.add_argument("--mode", choices=["smoke", "full", "audit"], default="smoke")
+    parser.add_argument("--packages", type=Path, default=None)
     return parser.parse_args(argv)
 
 
@@ -52,11 +57,10 @@ def banner() -> None:
     print("=" * 60)
     print(RUNNER_NAME)
     print("=" * 60)
-    print()
-    print("MODE:                  TEST + SIMULATION + EVIDENCE COLLECTION")
-    print("REAL-WORLD ACTION:     NONE")
+    print("MODE:                     TEST + SIMULATION + EVIDENCE")
+    print("REAL-WORLD ACTION:        NONE")
     print("PRODUCTION AUTHORIZATION: NO")
-    print()
+    print("V1 ADMISSION BOUNDARY:    ENFORCED")
     print("=" * 60)
     print()
 
@@ -66,10 +70,16 @@ def load_packages(path: Path) -> dict:
         raise FileNotFoundError(f"packages.json not found: {path}")
     with path.open(encoding="utf-8") as f:
         data = json.load(f)
-    schema = data.get("schema", "")
-    if not schema.startswith("swi.online.test.rebuild.packages."):
-        raise ValueError(f"Unsupported packages.json schema: {schema}")
+    if not str(data.get("schema", "")).startswith("swi.online.test.rebuild.packages."):
+        raise ValueError(f"Unsupported schema: {data.get('schema')}")
     return data
+
+
+def _split_by_key(results: list[dict], key: str) -> dict | None:
+    for r in results:
+        if r.get("key") == key:
+            return r
+    return None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -78,7 +88,6 @@ def main(argv: list[str] | None = None) -> int:
 
     script_dir = Path(__file__).resolve().parent.parent
     packages_path = args.packages or (script_dir / "packages.json")
-
     run_id = f"SWI-RUN-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
     print(f"RUN_ID          : {run_id}")
     print(f"Runner version  : {__version__}")
@@ -88,85 +97,122 @@ def main(argv: list[str] | None = None) -> int:
 
     ledger = EvidenceLedger(run_id=run_id, runner_version=__version__)
 
+    # 01–02 Manifest
     try:
         packages = load_packages(packages_path)
-        print(f"[1/10] Loaded packages.json (schema {packages.get('schema')})")
+        print(f"[01] Manifest loaded (schema {packages.get('schema')})")
     except Exception as exc:
-        print(f"FATAL: Cannot load packages.json — {exc}")
+        print(f"FATAL: {exc}")
         return 1
 
-    print("[2/10] Detecting environment...")
+    # 01 Toolchain
+    print("[02] Toolchain detection...")
     env = detect_environment()
     ledger.record_environment(env)
-    print(f"       OS={env.get('os')}  Python={env.get('python')}  Git={env.get('git')}")
-    print(f"       Node={env.get('node') or 'not found'}  Rust={env.get('rust') or 'not found'}")
+    print(f"     OS={env.get('os')} Python={env.get('python')} Git={env.get('git')}")
     print()
 
-    print("[3/10] Ensuring workspace...")
+    # Workspace
+    print("[03] Workspace...")
     workspace = ensure_workspace(script_dir, packages.get("workspace", {}))
-    print(f"       {workspace['root']}")
+    print(f"     {workspace['root']}")
     print()
 
-    print("[4/10] Materializing repositories...")
+    # 03–04 Materialize + SHA
+    print("[04] Materialize repositories + record SHAs...")
     try:
         repo_results = materialize_repositories(
             packages=packages, workspace=workspace, mode=args.mode, ledger=ledger,
         )
     except Exception as exc:
-        print(f"FATAL during materialization: {exc}")
-        ledger.record_failure("materialization", str(exc))
+        print(f"FATAL: {exc}")
         write_final_status(workspace["reports"], ledger)
         return 1
-    materialized = sum(1 for r in repo_results if r.get("status") == "MATERIALIZED")
-    print(f"       Materialized: {materialized}/{len(repo_results)}")
+    print(f"     Materialized: {sum(1 for r in repo_results if r.get('status')=='MATERIALIZED')}/{len(repo_results)}")
     print()
 
-    print("[5/10] Inventory + component evaluation...")
+    # Inventory (informational, not admission)
+    print("[05] Inventory + component evaluation...")
     inventory = run_inventory(packages, repo_results, workspace)
     components = evaluate_components(packages, repo_results, inventory)
-    present = sum(1 for c in components if c["status"]["present"])
-    print(f"       Components declared={len(components)}  present={present}")
+    print(f"     Components declared={len(components)} present={sum(1 for c in components if c['status']['present'])}")
     print()
 
-    print("[6/10] Building repositories...")
+    # ---- V1 FIRST (admission boundary) ----
+    print("[06] V1 BUILD...")
     if args.mode == "audit":
         build_results = []
-        print("       Skipped (audit mode)")
     else:
-        build_results = build_repositories(
-            packages, repo_results, workspace, env, ledger,
-        )
-    print(f"       Build PASS={sum(1 for b in build_results if b.get('status')=='PASS')}  "
-          f"FAIL={sum(1 for b in build_results if b.get('status')=='FAIL')}")
+        # Build all, but we sequence reporting as V1 then V2
+        build_results = build_repositories(packages, repo_results, workspace, env, ledger)
+    v1_build = _split_by_key(build_results, "v1")
+    v2_build = _split_by_key(build_results, "v2")
+    print(f"     V1 BUILD: {(v1_build or {}).get('status', 'NOT_RUN')}")
     print()
 
-    print("[7/10] Running repository tests...")
+    print("[07] V1 TEST...")
     if args.mode == "audit":
         test_results = []
-        print("       Skipped (audit mode)")
     else:
         test_results = test_repositories(
             packages, repo_results, build_results, workspace, env, ledger,
         )
-    print(f"       Test PASS={sum(1 for t in test_results if t.get('status')=='PASS')}  "
-          f"FAIL={sum(1 for t in test_results if t.get('status')=='FAIL')}")
+    v1_test = _split_by_key(test_results, "v1")
+    v2_test = _split_by_key(test_results, "v2")
+    print(f"     V1 TEST: {(v1_test or {}).get('status', 'NOT_RUN')}")
     print()
 
-    print("[8/10] Firefly demonstration suite...")
+    print("[08] V1 ADMISSION TEST...")
     if args.mode == "audit":
-        firefly_results = {"status": "SKIPPED", "reason": "audit mode"}
+        admission = {"primary_admission": {"status": "NOT_ESTABLISHED"}, "admission_established": False}
+        print("     Skipped (audit mode)")
+    else:
+        admission = run_admission_tests(
+            packages, repo_results, v1_build, v1_test, ledger,
+        )
+    admission_ok = admission.get("admission_established", False)
+    print(f"     V1 admission established: {admission_ok}")
+    print(f"     Primary status: {admission.get('primary_admission', {}).get('status')}")
+    print()
+
+    # Downstream stages — if admission not established, mark admission-dependent as NOT_REACHED
+    downstream_note = None
+    if not admission_ok:
+        downstream_note = (
+            "V1 admission NOT_ESTABLISHED — downstream admission-dependent flows "
+            "must not be treated as authorized. Stages still run for evidence "
+            "collection but cannot claim admission or authority."
+        )
+        print(f"[09] NOTE: {downstream_note}")
+        print()
+
+    print("[09] V2 BUILD status...")
+    print(f"     V2 BUILD: {(v2_build or {}).get('status', 'NOT_RUN')}")
+    print()
+
+    print("[10] V2 TEST status...")
+    print(f"     V2 TEST: {(v2_test or {}).get('status', 'NOT_RUN')}")
+    print()
+
+    print("[11] Firefly...")
+    if args.mode == "audit":
+        firefly_results = {"status": "SKIPPED"}
     else:
         firefly_results = run_firefly_tests(packages, repo_results, workspace, ledger)
     print()
 
-    print("[9/10] Synthetic simulation...")
+    print("[12] Synthetic simulation (not an admission path)...")
     if args.mode == "audit":
-        simulation_results = {"status": "SKIPPED", "reason": "audit mode"}
+        simulation_results = {"status": "SKIPPED"}
     else:
         simulation_results = run_simulation(args.cases, packages, ledger)
+        simulation_results["admission_bypass"] = False
+        simulation_results["note"] = (
+            "SIMULATION ≠ PROOF. Simulation is not an admission gate."
+        )
     print()
 
-    print("[10/10] Generating reports...")
+    print("[13–14] Reports + FINAL STATUS...")
     reports = workspace["reports"]
     write_json_report(reports, "ENVIRONMENT.json", env)
     write_json_report(reports, "REPOSITORIES.json", repo_results)
@@ -174,6 +220,7 @@ def main(argv: list[str] | None = None) -> int:
     write_json_report(reports, "component_status.json", components)
     write_json_report(reports, "BUILD_RESULTS.json", build_results)
     write_json_report(reports, "TEST_RESULTS.json", test_results)
+    write_json_report(reports, "ADMISSION_RESULTS.json", admission)
     write_json_report(reports, "FIREFLY_RESULTS.json", firefly_results)
     write_json_report(reports, "simulation_results.json", simulation_results)
 
@@ -188,23 +235,36 @@ def main(argv: list[str] | None = None) -> int:
             "mode": args.mode,
             "cases_requested": args.cases,
         },
+        "architecture": {
+            "admission_boundary": "V1",
+            "v2_role": "DOWNSTREAM / CONTINUATION",
+            "bypass_forbidden": [
+                "INPUT → V2",
+                "INPUT → RELATED",
+                "INPUT → SIMULATION",
+                "INPUT → SEAL",
+                "INPUT → FIREFLY",
+            ],
+        },
         "claims": FINAL_CLAIMS.copy(),
+        "admission": admission.get("primary_admission"),
+        "admission_established": admission_ok,
         "repositories": repo_results,
         "components": components,
         "toolchain": env,
-        "inventory": {"repositories_inventoried": inventory.get("repositories_inventoried")},
         "build": build_results,
         "tests": test_results,
         "firefly": firefly_results,
         "simulation": {
             "summary": simulation_results.get("summary") if isinstance(simulation_results, dict) else None,
-            "seed": simulation_results.get("seed") if isinstance(simulation_results, dict) else None,
-            "note": "SIMULATION ≠ PROOF",
+            "note": "SIMULATION ≠ PROOF; simulation is not an admission gate",
         },
         "limitations": [
-            "Component paths that are null remain NOT_FOUND",
-            "Successful builds/tests do not upgrade claims",
-            "Simulation is synthetic only",
+            "V1 BUILD/TEST PASS ≠ V1 ADMISSION PROVEN",
+            "V1 ADMISSION ≠ AUTHORIZATION",
+            "AUTHORIZATION ≠ ACTION",
+            "Downstream stages do not create alternate admission paths",
+            downstream_note,
         ],
     }
     write_json_report(reports, "final_report.json", final_report)
@@ -215,13 +275,15 @@ def main(argv: list[str] | None = None) -> int:
     print("=" * 60)
     print("SWI UNIVERSAL TEST — RUN COMPLETE")
     print("=" * 60)
-    print()
-    print("Reports:", reports)
+    print(f"V1 admission boundary : ENFORCED")
+    print(f"V1 admission status   : {admission.get('primary_admission', {}).get('status')}")
+    print(f"Admission established : {admission_ok}")
     print()
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
     print()
-    print("BUILD/TEST/SIMULATION INFRASTRUCTURE ≠ SWI PROOF")
+    print("NO V1 ADMISSION → NO DOWNSTREAM ADMISSION-DEPENDENT FLOW")
+    print("BUILD ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION")
     print()
 
     return 0
