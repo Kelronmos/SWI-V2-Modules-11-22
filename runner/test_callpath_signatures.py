@@ -7,7 +7,7 @@ from __future__ import annotations
 import inspect
 
 from runner.build import build_repositories
-from runner.tests import test_repositories
+from runner.tests import test_repositories as stage_test_repositories
 from runner.admission import run_admission_tests
 from runner.firefly import run_firefly_tests
 from runner.inventory import run_inventory, evaluate_components
@@ -30,8 +30,8 @@ def test_build_signature():
     ]
 
 
-def test_test_signature():
-    assert _params(test_repositories) == [
+def test_stage_test_signature():
+    assert _params(stage_test_repositories) == [
         "packages", "repo_results", "build_results", "workspace", "env", "ledger"
     ]
 
