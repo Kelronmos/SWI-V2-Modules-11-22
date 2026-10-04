@@ -1,8 +1,8 @@
 """
-Evidence-based component discovery across materialized repositories.
+Evidence-based component DISCOVERY (Domain A).
 
-TERM_FOUND ≠ CODE_FOUND ≠ TEST_FOUND ≠ EXECUTABLE_FOUND
-Never invent paths. PATH_NOT_ESTABLISHED when no evidence.
+Answers: what exists, where, what can be inspected?
+Does NOT produce test PASS/FAIL.
 """
 from __future__ import annotations
 
@@ -10,32 +10,36 @@ import re
 from pathlib import Path
 from typing import Any
 
-# Search tokens per component (not proof of implementation)
+from runner.domains import (
+    FOUND, PATH_NOT_ESTABLISHED, DOCUMENTED_ONLY, TERM_FOUND,
+    make_discovery_record,
+)
+
 COMPONENT_SEARCH = {
     "v1_admission": ["admit_or_halt", "evaluate_source", "source_admission", "admission_boundary"],
     "v2_modules": ["swi_v2", "module11", "admit_foundation_input"],
     "node_access_boundary": ["node_access", "node-access", "NodeAccess"],
     "mathematical_evidence_engine": ["mathematical_evidence", "math_evidence"],
     "firefly_memory": ["firefly", "FireflyMemory"],
-    "structured_workflow_intelligence": ["structured_workflow", "SWI"],
-    "rust_governance_engine": ["governance", "cargo.toml"],
+    "structured_workflow_intelligence": ["structured_workflow"],
+    "rust_governance_engine": ["governance"],
     "v103_api_foundation": ["v103", "api_foundation"],
     "common_sense": ["common_sense", "CommonSense"],
     "reflex_sadu": ["reflex", "sadu", "SADU"],
-    "cek": ["cek", "CEK", "observational"],
-    "scar": ["scar", "SCAR"],
+    "cek": ["\\bcek\\b", "CEK"],
+    "scar": ["\\bscar\\b", "SCAR"],
     "seeder": ["seeder", "SEEDER"],
-    "s9_security_maze": ["s9", "security_maze", "SecurityMaze"],
-    "zero_trust_task_travel": ["zero_trust", "task_travel", "TaskTravel"],
+    "s9_security_maze": ["s9", "security_maze"],
+    "zero_trust_task_travel": ["zero_trust", "task_travel"],
     "structured_seal": ["structured_seal", "create_seal", "SealedEvidence"],
     "runtime_seal": ["runtime_seal", "RuntimeSeal"],
-    "mathematical_zero": ["mathematical_zero", "true_zero", "TrueZero"],
-    "geometric_zero": ["geometric_zero", "GeometricZero"],
+    "mathematical_zero": ["mathematical_zero", "true_zero"],
+    "geometric_zero": ["geometric_zero"],
     "evidence_engine": ["evidence_engine", "EvidenceEngine"],
-    "consequence_gate": ["consequence", "ConsequenceGate"],
+    "consequence_gate": ["consequence_gate", "ConsequenceGate"],
     "authorization_gate": ["authorization_gate", "AuthorizationGate"],
-    "jurisdiction_binding": ["jurisdiction", "Jurisdiction"],
-    "pre_revalidation": ["revalidation", "REQUIRES_REVALIDATION", "PRE"],
+    "jurisdiction_binding": ["jurisdiction"],
+    "pre_revalidation": ["REQUIRES_REVALIDATION", "revalidation"],
 }
 
 SKIP_DIRS = {
@@ -52,14 +56,17 @@ def _scan_repo(repo_path: Path, tokens: list[str], max_hits: int = 20) -> dict[s
 
     if not repo_path.is_dir():
         return {
-            "term_found": False,
-            "code_found": False,
-            "test_found": False,
-            "doc_found": False,
-            "hits": [],
+            "term_found": False, "code_found": False,
+            "test_found": False, "doc_found": False,
+            "term_hits": [], "code_hits": [], "test_hits": [], "doc_hits": [],
         }
 
-    patterns = [re.compile(re.escape(t), re.IGNORECASE) for t in tokens if t]
+    patterns = []
+    for t in tokens:
+        try:
+            patterns.append(re.compile(t, re.IGNORECASE))
+        except re.error:
+            patterns.append(re.compile(re.escape(t), re.IGNORECASE))
 
     for path in repo_path.rglob("*"):
         if not path.is_file():
@@ -75,11 +82,7 @@ def _scan_repo(repo_path: Path, tokens: list[str], max_hits: int = 20) -> dict[s
         except OSError:
             continue
         rel = str(path.relative_to(repo_path))
-        matched = False
-        for pat in patterns:
-            if pat.search(text) or pat.search(rel):
-                matched = True
-                break
+        matched = any(p.search(text) or p.search(rel) for p in patterns)
         if not matched:
             continue
 
@@ -95,7 +98,6 @@ def _scan_repo(repo_path: Path, tokens: list[str], max_hits: int = 20) -> dict[s
                 code_hits.append(rel)
         if len(term_hits) < max_hits:
             term_hits.append(rel)
-
         if len(term_hits) >= max_hits:
             break
 
@@ -111,16 +113,14 @@ def _scan_repo(repo_path: Path, tokens: list[str], max_hits: int = 20) -> dict[s
     }
 
 
-def classify_discovery(scan: dict[str, Any]) -> str:
-    if scan.get("code_found") and scan.get("test_found"):
-        return "IMPLEMENTED"  # code+tests found; not yet executed
+def _classify_discovery(scan: dict[str, Any]) -> str:
     if scan.get("code_found"):
-        return "IMPLEMENTED"
+        return FOUND
     if scan.get("doc_found") and not scan.get("code_found"):
-        return "DOCUMENTED_ONLY"
+        return DOCUMENTED_ONLY
     if scan.get("term_found"):
-        return "TERM_FOUND"
-    return "PATH_NOT_ESTABLISHED"
+        return TERM_FOUND
+    return PATH_NOT_ESTABLISHED
 
 
 def discover_components(
@@ -128,7 +128,11 @@ def discover_components(
     repo_results: list[dict[str, Any]],
     workspace: dict[str, Path],
 ) -> list[dict[str, Any]]:
-    """Discover declared + known SWI components across materialized trees."""
+    """
+    Domain A only: discovery records.
+    Each record has discovery.* and tests.status=NOT_RUN | NO_TEST_SUITE_FOUND.
+    assertions list is always empty here.
+    """
     special = {"v1": workspace["v1"], "v2": workspace["v2"]}
     repo_paths: dict[str, Path] = {}
     sha_by_key: dict[str, str | None] = {}
@@ -143,62 +147,58 @@ def discover_components(
         else:
             repo_paths[key] = workspace["repos"] / key
 
-    results: list[dict[str, Any]] = []
-
-    # Merge manifest components + known search map
     declared_ids = {c.get("id") for c in packages.get("components", []) if isinstance(c, dict)}
     all_ids = list(dict.fromkeys(list(COMPONENT_SEARCH.keys()) + list(declared_ids)))
 
+    results: list[dict[str, Any]] = []
+
     for cid in all_ids:
         tokens = COMPONENT_SEARCH.get(cid, [cid])
-        best: dict[str, Any] = {
-            "component": cid,
-            "repository": None,
-            "commit_sha": None,
-            "path": None,
-            "classification": "PATH_NOT_ESTABLISHED",
-            "term_found": False,
-            "code_found": False,
-            "test_found": False,
-            "doc_found": False,
-            "executable": False,  # requires actual execution elsewhere
-            "build": "NOT_RUN",
-            "unit_test": "NOT_RUN",
-            "test_suite": "NOT_REACHED",
-            "hits": {},
+        best_scan: dict[str, Any] | None = None
+        best_repo: str | None = None
+        best_cls = PATH_NOT_ESTABLISHED
+        rank = {
+            PATH_NOT_ESTABLISHED: 0,
+            TERM_FOUND: 1,
+            DOCUMENTED_ONLY: 2,
+            FOUND: 3,
         }
 
         for rkey, rpath in repo_paths.items():
             scan = _scan_repo(rpath, tokens)
-            cls = classify_discovery(scan)
-            # Prefer stronger classification
-            rank = {
-                "PATH_NOT_ESTABLISHED": 0,
-                "TERM_FOUND": 1,
-                "DOCUMENTED_ONLY": 2,
-                "IMPLEMENTED": 3,
-            }
-            if rank.get(cls, 0) > rank.get(best["classification"], 0):
-                best.update({
-                    "repository": rkey,
-                    "commit_sha": sha_by_key.get(rkey),
-                    "path": (scan.get("code_hits") or scan.get("term_hits") or [None])[0],
-                    "classification": cls,
-                    "term_found": scan["term_found"],
-                    "code_found": scan["code_found"],
-                    "test_found": scan["test_found"],
-                    "doc_found": scan["doc_found"],
-                    "hits": {
-                        "code": scan.get("code_hits", []),
-                        "test": scan.get("test_hits", []),
-                        "doc": scan.get("doc_hits", []),
-                    },
-                })
-                if scan.get("test_found"):
-                    best["test_suite"] = "TEST_FOUND"
-                elif scan.get("code_found"):
-                    best["test_suite"] = "NO_TEST_SUITE_FOUND"
+            cls = _classify_discovery(scan)
+            if rank.get(cls, 0) > rank.get(best_cls, 0):
+                best_scan = scan
+                best_repo = rkey
+                best_cls = cls
 
-        results.append(best)
+        if best_scan is None:
+            best_scan = {
+                "term_found": False, "code_found": False,
+                "test_found": False, "doc_found": False,
+                "code_hits": [], "test_hits": [], "doc_hits": [], "term_hits": [],
+            }
+
+        record = make_discovery_record(
+            cid,
+            status=best_cls,
+            path=(best_scan.get("code_hits") or best_scan.get("term_hits") or [None])[0],
+            repository=best_repo,
+            commit_sha=sha_by_key.get(best_repo) if best_repo else None,
+            implementation_found=bool(best_scan.get("code_found")),
+            test_suite_found=bool(best_scan.get("test_found")),
+            documentation_found=bool(best_scan.get("doc_found")),
+            hits={
+                "code": best_scan.get("code_hits", []),
+                "test": best_scan.get("test_hits", []),
+                "doc": best_scan.get("doc_hits", []),
+            },
+        )
+        # Preserve legacy fields for older report consumers (discovery-only meaning)
+        record["classification"] = best_cls
+        record["code_found"] = record["discovery"]["implementation_found"]
+        record["test_found"] = record["discovery"]["test_suite_found"]
+        record["doc_found"] = record["discovery"]["documentation_found"]
+        results.append(record)
 
     return results
