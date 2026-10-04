@@ -5,8 +5,11 @@ SWI Universal Test / Demonstration Runner — entry point.
 Order:
   TOOLCHAIN → MANIFEST → MATERIALIZE → INVENTORY
   → V1 BUILD → V1 TEST → V1 ADMISSION
-  → V2 / downstream (only evidence collection; not alternate admission)
+  → V2 / downstream (evidence collection only; not alternate admission)
   → REPORTS
+
+All stage functions are invoked with keyword arguments to prevent
+positional signature drift (the class of TypeError seen on Windows).
 
 V1 test FAIL is never overwritten by build PASS.
 Admission after V1 test FAIL runs only as ISOLATED_DIAGNOSTIC.
@@ -15,7 +18,6 @@ Admission after V1 test FAIL runs only as ISOLATED_DIAGNOSTIC.
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 import traceback
 from datetime import datetime, timezone
@@ -61,6 +63,7 @@ def load_packages(path: Path) -> dict:
     if not path.is_file():
         raise FileNotFoundError(f"packages.json not found: {path}")
     with path.open(encoding="utf-8") as f:
+        import json
         data = json.load(f)
     if not str(data.get("schema", "")).startswith("swi.online.test.rebuild.packages."):
         raise ValueError(f"Unsupported schema: {data.get('schema')}")
@@ -97,7 +100,6 @@ def main(argv: list[str] | None = None) -> int:
     runner_error = False
     runner_error_detail: str | None = None
 
-    # Defaults for final status fields
     build_results: list[dict] = []
     test_results: list[dict] = []
     admission: dict[str, Any] = {}
@@ -130,57 +132,118 @@ def main(argv: list[str] | None = None) -> int:
     print("[04] Materialize repositories + record SHAs...")
     try:
         repo_results = materialize_repositories(
-            packages=packages, workspace=workspace, mode=args.mode, ledger=ledger,
+            packages=packages,
+            workspace=workspace,
+            mode=args.mode,
+            ledger=ledger,
         )
     except Exception as exc:
         runner_error = True
         runner_error_detail = f"materialization: {exc}"
         print(f"FATAL: {exc}")
-        write_final_status(workspace["reports"], ledger)
+        write_final_status(reports_dir=workspace["reports"], ledger=ledger)
         return 1
     print(f"     Materialized: {sum(1 for r in repo_results if r.get('status')=='MATERIALIZED')}/{len(repo_results)}")
     print()
 
     print("[05] Inventory + component evaluation...")
-    inventory = run_inventory(packages, repo_results, workspace)
-    components = evaluate_components(packages, repo_results, inventory)
-    print(f"     Components declared={len(components)} present={sum(1 for c in components if c['status']['present'])}")
+    try:
+        inventory = run_inventory(
+            packages=packages,
+            repo_results=repo_results,
+            workspace=workspace,
+        )
+        components = evaluate_components(
+            packages=packages,
+            repo_results=repo_results,
+            inventory=inventory,
+        )
+    except TypeError as exc:
+        runner_error = True
+        runner_error_detail = f"inventory TypeError: {exc}"
+        print(f"     ERROR: {exc}")
+        inventory, components = {}, []
+    except Exception as exc:
+        runner_error = True
+        runner_error_detail = f"inventory: {exc}"
+        print(f"     ERROR: {exc}")
+        inventory, components = {}, []
+    print(f"     Components declared={len(components)} present={sum(1 for c in components if c.get('status', {}).get('present'))}")
     print()
 
-    # ---- V1 BUILD ----
-    print("[06] V1 BUILD...")
+    # ---- BUILD (V1 + V2 and all declared repos) ----
+    print("[06] BUILD (all declared repositories)...")
     if args.mode == "audit":
         build_results = []
     else:
-        build_results = build_repositories(packages, repo_results, workspace, env, ledger)
+        try:
+            build_results = build_repositories(
+                packages=packages,
+                repo_results=repo_results,
+                workspace=workspace,
+                env=env,
+                ledger=ledger,
+            )
+        except TypeError as exc:
+            runner_error = True
+            runner_error_detail = f"build TypeError: {exc}"
+            print(f"     ERROR: {exc}")
+            print(traceback.format_exc())
+            build_results = []
+            ledger.record_failure("build", str(exc))
+        except Exception as exc:
+            runner_error = True
+            runner_error_detail = f"build: {exc}"
+            print(f"     ERROR: {exc}")
+            build_results = []
+            ledger.record_failure("build", str(exc))
     v1_build = _split_by_key(build_results, "v1")
     v2_build = _split_by_key(build_results, "v2")
     v1_build_status = _status_of(v1_build)
+    v2_build_status = _status_of(v2_build)
     print(f"     V1 BUILD: {v1_build_status}")
+    print(f"     V2 BUILD: {v2_build_status}")
     print()
 
-    # ---- V1 TEST (result is independent; never overwritten by build) ----
-    print("[07] V1 TEST...")
+    # ---- TEST (independent; never overwritten by build) ----
+    print("[07] TEST (all declared repositories)...")
     if args.mode == "audit":
         test_results = []
     else:
-        test_results = test_repositories(
-            packages, repo_results, build_results, workspace, env, ledger,
-        )
+        try:
+            test_results = test_repositories(
+                packages=packages,
+                repo_results=repo_results,
+                build_results=build_results,
+                workspace=workspace,
+                env=env,
+                ledger=ledger,
+            )
+        except TypeError as exc:
+            runner_error = True
+            runner_error_detail = f"test TypeError: {exc}"
+            print(f"     ERROR: {exc}")
+            print(traceback.format_exc())
+            test_results = []
+            ledger.record_failure("test", str(exc))
+        except Exception as exc:
+            runner_error = True
+            runner_error_detail = f"test: {exc}"
+            print(f"     ERROR: {exc}")
+            test_results = []
+            ledger.record_failure("test", str(exc))
     v1_test = _split_by_key(test_results, "v1")
     v2_test = _split_by_key(test_results, "v2")
     v1_test_status = _status_of(v1_test)
+    v2_test_status = _status_of(v2_test)
     print(f"     V1 TEST: {v1_test_status}")
+    print(f"     V2 TEST: {v2_test_status}")
     print()
 
     # ---- V1 ADMISSION ----
-    # Signature (authoritative):
-    #   run_admission_tests(packages, repo_results, v1_build, v1_test, workspace, ledger)
-    # Always use keyword arguments to prevent positional drift.
     print("[08] V1 ADMISSION — discover and bind actual mechanisms...")
     admission_mode = "NORMAL"
     if v1_test_status == "FAIL":
-        # Diagnostics still useful; must not authorize downstream
         admission_mode = "ISOLATED_DIAGNOSTIC"
         print("     ADMISSION_MODE = ISOLATED_DIAGNOSTIC (V1 TEST=FAIL)")
 
@@ -259,14 +322,12 @@ def main(argv: list[str] | None = None) -> int:
 
     admission["admission_mode"] = admission_mode
     primary = admission.get("primary") or {}
-    # Support both shapes: primary.status and primary.admission.status
     if isinstance(primary.get("admission"), dict):
         primary_status = primary["admission"].get("status") or primary.get("status") or "UNKNOWN"
     else:
         primary_status = primary.get("status") or "UNKNOWN"
 
     admission_ok = bool(admission.get("admission_established", False))
-    # Isolated diagnostic can never establish downstream authority
     if admission_mode == "ISOLATED_DIAGNOSTIC":
         admission_ok = False
         admission["admission_established"] = False
@@ -279,26 +340,18 @@ def main(argv: list[str] | None = None) -> int:
     print(f"     ADMISSION_MODE: {admission_mode}")
     print()
 
-    # V1→V2 handoff: do not invent; report NOT_FOUND / NOT_TESTED only
-    v1_to_v2_handoff = "NOT_FOUND"  # no defined handoff interface located/executed
-
-    # Downstream reachability
-    if admission_ok and v1_to_v2_handoff == "FOUND":
-        downstream_flow = "REACHED"
-    else:
-        downstream_flow = "NOT_REACHED"
+    v1_to_v2_handoff = "NOT_FOUND"
+    downstream_flow = "REACHED" if (admission_ok and v1_to_v2_handoff == "FOUND") else "NOT_REACHED"
 
     if not admission_ok:
         print("[09] NOTE: V1 admission not established — downstream = NOT_REACHED")
         print()
 
-    print("[09] V2 BUILD status...")
-    v2_build_status = _status_of(v2_build)
+    print("[09] V2 BUILD status (from shared build stage)...")
     print(f"     V2 BUILD: {v2_build_status}")
     print()
 
-    print("[10] V2 TEST status...")
-    v2_test_status = _status_of(v2_test)
+    print("[10] V2 TEST status (from shared test stage)...")
     print(f"     V2 TEST: {v2_test_status}")
     print()
 
@@ -307,7 +360,17 @@ def main(argv: list[str] | None = None) -> int:
         firefly_results = {"status": "SKIPPED"}
     else:
         try:
-            firefly_results = run_firefly_tests(packages, repo_results, workspace, ledger)
+            firefly_results = run_firefly_tests(
+                packages=packages,
+                repo_results=repo_results,
+                workspace=workspace,
+                ledger=ledger,
+            )
+        except TypeError as exc:
+            runner_error = True
+            runner_error_detail = f"firefly TypeError: {exc}"
+            firefly_results = {"status": "ERROR", "error": str(exc), "traceback": traceback.format_exc()}
+            ledger.record_failure("firefly", str(exc))
         except Exception as exc:
             firefly_results = {"status": "ERROR", "error": str(exc)}
             ledger.record_failure("firefly", str(exc))
@@ -318,9 +381,18 @@ def main(argv: list[str] | None = None) -> int:
         simulation_results = {"status": "SKIPPED"}
     else:
         try:
-            simulation_results = run_simulation(args.cases, packages, ledger)
+            simulation_results = run_simulation(
+                case_count=args.cases,
+                packages=packages,
+                ledger=ledger,
+            )
             simulation_results["admission_bypass"] = False
             simulation_results["note"] = "SIMULATION ≠ PROOF. Simulation is not an admission gate."
+        except TypeError as exc:
+            runner_error = True
+            runner_error_detail = f"simulation TypeError: {exc}"
+            simulation_results = {"status": "ERROR", "error": str(exc), "traceback": traceback.format_exc()}
+            ledger.record_failure("simulation", str(exc))
         except Exception as exc:
             simulation_results = {"status": "ERROR", "error": str(exc)}
             ledger.record_failure("simulation", str(exc))
@@ -373,17 +445,6 @@ def main(argv: list[str] | None = None) -> int:
             "admission_boundary": "V1",
             "v2_role": "DOWNSTREAM / CONTINUATION",
             "v1_to_v2_handoff": v1_to_v2_handoff,
-            "bypass_forbidden": [
-                "INPUT → V2",
-                "INPUT → CEK",
-                "INPUT → REFLEX/SADU",
-                "INPUT → S9",
-                "INPUT → SEAL",
-                "INPUT → EVIDENCE ENGINE",
-                "INPUT → FIREFLY",
-                "INPUT → RELATED",
-                "INPUT → SIMULATION",
-            ],
         },
         "admission_boundary_report": report_section,
         "claims": FINAL_CLAIMS.copy(),
@@ -402,19 +463,23 @@ def main(argv: list[str] | None = None) -> int:
             "note": "SIMULATION ≠ PROOF; simulation is not an admission gate",
         },
         "limitations": [
-            "Runner binds to actual V1 mechanisms; does not invent admit()",
+            "All stage calls use keyword arguments to prevent positional TypeError",
             "V1 BUILD/TEST PASS ≠ V1 ADMISSION PROVEN",
             "CHECK_PASSED ≠ authority ADMITTED",
             "V1 TEST FAIL is never overwritten by BUILD PASS",
             "ISOLATED_DIAGNOSTIC admission cannot authorize downstream",
             "v1_to_v2_handoff remains NOT_FOUND until a real interface is evidenced",
-            "No alternate component may become an admission boundary",
             runner_error_detail,
         ],
     }
     write_json_report(reports, "final_report.json", final_report)
-    write_html_report(reports, final_report)
-    write_final_status(reports, ledger, components=components, simulation=simulation_results)
+    write_html_report(reports_dir=reports, final_report=final_report)
+    write_final_status(
+        reports_dir=reports,
+        ledger=ledger,
+        components=components,
+        simulation=simulation_results,
+    )
 
     print()
     print("=" * 60)
@@ -423,12 +488,16 @@ def main(argv: list[str] | None = None) -> int:
     print()
     print("STAGE STATUS")
     print(f"  runner_error        : {runner_error}")
+    if runner_error_detail:
+        print(f"  runner_error_detail : {runner_error_detail}")
     print(f"  v1_build            : {v1_build_status}")
     print(f"  v1_test             : {v1_test_status}")
     print(f"  v1_admission        : {primary_status}")
     print(f"  admission_mode      : {admission_mode}")
     print(f"  v1_to_v2_handoff    : {v1_to_v2_handoff}")
     print(f"  downstream_flow     : {downstream_flow}")
+    print(f"  v2_build            : {v2_build_status}")
+    print(f"  v2_test             : {v2_test_status}")
     print()
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
