@@ -11,6 +11,9 @@ from typing import Any
 
 from runner.evidence import EvidenceLedger
 
+# Prevent pytest from collecting this module (function name test_repositories)
+__test__ = False
+
 
 def _run_command(
     command: str,
