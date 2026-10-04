@@ -7,19 +7,16 @@ Architectural order:
   02 MANIFEST
   03 MATERIALIZE
   04 SHA / COMMIT
-  05 V1 BUILD
-  06 V1 TEST
-  07 V1 ADMISSION TEST
-  08 V2 BUILD
-  09 V2 TEST
-  10 COMPONENT / CROSS TESTS
-  11 FIREFLY
-  12 SIMULATION
-  13 EVIDENCE / REPORTS
-  14 FINAL STATUS
+  05 INVENTORY
+  06 V1 BUILD
+  07 V1 TEST
+  08 V1 ADMISSION (discover + bind actual mechanisms)
+  09 V2 BUILD / TEST
+  10 FIREFLY / SIMULATION
+  11 REPORTS / FINAL STATUS
 
-If V1 admission is not established, downstream admission-dependent
-stages are marked NOT_REACHED (not false PASS).
+If V1 admission mechanism is NOT_FOUND or not established,
+downstream admission-dependent claims remain NOT_REACHED.
 """
 
 from __future__ import annotations
@@ -60,7 +57,7 @@ def banner() -> None:
     print("MODE:                     TEST + SIMULATION + EVIDENCE")
     print("REAL-WORLD ACTION:        NONE")
     print("PRODUCTION AUTHORIZATION: NO")
-    print("V1 ADMISSION BOUNDARY:    ENFORCED")
+    print("V1 ADMISSION BOUNDARY:    ENFORCED (discover actual mechanisms)")
     print("=" * 60)
     print()
 
@@ -97,7 +94,6 @@ def main(argv: list[str] | None = None) -> int:
 
     ledger = EvidenceLedger(run_id=run_id, runner_version=__version__)
 
-    # 01–02 Manifest
     try:
         packages = load_packages(packages_path)
         print(f"[01] Manifest loaded (schema {packages.get('schema')})")
@@ -105,20 +101,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FATAL: {exc}")
         return 1
 
-    # 01 Toolchain
     print("[02] Toolchain detection...")
     env = detect_environment()
     ledger.record_environment(env)
     print(f"     OS={env.get('os')} Python={env.get('python')} Git={env.get('git')}")
     print()
 
-    # Workspace
     print("[03] Workspace...")
     workspace = ensure_workspace(script_dir, packages.get("workspace", {}))
     print(f"     {workspace['root']}")
     print()
 
-    # 03–04 Materialize + SHA
     print("[04] Materialize repositories + record SHAs...")
     try:
         repo_results = materialize_repositories(
@@ -131,19 +124,16 @@ def main(argv: list[str] | None = None) -> int:
     print(f"     Materialized: {sum(1 for r in repo_results if r.get('status')=='MATERIALIZED')}/{len(repo_results)}")
     print()
 
-    # Inventory (informational, not admission)
     print("[05] Inventory + component evaluation...")
     inventory = run_inventory(packages, repo_results, workspace)
     components = evaluate_components(packages, repo_results, inventory)
     print(f"     Components declared={len(components)} present={sum(1 for c in components if c['status']['present'])}")
     print()
 
-    # ---- V1 FIRST (admission boundary) ----
     print("[06] V1 BUILD...")
     if args.mode == "audit":
         build_results = []
     else:
-        # Build all, but we sequence reporting as V1 then V2
         build_results = build_repositories(packages, repo_results, workspace, env, ledger)
     v1_build = _split_by_key(build_results, "v1")
     v2_build = _split_by_key(build_results, "v2")
@@ -162,28 +152,37 @@ def main(argv: list[str] | None = None) -> int:
     print(f"     V1 TEST: {(v1_test or {}).get('status', 'NOT_RUN')}")
     print()
 
-    print("[08] V1 ADMISSION TEST...")
+    print("[08] V1 ADMISSION — discover and bind actual mechanisms...")
     if args.mode == "audit":
-        admission = {"primary_admission": {"status": "NOT_ESTABLISHED"}, "admission_established": False}
+        admission = {
+            "primary": {"admission": {"status": "NOT_ESTABLISHED"}},
+            "admission_established": False,
+            "discovery": {"status": "SKIPPED"},
+            "report_section": {
+                "V1": {"FOUND": False, "BOUND": False, "EXECUTED": False, "RESULT": "NOT_ESTABLISHED"},
+                "V2": {"ADMISSION_AUTHORITY": False},
+                "ALTERNATE_ADMISSION_PATHS": "NOT_TESTED",
+            },
+        }
         print("     Skipped (audit mode)")
     else:
         admission = run_admission_tests(
-            packages, repo_results, v1_build, v1_test, ledger,
+            packages, repo_results, v1_build, v1_test, workspace, ledger,
         )
     admission_ok = admission.get("admission_established", False)
-    print(f"     V1 admission established: {admission_ok}")
-    print(f"     Primary status: {admission.get('primary_admission', {}).get('status')}")
+    primary_status = (
+        admission.get("primary", {}).get("admission", {}).get("status")
+        or admission.get("primary_admission", {}).get("status")
+        or "UNKNOWN"
+    )
+    discovery_status = admission.get("discovery", {}).get("status", "UNKNOWN")
+    print(f"     Discovery: {discovery_status}")
+    print(f"     Primary admission status: {primary_status}")
+    print(f"     Admission established: {admission_ok}")
     print()
 
-    # Downstream stages — if admission not established, mark admission-dependent as NOT_REACHED
-    downstream_note = None
     if not admission_ok:
-        downstream_note = (
-            "V1 admission NOT_ESTABLISHED — downstream admission-dependent flows "
-            "must not be treated as authorized. Stages still run for evidence "
-            "collection but cannot claim admission or authority."
-        )
-        print(f"[09] NOTE: {downstream_note}")
+        print("[09] NOTE: V1 admission not established — downstream cannot claim admission/authority")
         print()
 
     print("[09] V2 BUILD status...")
@@ -194,7 +193,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"     V2 TEST: {(v2_test or {}).get('status', 'NOT_RUN')}")
     print()
 
-    print("[11] Firefly...")
+    print("[11] Firefly (not an admission path)...")
     if args.mode == "audit":
         firefly_results = {"status": "SKIPPED"}
     else:
@@ -207,9 +206,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         simulation_results = run_simulation(args.cases, packages, ledger)
         simulation_results["admission_bypass"] = False
-        simulation_results["note"] = (
-            "SIMULATION ≠ PROOF. Simulation is not an admission gate."
-        )
+        simulation_results["note"] = "SIMULATION ≠ PROOF. Simulation is not an admission gate."
     print()
 
     print("[13–14] Reports + FINAL STATUS...")
@@ -224,6 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     write_json_report(reports, "FIREFLY_RESULTS.json", firefly_results)
     write_json_report(reports, "simulation_results.json", simulation_results)
 
+    report_section = admission.get("report_section", {})
     final_report = {
         "schema": "swi.execution.report.v3",
         "execution": {
@@ -240,15 +238,21 @@ def main(argv: list[str] | None = None) -> int:
             "v2_role": "DOWNSTREAM / CONTINUATION",
             "bypass_forbidden": [
                 "INPUT → V2",
+                "INPUT → CEK",
+                "INPUT → REFLEX/SADU",
+                "INPUT → S9",
+                "INPUT → SEAL",
+                "INPUT → EVIDENCE ENGINE",
+                "INPUT → FIREFLY",
                 "INPUT → RELATED",
                 "INPUT → SIMULATION",
-                "INPUT → SEAL",
-                "INPUT → FIREFLY",
             ],
         },
+        "admission_boundary_report": report_section,
         "claims": FINAL_CLAIMS.copy(),
-        "admission": admission.get("primary_admission"),
+        "admission": admission.get("primary"),
         "admission_established": admission_ok,
+        "discovery": admission.get("discovery"),
         "repositories": repo_results,
         "components": components,
         "toolchain": env,
@@ -260,11 +264,11 @@ def main(argv: list[str] | None = None) -> int:
             "note": "SIMULATION ≠ PROOF; simulation is not an admission gate",
         },
         "limitations": [
+            "Runner binds to actual V1 mechanisms; does not invent admit()",
             "V1 BUILD/TEST PASS ≠ V1 ADMISSION PROVEN",
-            "V1 ADMISSION ≠ AUTHORIZATION",
-            "AUTHORIZATION ≠ ACTION",
-            "Downstream stages do not create alternate admission paths",
-            downstream_note,
+            "V1 ADMISSION ≠ AUTHORIZATION ≠ ACTION",
+            "If mechanism NOT_FOUND → downstream admission-dependent = NOT_REACHED",
+            "No alternate component may become an admission boundary",
         ],
     }
     write_json_report(reports, "final_report.json", final_report)
@@ -275,14 +279,20 @@ def main(argv: list[str] | None = None) -> int:
     print("=" * 60)
     print("SWI UNIVERSAL TEST — RUN COMPLETE")
     print("=" * 60)
-    print(f"V1 admission boundary : ENFORCED")
-    print(f"V1 admission status   : {admission.get('primary_admission', {}).get('status')}")
-    print(f"Admission established : {admission_ok}")
+    print()
+    print("ADMISSION BOUNDARY")
+    v1rep = report_section.get("V1", {})
+    print(f"  V1 FOUND    : {v1rep.get('FOUND')}")
+    print(f"  V1 BOUND    : {v1rep.get('BOUND')}")
+    print(f"  V1 EXECUTED : {v1rep.get('EXECUTED')}")
+    print(f"  V1 RESULT   : {v1rep.get('RESULT')}")
+    print(f"  V2 ADMISSION AUTHORITY : {report_section.get('V2', {}).get('ADMISSION_AUTHORITY')}")
+    print(f"  ALTERNATE PATHS        : {report_section.get('ALTERNATE_ADMISSION_PATHS')}")
     print()
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
     print()
-    print("NO V1 ADMISSION → NO DOWNSTREAM ADMISSION-DEPENDENT FLOW")
+    print("V1 admits. V2 continues. Neither fact alone constitutes proof.")
     print("BUILD ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION")
     print()
 
