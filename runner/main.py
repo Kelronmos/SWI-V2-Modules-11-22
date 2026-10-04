@@ -21,6 +21,8 @@ from pathlib import Path
 from runner import __version__, RUNNER_NAME
 from runner.bootstrap import detect_environment, ensure_workspace
 from runner.repositories import materialize_repositories
+from runner.build import build_repositories
+from runner.tests import test_repositories
 from runner.evidence import EvidenceLedger, FINAL_CLAIMS
 from runner.reporting import write_final_status, write_json_report
 
@@ -112,8 +114,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"       OS      : {env.get('os')}")
     print(f"       Python  : {env.get('python')}")
     print(f"       Git     : {env.get('git')}")
-    print(f"       Node    : {env.get('node', 'not found')}")
-    print(f"       Rust    : {env.get('rust', 'not found')}")
+    print(f"       Node    : {env.get('node') or 'not found'}")
+    print(f"       Rust    : {env.get('rust') or 'not found'}")
     print()
 
     # 3. Workspace
@@ -141,21 +143,63 @@ def main(argv: list[str] | None = None) -> int:
     print(f"       Materialized: {materialized}/{len(repo_results)}")
     print()
 
-    # Remaining stages are stubs in Phase 1 — they record NOT_RUN
-    print("[5/10] Inventory          — Phase 1 stub (NOT_RUN)")
-    print("[6/10] Build              — Phase 1 stub (NOT_RUN)")
-    print("[7/10] Repository tests   — Phase 1 stub (NOT_RUN)")
-    print("[8/10] Firefly tests      — Phase 1 stub (NOT_RUN)")
-    print("[9/10] Demonstrations     — Phase 1 stub (NOT_RUN)")
-    print("[10/10] Reporting...")
+    # 5. Inventory (still stub)
+    print("[5/10] Inventory          — stub (NOT_RUN)")
+    print()
 
+    # 6. Build phase
+    print("[6/10] Building repositories...")
+    if args.mode == "audit":
+        build_results = []
+        print("       Skipped (audit mode)")
+    else:
+        build_results = build_repositories(
+            packages=packages,
+            repo_results=repo_results,
+            workspace=workspace,
+            env=env,
+            ledger=ledger,
+        )
+    build_pass = sum(1 for b in build_results if b.get("status") == "PASS")
+    build_fail = sum(1 for b in build_results if b.get("status") == "FAIL")
+    print(f"       Build PASS: {build_pass}  FAIL: {build_fail}")
+    print()
+
+    # 7. Test phase
+    print("[7/10] Running repository tests...")
+    if args.mode == "audit":
+        test_results = []
+        print("       Skipped (audit mode)")
+    else:
+        test_results = test_repositories(
+            packages=packages,
+            repo_results=repo_results,
+            build_results=build_results,
+            workspace=workspace,
+            env=env,
+            ledger=ledger,
+        )
+    test_pass = sum(1 for t in test_results if t.get("status") == "PASS")
+    test_fail = sum(1 for t in test_results if t.get("status") == "FAIL")
+    print(f"       Test PASS: {test_pass}  FAIL: {test_fail}")
+    print()
+
+    # 8–9 still stubs
+    print("[8/10] Firefly tests      — stub (NOT_RUN)")
+    print("[9/10] Demonstrations     — stub (NOT_RUN)")
+    print()
+
+    # 10. Reporting
+    print("[10/10] Generating reports...")
     write_json_report(workspace["reports"], "ENVIRONMENT.json", env)
     write_json_report(workspace["reports"], "REPOSITORIES.json", repo_results)
+    write_json_report(workspace["reports"], "BUILD_RESULTS.json", build_results)
+    write_json_report(workspace["reports"], "TEST_RESULTS.json", test_results)
     write_final_status(workspace["reports"], ledger)
 
     print()
     print("=" * 60)
-    print("SWI UNIVERSAL TEST — PHASE 1 COMPLETE (SKELETON)")
+    print("SWI UNIVERSAL TEST — BUILD + TEST PHASE COMPLETE")
     print("=" * 60)
     print()
     print("Reports written under:", workspace["reports"])
@@ -163,9 +207,8 @@ def main(argv: list[str] | None = None) -> int:
     for k, v in FINAL_CLAIMS.items():
         print(f"{k.upper():<28}: {v}")
     print()
-    print("NOTE: Phase 1 is scaffolding only.")
-    print("      Full build/test/Firefly/8K engines are not yet implemented.")
-    print("      No claim upgrade has occurred.")
+    print("NOTE: Successful builds/tests do not upgrade evidence claims.")
+    print("      BUILD/TEST INFRASTRUCTURE ≠ SWI PROOF")
     print()
 
     return 0

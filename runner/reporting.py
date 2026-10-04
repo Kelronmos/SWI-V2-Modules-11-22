@@ -25,7 +25,9 @@ def write_final_status(reports_dir: Path, ledger: EvidenceLedger) -> Path:
         1 for r in ledger.repositories if r.get("status") == "MATERIALIZED"
     )
     dirty = sum(1 for r in ledger.repositories if r.get("status") == "SOURCE_DIRTY")
-    failed = sum(1 for r in ledger.repositories if r.get("status") in ("FAIL", "SOURCE_MISSING"))
+    failed = sum(
+        1 for r in ledger.repositories if r.get("status") in ("FAIL", "SOURCE_MISSING")
+    )
 
     lines = [
         "=" * 60,
@@ -41,8 +43,12 @@ def write_final_status(reports_dir: Path, ledger: EvidenceLedger) -> Path:
         f"  SOURCE_DIRTY         : {dirty}",
         f"  Failed / Missing     : {failed}",
         "",
-        "Nodes / Builds / Tests / Firefly / 8K cases:",
-        "  (Phase 1 skeleton — engines not yet implemented)",
+        "Build / Test results are recorded in:",
+        "  BUILD_RESULTS.json",
+        "  TEST_RESULTS.json",
+        "",
+        "Firefly / 8K cases:",
+        "  (engines not yet implemented — NOT_RUN)",
         "",
         "Evidence:",
         "  Repository SHAs       : RECORDED (where materialized)",
@@ -59,8 +65,7 @@ def write_final_status(reports_dir: Path, ledger: EvidenceLedger) -> Path:
         "",
         "=" * 60,
         "",
-        "NOTE: This is Phase 1 scaffolding.",
-        "      Successful materialization does not equal proof.",
+        "NOTE: Successful builds/tests do not upgrade evidence claims.",
         "      BUILD/TEST INFRASTRUCTURE ≠ SWI PROOF",
         "",
     ]
@@ -68,7 +73,6 @@ def write_final_status(reports_dir: Path, ledger: EvidenceLedger) -> Path:
     txt_path.write_text("\n".join(lines), encoding="utf-8")
     write_json_report(reports_dir, "FINAL_STATUS.json", ledger.to_dict())
 
-    # Also echo to console
     print("\n".join(lines))
 
     return txt_path
