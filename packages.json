@@ -1,6 +1,6 @@
 {
-  "schema": "swi.online.test.rebuild.packages.v2",
-  "project": "SWI Online Test Rebuild + Full Repository Pack",
+  "schema": "swi.online.test.rebuild.packages.v3",
+  "project": "SWI Online Test Rebuild + Component Registry",
   "mode": "TEST_ONLY",
   "repositories": {
     "v1": {
@@ -87,6 +87,113 @@
       "status": "LEGACY_STUB"
     }
   },
+  "components": [
+    {
+      "id": "common_sense",
+      "display_name": "Common Sense",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "Path not established from filesystem evidence; do not infer from docs alone."
+    },
+    {
+      "id": "reflex_sadu",
+      "display_name": "REFLEX / SADU",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "Account separately for REFLEX and SADU if distinct implementations exist."
+    },
+    {
+      "id": "cek",
+      "display_name": "CEK",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "invariants": [
+        "OBSERVATION ≠ AUTHORITY",
+        "UNKNOWN ≠ PERMITTED",
+        "STABLE ≠ AUTHORIZED"
+      ]
+    },
+    {
+      "id": "scar",
+      "display_name": "SCAR",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v1", "path": null},
+      "notes": "Inventory and test only if implementation exists."
+    },
+    {
+      "id": "seeder",
+      "display_name": "SEEDER",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "Do not treat generated fixtures as production nodes."
+    },
+    {
+      "id": "s9_security_maze",
+      "display_name": "S9 Security Maze",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "S9 output is not automatic truth; requires memory validation and replay."
+    },
+    {
+      "id": "zero_trust_task_travel",
+      "display_name": "Zero-Trust Task Travel",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "Document ≠ implementation. Track DESIGN / IMPLEMENTED / TESTED / PROVEN / SEALED separately."
+    },
+    {
+      "id": "structured_seal",
+      "display_name": "Structured Seal",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "HASH ≠ STRUCTURED SEAL"
+    },
+    {
+      "id": "runtime_seal",
+      "display_name": "Runtime Seal",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "STRUCTURED SEAL ≠ RUNTIME SEAL ≠ PRODUCTION AUTHORIZATION"
+    },
+    {
+      "id": "mathematical_geometric_zero",
+      "display_name": "Mathematical / Geometric Zero",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "notes": "FAIL_CLOSED_BASELINE ≠ TRUE_ZERO. Do not reconstruct missing historical evidence."
+    },
+    {
+      "id": "evidence_engine",
+      "display_name": "Evidence Engine",
+      "type": "component",
+      "source": {"kind": "repository", "repository": "mathematical_evidence_engine", "path": null},
+      "notes": "EVIDENCE ENGINE ≠ AUTHORIZATION ENGINE"
+    },
+    {
+      "id": "firefly_memory",
+      "display_name": "Firefly Memory",
+      "type": "component",
+      "source": {"kind": "repository", "repository": "firefly_memory", "path": null},
+      "status_hint": "DEVELOPMENT_SUSPENDED"
+    },
+    {
+      "id": "node_access_boundary",
+      "display_name": "Node Access Boundary",
+      "type": "component",
+      "source": {"kind": "repository", "repository": "node_access_boundary", "path": null}
+    },
+    {
+      "id": "consequence_authorization_gate",
+      "display_name": "Consequence / Authorization Gate",
+      "type": "component",
+      "source": {"kind": "repository_path", "repository": "v2", "path": null},
+      "invariants": [
+        "CONSEQUENCE ≠ AUTHORIZATION",
+        "AUTHORIZATION ≠ ACTION"
+      ],
+      "notes": "All tests must remain synthetic. No real-world side effects."
+    }
+  ],
   "runtime": {
     "language": "python",
     "minimum": "3.10",
@@ -134,6 +241,7 @@
     "standard": 100,
     "extended": 1000,
     "full": 8000,
+    "deterministic_seed": 20261004,
     "deterministic_seed_required": true
   },
   "reporting": {
@@ -142,18 +250,16 @@
     "html": true,
     "sha256_manifest": true,
     "outputs": [
-      "GLOBAL_REPORT.json",
-      "NODE_INVENTORY.json",
+      "FINAL_STATUS.txt",
+      "final_report.json",
+      "final_report.html",
+      "sha256_manifest.json",
+      "inventory.json",
+      "component_status.json",
       "BUILD_RESULTS.json",
       "TEST_RESULTS.json",
       "FIREFLY_RESULTS.json",
-      "SIMULATION_RESULTS.json",
-      "CASE_RESULTS.json",
-      "FAILURE_REPORT.json",
-      "HASH_MANIFEST.json",
-      "GLOBAL_REPORT.pdf",
-      "GLOBAL_REPORT.html",
-      "FINAL_STATUS.txt"
+      "simulation_results.json"
     ]
   },
   "claims": {
