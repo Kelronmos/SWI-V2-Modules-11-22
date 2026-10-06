@@ -1,0 +1,29 @@
+{
+  "record_type": "DAILY_TEST_RECORD",
+  "date": "2026-10-06",
+  "time_cat": "14:29",
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "branch": "recovery/swi-full-implementation",
+  "base_main_sha": "26591dbc1bbf05fb0e76b11886c4504832938faa",
+  "execution_integrity": {
+    "source": "77ee326 / fix/new-information-boundary (ed600c0 MISSING on remote)",
+    "file_size_bytes": 23466,
+    "sha256": "fca62deaf90e700183c97b87e5f05af60e4ab46d63267030bad3c3ee96ca8ba6",
+    "match_permit_closed": true,
+    "authority_cleared_on_new_information": true
+  },
+  "tests": {
+    "commands": [
+      "pytest -q test/adversarial/",
+      "pytest -q test/test_governing_formula.py"
+    ],
+    "passed": 81,
+    "failed": 0,
+    "skipped": 0
+  },
+  "status_ceiling": {
+    "PROVEN": "NO",
+    "SEALED": "NO",
+    "PRODUCTION_AUTHORIZED": "NO"
+  }
+}
