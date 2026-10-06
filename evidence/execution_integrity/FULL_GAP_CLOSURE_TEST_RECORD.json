@@ -1,0 +1,29 @@
+{
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "branch": "recovery/swi-full-implementation",
+  "starting_sha": "26591dbc1bbf05fb0e76b11886c4504832938faa",
+  "recovery_source": "77ee326 / origin/fix/new-information-boundary (ed600c0 MISSING)",
+  "test_results": {
+    "passed": 82,
+    "failed": 0,
+    "commands": [
+      "pytest -q test/adversarial/",
+      "pytest -q test/test_governing_formula.py"
+    ]
+  },
+  "layers": {
+    "execution_integrity_restore": "IMPLEMENTED/TESTED (local)",
+    "match_shortcut_closure": "IMPLEMENTED/TESTED",
+    "hive_context": "NOT_IMPLEMENTED",
+    "human_authority_binding": "IMPLEMENTED/TESTED",
+    "jurisdiction": "NOT_IMPLEMENTED",
+    "runtime_revalidation": "PARTIAL",
+    "replay": "PARTIAL (in-process; DURABLE=NOT_IMPLEMENTED)",
+    "advisory": "IMPLEMENTED/TESTED (minimal)"
+  },
+  "status_ceiling": {
+    "PROVEN": "NO",
+    "SEALED": "NO",
+    "PRODUCTION_AUTHORIZED": "NO"
+  }
+}
