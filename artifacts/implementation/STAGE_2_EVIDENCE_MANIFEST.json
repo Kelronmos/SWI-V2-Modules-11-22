@@ -1,0 +1,32 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1777,
+      "path": "artifacts/implementation/STAGE_2_GOVERNING_PERMIT_AUDIT.md",
+      "sha256": "73d76bf77dddd1a37013e43a30e93e6ec1b3d921d377cdf9ca7bb57e0708a9aa"
+    },
+    {
+      "bytes": 689,
+      "path": "artifacts/implementation/STAGE_2_TEST_RESULTS.json",
+      "sha256": "8f67b0ff8b4313e1ab3ae773b6abaee8df501b195cc6a9bc5f1f157d2e30d4c9"
+    },
+    {
+      "bytes": 573,
+      "path": "artifacts/implementation/pytest_stage2_full.out",
+      "sha256": "b75de7cd61e10f7dc8442d19092322c696cf904946e5ab727ae5b2586f7c94c3"
+    }
+  ],
+  "baseline_commit": "de374da7e25dcaefc7676ac60f1fef31b219a112",
+  "governing_permit_py_sha256": "3aa4b53a4aa72ba6ebcc89f1435a745e6b8b85b0c264fe0be5f365c4d1b69659",
+  "production_authorized": false,
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "schema_version": "stage2_evidence_manifest_v0",
+  "sealed": false,
+  "test_summary": {
+    "collected": 35,
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 35,
+    "skipped": 0
+  }
+}

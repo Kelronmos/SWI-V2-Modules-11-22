@@ -1,0 +1,12 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0
+rootdir: /home/workdir/artifacts/swi-v2-real
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collected 36 items
+
+test/test_governing_formula.py ............                              [ 33%]
+test/test_governing_boundary_bind.py ..................                  [ 83%]
+test/test_governing_spine_bind.py ......                                 [100%]
+
+============================== 36 passed in 1.00s ==============================

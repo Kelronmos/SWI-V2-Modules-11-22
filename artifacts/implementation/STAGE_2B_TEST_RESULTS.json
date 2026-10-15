@@ -1,0 +1,15 @@
+{
+  "baseline_commit": "de374da7e25dcaefc7676ac60f1fef31b219a112",
+  "collected": 43,
+  "command": "PYTHONPATH=. python3 -m pytest test/test_governing_boundary_bind.py test/test_governing_spine_bind.py test/test_authority_non_escalation.py test/test_kernel_enforcement.py -v --tb=line",
+  "environment": {"python": "3.12.3", "pytest": "9.0.3"},
+  "exit_code": 0,
+  "failed": 0,
+  "passed": 43,
+  "production_authorized": false,
+  "schema_version": "stage2b_test_results_v0",
+  "sealed": false,
+  "skipped": 0,
+  "vacuous_outcome": "PERMITTED",
+  "vacuous_permission_retained": true
+}

@@ -1,0 +1,18 @@
+{
+  "collected": 35,
+  "command": "PYTHONPATH=. python3 -m pytest test/test_governing_formula.py test/test_governing_boundary_bind.py test/test_governing_spine_bind.py -v --tb=line",
+  "environment": {
+    "pytest": "9.0.3",
+    "python": "3.12.3"
+  },
+  "exit_code": 0,
+  "failed": 0,
+  "observational_edge_test_added": "test_edge_empty_conditions_observed_behaviour",
+  "passed": 35,
+  "production_authorized": false,
+  "schema_version": "stage2_test_results_v0",
+  "sealed": false,
+  "skipped": 0,
+  "vacuous_outcome": "PERMITTED",
+  "vacuous_permission_observed": true
+}

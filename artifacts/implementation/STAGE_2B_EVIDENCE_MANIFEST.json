@@ -1,0 +1,7 @@
+{
+  "baseline_commit": "de374da7e25dcaefc7676ac60f1fef31b219a112",
+  "production_authorized": false,
+  "schema_version": "stage2b_evidence_manifest_v0",
+  "sealed": false,
+  "test_summary": {"collected": 43, "passed": 43, "failed": 0, "skipped": 0, "exit_code": 0}
+}
