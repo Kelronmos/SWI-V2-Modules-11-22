@@ -217,3 +217,27 @@ def test_non_claims_on_permitted_result():
     assert ev.proven is False
     assert ev.sealed is False
     assert ev.production_authorized is False
+
+
+def test_edge_empty_conditions_observed_behaviour():
+    """EDGE (observational): C=∅ with known layers + non-empty evidence.
+
+    Documents current implementation behaviour. Does not assert policy.
+    Mathematical note: empty set is subset of every set.
+    Policy decision required before production use.
+    """
+    from swi_v2.kernel.governing_permit import evaluate_governing_permit, PermitOutcome
+    ev = evaluate_governing_permit(
+        conditions=frozenset(),
+        L=frozenset({"a"}),
+        G=frozenset({"a"}),
+        S=frozenset({"a"}),
+        H=frozenset({"a"}),
+        evidence={"receipt": "vacuous-edge"},
+    )
+    # Record observed outcome; do not change the evaluator.
+    assert ev.outcome is PermitOutcome.PERMITTED
+    assert ev.reason == "all_layers_satisfied_and_evidence_present"
+    assert ev.proven is False
+    assert ev.sealed is False
+    assert ev.production_authorized is False
