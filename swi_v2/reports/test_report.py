@@ -1,6 +1,7 @@
 """Mandatory test-report / evidence layer for SWI verification runs.
 
 HASH != AUTHORITY != TRUTH
+OBSERVATION ≠ CLAIM ≠ PROOF ≠ AUTHORIZATION
 Time-stable canonical bytes = structural outcomes without wall-clock fields.
 """
 from __future__ import annotations
@@ -52,6 +53,49 @@ class TestResultRecord:
         return asdict(self)
 
 
+@dataclass
+class ObservationRecord:
+    """Recorded information — not interpretation, admission, or authority.
+
+    OBSERVATION ≠ CLAIM ≠ PROOF ≠ AUTHORIZATION
+    """
+
+    observation_id: str
+    observation_type: str
+    description: str
+    source: Optional[str] = None
+    timestamp: Optional[float] = None
+    evidence_ref: Optional[str] = None
+    observed_status: Optional[str] = None
+    workflow_id: Optional[str] = None
+    stage_id: Optional[str] = None
+    test_id: Optional[str] = None
+    incomplete: bool = False
+    uncertain: bool = False
+    unavailable: bool = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ClaimRecord:
+    """Interpreted assertion that must reference supporting observations."""
+
+    claim_id: str
+    claim_text: str
+    category: str = "general"
+    supporting_observation_ids: List[str] = field(default_factory=list)
+    evidence_refs: List[str] = field(default_factory=list)
+    verification_status: str = "UNVERIFIED"
+    limitations: List[str] = field(default_factory=list)
+    counterevidence: List[str] = field(default_factory=list)
+    unproven: List[str] = field(default_factory=list)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
 def _git(cmd: List[str], cwd: Optional[Path] = None) -> str:
     try:
         return subprocess.check_output(["git"] + cmd, cwd=cwd, stderr=subprocess.DEVNULL).decode().strip()
@@ -68,6 +112,8 @@ class TestReportBuilder:
         self.branch = _git(["branch", "--show-current"], self.root) or None
         self.test_command: Optional[str] = None
         self.tests: List[TestResultRecord] = []
+        self.observations: List[ObservationRecord] = []
+        self.claims: List[ClaimRecord] = []
         self.halt_results: List[Dict[str, Any]] = []
         self.execution_results: List[Dict[str, Any]] = []
         self.bypass_results: List[Dict[str, Any]] = []
@@ -97,6 +143,75 @@ class TestReportBuilder:
     def add_not_proven(self, text: str) -> None:
         self.not_proven.append(text)
 
+    def add_observation(self, obs: ObservationRecord) -> None:
+        self.observations.append(obs)
+
+    def observation_ids(self) -> set:
+        return {o.observation_id for o in self.observations}
+
+    def add_claim(self, claim: ClaimRecord) -> ClaimRecord:
+        known = self.observation_ids()
+        missing = [oid for oid in claim.supporting_observation_ids if oid not in known]
+        if missing:
+            claim.limitations = list(claim.limitations) + [
+                f"missing_observations:{','.join(sorted(missing))}"
+            ]
+            if claim.verification_status == "VERIFIED":
+                claim.verification_status = "REJECTED"
+                claim.unproven = list(claim.unproven) + [
+                    "cannot_verify_without_supporting_observations"
+                ]
+            elif claim.verification_status not in ("REJECTED",):
+                claim.verification_status = "UNRESOLVED"
+        if claim.verification_status == "VERIFIED" and not claim.supporting_observation_ids:
+            claim.verification_status = "REJECTED"
+            claim.unproven = list(claim.unproven) + ["verified_claim_requires_observations"]
+        if claim.category in ("authority", "authorization", "production_authorization"):
+            if claim.verification_status == "VERIFIED" and not claim.evidence_refs:
+                claim.verification_status = "REJECTED"
+                claim.unproven = list(claim.unproven) + [
+                    "authority_claims_require_independent_evidence_refs"
+                ]
+            claim.limitations = list(claim.limitations) + [
+                "OBSERVATION≠AUTHORITY; claim category cannot manufacture permit"
+            ]
+        self.claims.append(claim)
+        return claim
+
+    def promote_claim(
+        self,
+        claim_id: str,
+        new_status: str,
+        *,
+        required_observation_ids: Optional[List[str]] = None,
+    ) -> ClaimRecord:
+        claim = next((c for c in self.claims if c.claim_id == claim_id), None)
+        if claim is None:
+            raise KeyError(f"unknown_claim:{claim_id}")
+        if new_status == "VERIFIED":
+            req = list(required_observation_ids or claim.supporting_observation_ids)
+            known = self.observation_ids()
+            if not req or any(oid not in known for oid in req):
+                claim.verification_status = "REJECTED"
+                claim.unproven = list(claim.unproven) + [
+                    "promotion_requires_present_observations"
+                ]
+                return claim
+            if claim.category in ("authority", "authorization", "production_authorization"):
+                claim.verification_status = "REJECTED"
+                claim.unproven = list(claim.unproven) + [
+                    "cannot_promote_authority_claim_via_report_builder"
+                ]
+                return claim
+            if claim.category == "universal_proof":
+                claim.verification_status = "REJECTED"
+                claim.unproven = list(claim.unproven) + [
+                    "passing_test_is_not_universal_proof"
+                ]
+                return claim
+        claim.verification_status = new_status
+        return claim
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "report_type": self.report_type,
@@ -110,26 +225,22 @@ class TestReportBuilder:
             "full_suite_status": self.full_suite_status,
             "ci_status": self.ci_status,
             "tests": [t.to_dict() for t in self.tests],
+            "observations": [o.to_dict() for o in self.observations],
+            "claims": [c.to_dict() for c in self.claims],
             "halt_results": self.halt_results,
             "execution_results": self.execution_results,
             "bypass_results": self.bypass_results,
             "limitations": self.limitations,
             "not_proven": self.not_proven,
+            "governance": {
+                "proven": "NO",
+                "sealed": "NO",
+                "authorized": "NO",
+                "production_authorized": "NO",
+            },
         }
 
     def content_for_hash(self) -> Dict[str, Any]:
-        """Time-stable payload for hashing.
-
-        Excludes wall-clock and per-run volatile fields so the same
-        structural outcomes at the same commit produce the same SHA-256:
-          - generated_at
-          - per-test timestamp
-          - evidence_hash (depends on IntegrityEvidence.timestamp)
-          - nested halt evidence timestamps
-
-        Outcome fields kept: decisions, counters, status, reason codes.
-        HASH != AUTHORITY != TRUTH
-        """
         data = self.to_dict()
         data.pop("generated_at", None)
         for t in data.get("tests", []):
@@ -194,6 +305,8 @@ def write_reports(builder: TestReportBuilder, out_dir: Path) -> Dict[str, Path]:
         )
     lines.append("")
     lines.append("HASH != AUTHORITY != TRUTH")
+    lines.append("OBSERVATION ≠ CLAIM ≠ PROOF ≠ AUTHORIZATION")
+    lines.append("PRODUCTION_AUTHORIZED = NO")
     md = "\n".join(lines)
     md_path.write_text(md)
     latest_md.write_text(md)
