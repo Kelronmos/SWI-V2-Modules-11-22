@@ -1,1 +1,32 @@
-PLACEHOLDER
+{
+  "record_id": "execution_integrity_restore_2026-10-30",
+  "schema_version": "1.0",
+  "timestamp_utc": "2026-10-30T14:02:57Z",
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "branch": "recovery/execution-integrity-restore",
+  "base_commit_sha": "de374da7e25dcaefc7676ac60f1fef31b219a112",
+  "component": "swi_v2.execution_integrity",
+  "action": "RESTORE_COMPLETE_SOURCE",
+  "status": "IMPLEMENTED_AND_TESTED",
+  "production_authorized": false,
+  "sealed": false,
+  "proven": false,
+  "tests": {
+    "suite": "adversarial execution-integrity + new-information + halt",
+    "exit_code": 0,
+    "passed": 60,
+    "stdout_tail": "............................................................             [100%]\n60 passed in 0.21s"
+  },
+  "limitations": [
+    "Restore is published to a recovery branch only; not merged to main.",
+    "M12 remains CONTRACT FROZEN.",
+    "Unrelated trusted-source spine inspector still contains a placeholder.",
+    "No claim of process-wide isolation or universal safety.",
+    "TESTED ≠ PROVEN ≠ SEALED ≠ PRODUCTION AUTHORIZED"
+  ],
+  "not_proven": [
+    "S9 formal properties",
+    "Durable cross-process replay",
+    "Production authorization"
+  ]
+}
