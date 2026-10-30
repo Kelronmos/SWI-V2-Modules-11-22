@@ -5,6 +5,8 @@ STATUS: IMPLEMENTATION CANDIDATE — not sealed, not production authorized.
 Governing formula:
     Permit(a) ⟺ ∀L,G,S,H: C(a) ⊆ L ∩ G ∩ S ∩ H  ∧  E(a) ≠ ∅
 
+Empty C is rejected (never PERMITTED via vacuous subset truth).
+
 Distinctions preserved:
     DATA ≠ EVIDENCE ≠ ADMISSION ≠ AUTHORIZATION ≠ ACTION
     TESTED ≠ PROVEN
@@ -84,26 +86,27 @@ def evaluate_governing_permit(
 ) -> GoverningEvaluation:
     """Evaluate Permit(a) under the SWI governing formula.
 
-    Parameters
-    ----------
-    conditions : C(a) — required condition identifiers for the action.
-    L, G, S, H : layer sets. None = UNKNOWN (not the same as empty).
-    evidence : E(a). Absence or empty → E(a) = ∅.
-
-    Returns
-    -------
-    GoverningEvaluation with outcome in {PERMITTED, REJECTED, UNKNOWN}.
-
     Rules
     -----
+    - Empty conditions C → REJECTED (never PERMITTED via vacuous truth).
     - If any of L,G,S,H is UNKNOWN → outcome UNKNOWN (never PERMITTED).
     - If any known layer fails C(a) ⊆ layer → REJECTED.
     - If E(a) = ∅ → REJECTED (when layers are otherwise resolved).
-    - PERMITTED only when all layers known, all subsets hold, and evidence exists.
-    - Observation objects, signatures, or prior evaluations do not satisfy H
-      merely by existing; H must be supplied as an explicit layer set.
+    - PERMITTED only when C non-empty, all layers known, all subsets hold, and evidence exists.
     """
     C = frozenset(conditions)
+    # Empty C must not PERMIT via vacuous subset truth (∅ ⊆ X is always true).
+    # An action with no required conditions is incomplete, not authorized.
+    if not C:
+        return GoverningEvaluation(
+            outcome=PermitOutcome.REJECTED,
+            reason="empty_conditions_never_permit",
+            conditions=C,
+            layer_status={"L": "n/a", "G": "n/a", "S": "n/a", "H": "n/a"},
+            evidence_present=_evidence_exists(evidence),
+            failed_layers=("C",),
+        )
+
     layers: dict[str, Optional[FrozenSet[str]]] = {
         "L": _as_frozenset(L),
         "G": _as_frozenset(G),
