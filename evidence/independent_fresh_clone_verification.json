@@ -1,0 +1,45 @@
+{
+  "record_id": "independent_fresh_clone_verification_2026-10-30",
+  "schema_version": "1.0",
+  "timestamp_utc": "2026-10-30T14:08:41Z",
+  "repository": "Kelronmos/SWI-V2-Modules-11-22",
+  "branch": "recovery/execution-integrity-restore",
+  "commit_sha": "fbabc71655d719364cbf9ff1aaec4609aeb663ec",
+  "clone_method": "git clone --depth 1 --branch recovery/execution-integrity-restore",
+  "python_version": "3.12.3",
+  "dependencies_installed": [
+    "pytest>=7.0",
+    "cryptography>=41.0.0"
+  ],
+  "source": {
+    "path": "swi_v2/execution_integrity.py",
+    "size_bytes": 21564,
+    "sha256": "cd5e12b1360afa3efcfe0b22376ca5fe73ffbf984272e7de8b4dcb24535ff080",
+    "git_blob_sha": "9e996555a5831208970b31b91fefb367e1f52cb7",
+    "payload_fragments_present": false
+  },
+  "import": "PASS",
+  "compileall": "PASS",
+  "adversarial_tests": {
+    "command": "python -m pytest test/adversarial/test_new_information_boundary_attacks.py test/adversarial/test_execution_integrity.py test/adversarial/test_gate_pass_fail_matrix.py test/adversarial/test_universal_halt.py -q",
+    "exit_code": 0,
+    "passed": 60,
+    "failed": 0
+  },
+  "broader_tests": {
+    "command": "python -m pytest test/ --ignore=test/test_trusted_source_spine_inspector.py -q",
+    "exit_code": 0,
+    "passed": 220,
+    "note": "Excluded pre-existing broken trusted-source inspector test"
+  },
+  "m11_m12_unchanged": true,
+  "m12_status": "CONTRACT FROZEN · Implementation: NOT STARTED · Seal: NOT CLAIMED",
+  "production_authorized": false,
+  "sealed": false,
+  "proven": false,
+  "limitations": [
+    "No isolated venv available in this environment (python3-venv missing); used user-site install of declared deps only.",
+    "Trusted-source spine inspector placeholder remains (pre-existing).",
+    "This verification does not constitute a seal or production authorization."
+  ]
+}
