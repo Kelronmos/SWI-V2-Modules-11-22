@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-spec",
+  "refusal_first": true,
+  "permission_path_required": true,
+  "refusal_path_required": true,
+  "dashboard_failures_as_visible_as_successes": true,
+  "desktop_shell_no_second_auth_engine": true,
+  "same_backend_spine_desktop_and_browser": true,
+  "no_placeholder_spine_as_working": true,
+  "platform_package_claim_requires_os_native_test": true,
+  "PROVEN": false,
+  "SEALED": false,
+  "PRODUCTION_AUTHORIZED": false,
+  "prominent_dashboard_sentence": "A system is not governed because it knows when to proceed. It is governed when it knows when it must not proceed, and cannot silently proceed anyway."
+}
