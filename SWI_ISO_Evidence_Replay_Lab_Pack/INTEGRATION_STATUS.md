@@ -1,18 +1,14 @@
-# SWI ISO Evidence & Replay Lab Pack — Integration Status
+# Integration status
 
-**Branch:** `feature/swi-iso-evidence-replay-lab`
-**Date:** 2026-10-31
+Branch: `feature/swi-iso-evidence-replay-lab`
 
-## Done
-- Lab pack imported under `SWI_ISO_Evidence_Replay_Lab_Pack/`
-- Pack-local validation tools available
+Local complete commit: `3ecc8aad50efcef6160bc8221253efe82952bda2`
 
-## Not done
-- No SWI V2 kernel changes
-- M12 freeze not lifted
-- Firefly not implemented
-- No ISO compliance claim
-- Evidence not yet rebound to this repository commit
+- Phase 1 package mirror: PASS (local)
+- Stage 1 schema/serial/ledger unit tests: 11 passed (local)
+- Kernel boundary probes: PASS (local)
+- ISO clause compatibility: NOT_ASSESSED
+- GitHub full-tree push: blocked without credentials
 
 ```
 PROVEN=NO
@@ -20,5 +16,3 @@ SEALED=NO
 AUTHORIZED=NO
 PRODUCTION_AUTHORIZED=NO
 ```
-
-ISO ALIGNMENT ≠ COMPLIANCE ≠ CERTIFICATION

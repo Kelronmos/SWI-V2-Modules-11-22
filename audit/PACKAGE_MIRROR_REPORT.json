@@ -1,0 +1,12 @@
+{
+  "local_commit": "3ecc8aad50efcef6160bc8221253efe82952bda2",
+  "branch": "feature/swi-iso-evidence-replay-lab",
+  "original_file_count": 88,
+  "PACKAGE_INVENTORY": "PASS",
+  "PACKAGE_MIRROR": "PASS",
+  "PACKAGE_HASH_VERIFICATION": "PASS",
+  "github_push": "FAILED_NO_CREDENTIALS",
+  "remote_full_tree": false,
+  "PROVEN": false,
+  "PRODUCTION_AUTHORIZED": false
+}
