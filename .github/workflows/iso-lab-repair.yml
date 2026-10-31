@@ -1,0 +1,29 @@
+name: iso-lab-repair
+on:
+  push:
+    paths:
+      - "SWI_ISO_Evidence_Replay_Lab_Pack/**"
+      - ".github/workflows/iso-lab-repair.yml"
+  pull_request:
+    paths:
+      - "SWI_ISO_Evidence_Replay_Lab_Pack/**"
+
+jobs:
+  lab-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: |
+          python -m pip install -U pip
+          pip install pytest jsonschema cryptography
+          pip install -r requirements.txt
+      - name: Schema and ledger unit tests
+        run: python -m pytest SWI_ISO_Evidence_Replay_Lab_Pack/tests/test_schema_and_ledger.py -q
+      - name: Governance reminder
+        run: |
+          echo "CI_GREEN != SWI_AUTHORIZED"
+          echo "PROVEN=NO SEALED=NO PRODUCTION_AUTHORIZED=NO"
