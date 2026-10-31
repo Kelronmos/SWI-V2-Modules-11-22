@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swi.local/schemas/swi_iso_proof_record_v1.schema.json",
+  "title": "SWI ISO Proof Record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "schema_id", "record_id", "record_type", "serial", "timestamp_utc", "standard_id", "run_id", "outcome", "scope", "repository_url", "commit_sha", "content_sha256", "previous_hash", "governance"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "swi_iso_proof_record_v1"},
+    "schema_id": {"type": "string"},
+    "schema_digest": {"type": "string"},
+    "record_id": {"type": "string", "minLength": 8},
+    "record_type": {"type": "string"},
+    "serial": {"type": "string"},
+    "timestamp_utc": {"type": "string"},
+    "standard_id": {"type": "string"},
+    "run_id": {"type": "string"},
+    "test_id": {"type": ["string", "null"]},
+    "outcome": {"type": "string", "enum": ["PASS", "FAIL", "NOT_RUN", "NOT_ASSESSED", "PARTIAL", "REJECT"]},
+    "scope": {"type": "string"},
+    "repository_url": {"type": "string"},
+    "commit_sha": {"type": ["string", "null"]},
+    "content_sha256": {"type": "string"},
+    "previous_hash": {"type": ["string", "null"]},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "governance": {
+      "type": "object",
+      "required": ["PROVEN", "SEALED", "AUTHORIZED", "PRODUCTION_AUTHORIZED"],
+      "properties": {
+        "PROVEN": {"type": "boolean"},
+        "SEALED": {"type": "boolean"},
+        "AUTHORIZED": {"type": "boolean"},
+        "PRODUCTION_AUTHORIZED": {"type": "boolean"}
+      }
+    },
+    "signature": {"type": "object"},
+    "detail": {"type": ["string", "null"]}
+  }
+}
