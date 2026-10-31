@@ -1,0 +1,48 @@
+{
+  "catalogue_id": "SWI-ISO-INITIAL-FIVE",
+  "version": "1.0",
+  "note": "Seed metadata only. Verify official ISO designations at implementation time. Not a claim of conformity.",
+  "standards": [
+    {
+      "id": "ISO-IEC-42001-2023",
+      "designation": "ISO/IEC 42001:2023",
+      "title": "Information technology — Artificial intelligence — Management system",
+      "status_in_lab": "PACK_PRESENT",
+      "conformity_claimed": false
+    },
+    {
+      "id": "ISO-IEC-23894-2023",
+      "designation": "ISO/IEC 23894:2023",
+      "title": "Information technology — Artificial intelligence — Guidance on risk management",
+      "status_in_lab": "PACK_PRESENT",
+      "conformity_claimed": false
+    },
+    {
+      "id": "ISO-IEC-5338-2023",
+      "designation": "ISO/IEC 5338:2023",
+      "title": "Information technology — Artificial intelligence — AI system life cycle processes",
+      "status_in_lab": "PACK_PRESENT",
+      "conformity_claimed": false
+    },
+    {
+      "id": "ISO-IEC-12792-2025",
+      "designation": "ISO/IEC 12792:2025",
+      "title": "Information technology — Artificial intelligence — Transparency taxonomy of AI systems",
+      "status_in_lab": "PACK_PRESENT",
+      "conformity_claimed": false
+    },
+    {
+      "id": "ISO-IEC-TS-42119-2-2025",
+      "designation": "ISO/IEC TS 42119-2:2025",
+      "title": "Artificial intelligence — Testing of AI systems",
+      "status_in_lab": "PACK_PRESENT",
+      "conformity_claimed": false
+    }
+  ],
+  "governance": {
+    "PROVEN": false,
+    "SEALED": false,
+    "AUTHORIZED": false,
+    "PRODUCTION_AUTHORIZED": false
+  }
+}
