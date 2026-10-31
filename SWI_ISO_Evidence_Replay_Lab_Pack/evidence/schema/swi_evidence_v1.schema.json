@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi_evidence_v1.schema.json",
+  "title": "SWI Evidence Record v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["record_id", "schema_version", "timestamp_utc"],
+  "properties": {
+    "record_id": {"type": "string"},
+    "schema_version": {"type": "string"},
+    "timestamp_utc": {"type": "string"},
+    "repository": {"type": "string"},
+    "commit_sha": {"type": ["string", "null"]},
+    "standard_id": {"type": "string"},
+    "test_id": {"type": "string"},
+    "outcome": {"type": "string"},
+    "sha256": {"type": "string"},
+    "previous_hash": {"type": ["string", "null"]},
+    "serial": {"type": "integer"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "governance": {
+      "type": "object",
+      "properties": {
+        "PROVEN": {"type": "boolean"},
+        "SEALED": {"type": "boolean"},
+        "AUTHORIZED": {"type": "boolean"},
+        "PRODUCTION_AUTHORIZED": {"type": "boolean"}
+      }
+    }
+  }
+}
