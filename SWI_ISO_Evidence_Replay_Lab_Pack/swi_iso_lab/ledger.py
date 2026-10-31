@@ -70,7 +70,7 @@ class SerialLedger:
                 f.write(line + "\n")
 
     def verify_chain(self) -> Dict[str, Any]:
-        entries = self mixed_entries() if False else self.read_entries()
+        entries = self.read_entries()
         errors: List[str] = []
         seen_active: set = set()
         prev = None
@@ -84,5 +84,9 @@ class SerialLedger:
                 if serial in seen_active:
                     errors.append(f"entry[{i}] duplicate active serial {serial}")
                 seen_active.add(serial)
-        return {"ok": len(errors) == 0, "entries": len(entries), "errors": errors,
-                "outcome": "PASS" if not errors else "FAIL"}
+        return {
+            "ok": len(errors) == 0,
+            "entries": len(entries),
+            "errors": errors,
+            "outcome": "PASS" if not errors else "FAIL",
+        }
