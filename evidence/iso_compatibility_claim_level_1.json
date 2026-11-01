@@ -1,0 +1,25 @@
+{
+  "claim_id": "SWI-ISO-COMPATIBILITY-LEVEL1-2026-11-01",
+  "claim_proven": false,
+  "claim_true": false,
+  "claim_false": true,
+  "standard_level": 1,
+  "standard_status": "NOT_ESTABLISHED",
+  "color": "red",
+  "legend": {
+    "green": "proven compliant / pass",
+    "yellow": "partial / limited evidence",
+    "orange": "risk / materially incomplete",
+    "red": "failed / not compliant",
+    "black": "absent / no evidence / not established"
+  },
+  "evidence": {
+    "source_record": "Local Independent Tests/current_verification_run.json",
+    "import_note": "Local Independent Tests/LOCAL_EVIDENCE_IMPORT_UPDATE_2026-11-01.md",
+    "not_proven": [
+      "No ISO conformity, certification, PROVEN, SEALED, or production authorization.",
+      "The optional ISO claim validator and ISO gate test files are absent from this checkout."
+    ],
+    "final_verdict": "ISO conformity remains NOT_ESTABLISHED; the compatibility claim is false and unproven."
+  }
+}
