@@ -1,0 +1,37 @@
+{
+  "schema_version": "pr14_repair_results_v1",
+  "updated_utc": "2026-11-01T22:00:00Z",
+  "pr": 14,
+  "branch": "review/iso-gate-repro-2026-11-01",
+  "main_sha": "bb401276ee3a32a822a518b18054d51c6490a20b",
+  "sync": {
+    "status": "FAIL",
+    "method": "github_update_pull_request_branch",
+    "error": "merge conflict between base and head",
+    "conflict_paths": ["evidence/iso_compatibility_claim_level_1.json"],
+    "resolution_guidance": "keep PR claim_true/claim_false null and color black",
+    "merge_commit": null
+  },
+  "stages": {
+    "schema_alignment": "SOURCE_PRESENT",
+    "validator_hardening": "SOURCE_PRESENT",
+    "regression_tests_source": "SOURCE_PRESENT",
+    "regression_tests_executed": "NOT_RUN",
+    "execution_integrity_compile": "PASS",
+    "execution_integrity_adversarial": "NOT_RUN",
+    "spine_inspector_original": "NOT_VERIFIED",
+    "spine_inspector_reconstructed": "SOURCE_PRESENT",
+    "spine_inspector_tests": "NOT_RUN",
+    "full_pytest": "NOT_RUN",
+    "ci_matrix": "NOT_RUN"
+  },
+  "governance": {
+    "PROVEN": false,
+    "SEALED": false,
+    "PRODUCTION_AUTHORIZED": false,
+    "ISO_CONFORMITY": "NOT_ESTABLISHED",
+    "CONFORMITY_CLAIM": "SEALED",
+    "SWI_V2_INTEGRATION": "NOT_ESTABLISHED"
+  },
+  "merge_recommendation": "DO_NOT_MERGE"
+}
