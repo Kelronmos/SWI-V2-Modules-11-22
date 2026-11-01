@@ -1,0 +1,7 @@
+{
+  "python": "3.12.3",
+  "platform": "Linux",
+  "commit": "4f8685181d8c8af2166277262ecae30182c90cce",
+  "jsonschema_installed": false,
+  "note": "Structural fallback used for ISO register validation"
+}
