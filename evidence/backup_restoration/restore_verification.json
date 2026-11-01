@@ -1,0 +1,16 @@
+{
+  "timestamp_utc": "2026-11-01T09:52:32Z",
+  "archive": "critical_paths_archive.tar.gz",
+  "archive_sha256": "eca1eab27608bd85866437fc620ad88009cb0fefa3b2e334a41ab5861043bff4",
+  "all_match": true,
+  "files": [
+    {"path": "evidence/iso_claim_status.json", "match": true, "sha256": "7b2650336d253da32065d15227a48a7d90bece31402b0dbb110c48b9fc46d446"},
+    {"path": "evidence/schemas/iso_claim_status.schema.json", "match": true, "sha256": "79d6011f3b688a815e126c123a931252ce195f629745cf71bc1f7f557e7b0a54"},
+    {"path": "tools/validate_iso_claim_status.py", "match": true, "sha256": "235690d13bda1e50efc5659ec7a5b777b29900bc01def4a1ba53059eb8bd3976"},
+    {"path": "tests/test_iso_claim_gate.py", "match": true, "sha256": "95fd268a7f25e9bf5dc47628fd9e915b39b1f361c9e2fd64e9b6bcfa97ab8087"},
+    {"path": ".github/workflows/iso-claim-gate.yml", "match": true, "sha256": "26f109dbd2bb9df1181b2e0b961daa89052ad8dd9273cc93c103e53d9e9e2201"},
+    {"path": "docs/iso/ISO_CLAIM_GOVERNANCE.md", "match": true, "sha256": "097ccb3e5a80c4a081eeee82670da7155f342c240c6414abfaefa713880b065b"},
+    {"path": "SWI_TECHNICAL_MANUAL.md", "match": true, "sha256": "0dd4219ba3a13e46ca38d46166ba35351ca1fc16cd1331aae603bcf60c620a0c"}
+  ],
+  "limitation": "Critical-path integrity only; does not prove full-repository backup completeness."
+}

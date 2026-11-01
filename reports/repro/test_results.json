@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-11-01T09:52:32Z",
+  "commit": "4f8685181d8c8af2166277262ecae30182c90cce",
+  "runs": [
+    {
+      "id": "ISO_VALIDATOR",
+      "command": "python3 tools/validate_iso_claim_status.py evidence/iso_claim_status.json",
+      "exit_code": 0,
+      "note": "structural fallback if jsonschema absent"
+    },
+    {
+      "id": "ISO_GATE_PYTEST",
+      "command": "python3 -m pytest tests/test_iso_claim_gate.py -q --tb=line",
+      "exit_code": 0,
+      "parsed": "13 passed"
+    },
+    {
+      "id": "KERNEL_SUBSET",
+      "command": "python3 -m pytest tests/cek_alignment_monitor tests/law tests/pre_r -q --tb=no",
+      "exit_code": 0,
+      "parsed": "536 passed"
+    }
+  ],
+  "independent_reviewer_note": "These results are from this publication run. REPORTED execution is not the same as independent third-party verification."
+}
