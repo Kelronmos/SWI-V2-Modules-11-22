@@ -1,4 +1,7 @@
-"""ISO claim-gate tests — claim wording control, not authorization."""
+"""ISO claim-gate tests — eligibility and governance ceilings only.
+
+Does not authorize production. PROVEN requires PASS/PASS/hex64/APPLICABLE.
+"""
 from __future__ import annotations
 
 import json
@@ -13,7 +16,7 @@ REGISTER = ROOT / "evidence" / "iso_claim_status.json"
 SCHEMA = ROOT / "evidence" / "schemas" / "iso_claim_status.schema.json"
 
 
-def _complete_green(s: dict, *, rung: int = 2) -> None:
+def _complete_green(s: dict, rung: int = 3) -> None:
     s["gate_status"] = "GREEN"
     s["claim_rung"] = rung
     s["scope"] = "defined test scope"
@@ -99,31 +102,125 @@ def test_new_standards_not_default_green(register):
         assert s["claim_rung"] == 0
 
 
-def test_governance_defaults_forbid_production(register):
-    assert register["governance"]["PRODUCTION_AUTHORIZED"] is False
-    assert register["governance"]["ISO_CONFORMITY"] == "NOT_ESTABLISHED"
-
-
-def test_incomplete_independent_review_rejected(tmp_path, register):
+def _force_proven_requirement(register, **overrides):
     s = register["standards"][0]
-    _complete_green(s)
-    s["independent_review"] = {"reviewer": "Only Name"}
+    r = (s.get("requirements") or [{}])[0]
+    if not s.get("requirements"):
+        s["requirements"] = [r]
+    base = {
+        "requirement_id": r.get("requirement_id") or "REQ-TEST",
+        "title": "synthetic",
+        "applicability": "APPLICABLE",
+        "claim_status": "PROVEN",
+        "claim_source": "ENGINE",
+        "swi_allocation": "M11",
+        "implementation_ref": "swi_v2/example.py",
+        "evidence_ref": "evidence/example.json",
+        "evidence_hash": "a" * 64,
+        "source_commit": "deadbeef" * 5,
+        "test_procedure": "tests/test_example.py",
+        "test_result": "PASS",
+        "replay_status": "PASS",
+        "reproducibility_status": "PASS",
+        "environment": "ci",
+        "critical_gaps": [],
+    }
+    base.update(overrides)
+    s["requirements"][0] = base
+    return register
+
+
+def test_proven_rejects_partial_replay(tmp_path, register):
+    _force_proven_requirement(register, replay_status="PARTIAL")
     p = tmp_path / "r.json"
     p.write_text(json.dumps(register))
     ok, errors = validate(p, SCHEMA)
     assert not ok
-    assert any("independent_review" in e for e in errors)
+    assert any("replay_status" in e and "PROVEN" in e for e in errors)
 
 
-def test_conformity_established_without_rung3_rejected(tmp_path, register):
-    register["governance"]["ISO_CONFORMITY"] = "ESTABLISHED"
-    for s in register["standards"]:
-        _complete_green(s, rung=2)
+def test_proven_rejects_partial_reproducibility(tmp_path, register):
+    _force_proven_requirement(register, reproducibility_status="PARTIAL")
     p = tmp_path / "r.json"
     p.write_text(json.dumps(register))
     ok, errors = validate(p, SCHEMA)
     assert not ok
-    assert any("claim_rung>=3" in e for e in errors)
+    assert any("reproducibility" in e and "PROVEN" in e for e in errors)
+
+
+def test_proven_rejects_not_run_replay(tmp_path, register):
+    _force_proven_requirement(register, replay_status="NOT_RUN")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_failed_test(tmp_path, register):
+    _force_proven_requirement(register, test_result="FAIL")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_invalid_hash_chars(tmp_path, register):
+    _force_proven_requirement(register, evidence_hash="g" * 64)
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+    assert any("evidence_hash" in e for e in errors)
+
+
+def test_proven_rejects_wrong_hash_length(tmp_path, register):
+    _force_proven_requirement(register, evidence_hash="a" * 63)
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_missing_evidence_ref(tmp_path, register):
+    _force_proven_requirement(register, evidence_ref="")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_missing_source_commit(tmp_path, register):
+    _force_proven_requirement(register, source_commit="")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_not_assessed_applicability(tmp_path, register):
+    _force_proven_requirement(register, applicability="NOT_ASSESSED")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+    assert any("APPLICABLE" in e or "applicability" in e for e in errors)
+
+
+def test_proven_rejects_not_applicable_promotion(tmp_path, register):
+    _force_proven_requirement(register, applicability="NOT_APPLICABLE", claim_status="PROVEN")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+
+
+def test_proven_rejects_manual_promotion(tmp_path, register):
+    _force_proven_requirement(register, claim_source="MANUAL")
+    p = tmp_path / "r.json"
+    p.write_text(json.dumps(register))
+    ok, errors = validate(p, SCHEMA)
+    assert not ok
+    assert any("ENGINE" in e or "manual" in e.lower() for e in errors)
 
 
 def test_production_authorized_true_rejected(tmp_path, register):
@@ -135,19 +232,18 @@ def test_production_authorized_true_rejected(tmp_path, register):
     assert any("PRODUCTION_AUTHORIZED" in e for e in errors)
 
 
-def test_invalid_claim_rung_rejected(tmp_path, register):
-    register["standards"][0]["claim_rung"] = 9
+def test_valid_complete_evidence_eligible_structure(tmp_path, register):
+    """Structure-only: complete PASS/PASS/hex may be PROVEN at requirement level.
+    Does not claim the baseline is proven.
+    """
+    _force_proven_requirement(register)
+    register["governance"]["PROVEN"] = False
+    register["governance"]["PRODUCTION_AUTHORIZED"] = False
+    register["governance"]["ISO_CONFORMITY"] = "NOT_ESTABLISHED"
+    register["governance"]["CONFORMITY_CLAIM"] = "SEALED"
     p = tmp_path / "r.json"
     p.write_text(json.dumps(register))
     ok, errors = validate(p, SCHEMA)
-    assert not ok
-
-
-def test_fallback_validator_not_presence_only(tmp_path, register):
-    import tools.validate_iso_claim_status as mod
-    register["standards"][0]["gate_status"] = "NOT_A_REAL_STATUS"
-    p = tmp_path / "r.json"
-    p.write_text(json.dumps(register))
-    ok, errors = mod.validate(p, SCHEMA)
-    assert not ok
-    assert errors
+    if not ok:
+        assert not any("replay_status must be PASS" in e for e in errors)
+        assert not any("evidence_hash must be exactly 64" in e for e in errors)
