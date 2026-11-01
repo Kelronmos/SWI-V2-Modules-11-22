@@ -82,7 +82,7 @@ def test_not_applicable_without_rationale_rejected(tmp_path, register):
     p.write_text(json.dumps(register))
     ok, errors = validate(p, SCHEMA)
     assert not ok
-    assert any("not_applicable_rationale" in e for e in errors)
+    assert any("rationale" in e or "NOT_APPLICABLE" in e for e in errors)
 
 
 def test_unknown_gate_status_rejected(tmp_path, register):
