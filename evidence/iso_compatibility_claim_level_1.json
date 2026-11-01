@@ -1,0 +1,26 @@
+{
+  "claim_id": "SWI-ISO-COMPATIBILITY-LEVEL1-2026-11-01",
+  "claim_proven": false,
+  "claim_true": null,
+  "claim_false": null,
+  "standard_level": 1,
+  "standard_status": "NOT_ESTABLISHED",
+  "color": "black",
+  "legend": {
+    "green": "proven compliant / pass",
+    "yellow": "partial / limited evidence",
+    "orange": "risk / materially incomplete",
+    "red": "failed / not compliant",
+    "black": "absent / no evidence / not established"
+  },
+  "evidence": {
+    "source_record": "Local Independent Tests/current_verification_run.json",
+    "import_note": "Local Independent Tests/LOCAL_EVIDENCE_IMPORT_UPDATE_2026-11-01.md",
+    "not_proven": [
+      "No ISO conformity, certification, PROVEN, SEALED, or production authorization.",
+      "The ISO claim validator and ISO gate test files are not on this branch; they exist on review/iso-gate-repro-2026-11-01."
+    ],
+    "final_verdict": "ISO conformity remains NOT_ESTABLISHED; no assessment has been performed."
+  },
+  "note": "NOT_ESTABLISHED means no assessment evidence exists. It does not mean the claim was tested and found false. claim_true and claim_false are therefore unknown (null)."
+}
