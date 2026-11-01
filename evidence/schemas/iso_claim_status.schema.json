@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swi.local/schemas/iso_claim_status.schema.json",
+  "title": "SWI ISO Claim Status Register v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated_utc", "governance", "standards"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "iso_claim_status_v1" },
+    "updated_utc": { "type": "string", "minLength": 10 },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["PROVEN", "SEALED", "PRODUCTION_AUTHORIZED", "ISO_CONFORMITY"],
+      "properties": {
+        "PROVEN": { "type": "boolean" },
+        "SEALED": { "type": "boolean" },
+        "PRODUCTION_AUTHORIZED": { "type": "boolean" },
+        "ISO_CONFORMITY": {
+          "type": "string",
+          "enum": ["NOT_ESTABLISHED", "UNDER_ASSESSMENT", "ESTABLISHED"]
+        }
+      }
+    },
+    "standards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["standard_id", "edition", "gate_status", "claim_rung", "critical_gaps"],
+        "properties": {
+          "standard_id": { "type": "string", "minLength": 3 },
+          "edition": { "type": "string", "minLength": 4 },
+          "scope": { "type": ["string", "null"] },
+          "gate_status": {
+            "type": "string",
+            "enum": ["RED", "AMBER", "GREEN", "NOT_ASSESSED", "NOT_APPLICABLE"]
+          },
+          "claim_rung": { "type": "integer", "minimum": 0, "maximum": 4 },
+          "clause_mapping_ref": { "type": ["string", "null"] },
+          "implementation_refs": { "type": "array", "items": { "type": "string" } },
+          "evidence_hashes": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          },
+          "test_results_ref": { "type": ["string", "null"] },
+          "independent_review": { "type": ["object", "null"] },
+          "critical_gaps": { "type": "array", "items": { "type": "string" } },
+          "certificate": { "type": ["object", "null"] },
+          "not_applicable_rationale": { "type": ["string", "null"] },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}
