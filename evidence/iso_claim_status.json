@@ -1,0 +1,109 @@
+{
+  "schema_version": "iso_claim_status_v1",
+  "updated_utc": "2026-11-01T00:00:00Z",
+  "governance": {
+    "PROVEN": false,
+    "SEALED": false,
+    "PRODUCTION_AUTHORIZED": false,
+    "ISO_CONFORMITY": "NOT_ESTABLISHED"
+  },
+  "standards": [
+    {
+      "standard_id": "ISO/IEC 42001:2023",
+      "edition": "2023",
+      "scope": null,
+      "gate_status": "NOT_ASSESSED",
+      "claim_rung": 0,
+      "clause_mapping_ref": null,
+      "implementation_refs": [],
+      "evidence_hashes": [],
+      "test_results_ref": null,
+      "independent_review": null,
+      "critical_gaps": [
+        "No licensed full-text clause mapping",
+        "No organisational AI management system assessment",
+        "No independent review",
+        "No accredited certification"
+      ],
+      "certificate": null,
+      "not_applicable_rationale": null,
+      "notes": "Studying only (rung 0). Not conformity or certification."
+    },
+    {
+      "standard_id": "ISO/IEC 23894:2023",
+      "edition": "2023",
+      "scope": null,
+      "gate_status": "NOT_ASSESSED",
+      "claim_rung": 0,
+      "clause_mapping_ref": null,
+      "implementation_refs": [],
+      "evidence_hashes": [],
+      "test_results_ref": null,
+      "independent_review": null,
+      "critical_gaps": [
+        "Guidance standard; no completed applicability assessment",
+        "No independent review"
+      ],
+      "certificate": null,
+      "not_applicable_rationale": null,
+      "notes": "Studying only (rung 0)."
+    },
+    {
+      "standard_id": "ISO/IEC 5338:2023",
+      "edition": "2023",
+      "scope": null,
+      "gate_status": "NOT_ASSESSED",
+      "claim_rung": 0,
+      "clause_mapping_ref": null,
+      "implementation_refs": [],
+      "evidence_hashes": [],
+      "test_results_ref": null,
+      "independent_review": null,
+      "critical_gaps": [
+        "Life-cycle process standard; SWI alone cannot satisfy organisational process scope",
+        "No independent review"
+      ],
+      "certificate": null,
+      "not_applicable_rationale": null,
+      "notes": "Studying only (rung 0)."
+    },
+    {
+      "standard_id": "ISO/IEC 12792:2025",
+      "edition": "2025",
+      "scope": null,
+      "gate_status": "NOT_ASSESSED",
+      "claim_rung": 0,
+      "clause_mapping_ref": null,
+      "implementation_refs": [],
+      "evidence_hashes": [],
+      "test_results_ref": null,
+      "independent_review": null,
+      "critical_gaps": [
+        "Transparency taxonomy mapping not completed",
+        "No independent review"
+      ],
+      "certificate": null,
+      "not_applicable_rationale": null,
+      "notes": "Studying only (rung 0)."
+    },
+    {
+      "standard_id": "ISO/IEC TS 42119-2:2025",
+      "edition": "2025",
+      "scope": null,
+      "gate_status": "NOT_ASSESSED",
+      "claim_rung": 0,
+      "clause_mapping_ref": null,
+      "implementation_refs": [],
+      "evidence_hashes": [],
+      "test_results_ref": null,
+      "independent_review": null,
+      "critical_gaps": [
+        "Testing guidance applicability not assessed for SWI as system under test",
+        "No independent review"
+      ],
+      "certificate": null,
+      "not_applicable_rationale": null,
+      "notes": "Studying only (rung 0)."
+    }
+  ]
+}
