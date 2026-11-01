@@ -1,0 +1,201 @@
+From 16c165af75317d11aed1f3ace831ba4c92acda74 Mon Sep 17 00:00:00 2001
+From: local-verifier <local@example.invalid>
+Date: Sun, 1 Nov 2026 16:35:06 +0000
+Subject: [PATCH 3/3] fix(trusted_source): reconstruct spine_inspector from
+ tests, fixtures and docs (NOT the original 20,747-byte module; unverified
+ beyond the tests)
+
+---
+ swi_v2/trusted_source/spine_inspector.py | 181 ++++++++++++++++++++++-
+ 1 file changed, 180 insertions(+), 1 deletion(-)
+
+diff --git a/swi_v2/trusted_source/spine_inspector.py b/swi_v2/trusted_source/spine_inspector.py
+index fa7d070..bebc5f5 100644
+--- a/swi_v2/trusted_source/spine_inspector.py
++++ b/swi_v2/trusted_source/spine_inspector.py
+@@ -1 +1,180 @@
+-PLACEHOLDER_LOAD_FROM_LOCAL_FILE_20747_BYTES
+\ No newline at end of file
++"""SWI Trusted-Source Spine Inspector (read-only, fail-closed, structural only).
++
++RECONSTRUCTED 2026-11-01. This is NOT the original 20,747-byte module, which was never
++committed (the repo held only a 44-byte placeholder). It was rebuilt from
++test/test_trusted_source_spine_inspector.py, test/fixtures/trusted_source/*,
++docs/SWI_TRUSTED_SOURCE_BOUNDARY_PLACEHOLDER.md and evidence/trusted_source_boundary_placeholder.json.
++Behaviour beyond what those specify is unverified. Replace with the original when recovered.
++
++Spine: HEADER > SOURCE > PROVENANCE > VERSION > STATUS > SCOPE > JURISDICTION > EVIDENCE
++       > BOUNDARY > CLAIM > DECISION.  Any stage that is not PASS is a SPINE BREAK -> HALT.
++Structural GREEN is not authorization. AUTHORIZATION from this layer is always NO.
++STANDARD != LAW . SOURCE != AUTHORIZATION . API != AUTHORIZATION . CI_GREEN != PRODUCTION_AUTHORIZATION
++"""
++from __future__ import annotations
++
++import json
++import re
++import sys
++from dataclasses import dataclass, field
++from enum import Enum
++from pathlib import Path
++from typing import Iterable, List, Optional
++
++RECONSTRUCTED = True
++STAGES = ("HEADER", "SOURCE", "PROVENANCE", "VERSION", "STATUS", "SCOPE",
++          "JURISDICTION", "EVIDENCE", "BOUNDARY", "CLAIM")
++_FIELDS = {"HEADER": ["swi_header"], "SOURCE": ["source_id", "source_type", "publisher", "reference"],
++           "PROVENANCE": ["provenance"], "VERSION": ["policy_version"], "STATUS": ["policy_status"],
++           "SCOPE": ["policy_scope"], "JURISDICTION": ["jurisdiction"], "EVIDENCE": ["evidence"],
++           "BOUNDARY": ["boundary"], "CLAIM": ["claim"]}
++_UNKNOWN = {"unknown", "tbd", "n/a", "na", "?", "todo", "unspecified"}
++_STATUSES = {"draft", "active", "superseded", "withdrawn", "expired"}
++
++
++class SpineBreak(Exception):
++    """Raised by InspectionResult.require_green() on a spine break.
++
++    ASSUMPTION: the package __init__ exports this name but nothing in the repo uses it, so its
++    original shape is unknown. Defined here as a plain exception.
++    """
++
++
++class FieldStatus(str, Enum):
++    PASS = "PASS"
++    UNKNOWN = "UNKNOWN"
++    FAIL = "FAIL"
++    CONFLICT = "CONFLICT"
++
++
++_RANK = {FieldStatus.PASS: 0, FieldStatus.UNKNOWN: 1, FieldStatus.FAIL: 2, FieldStatus.CONFLICT: 3}
++
++
++@dataclass
++class Finding:
++    stage: str
++    status: FieldStatus
++    detail: str
++
++
++@dataclass
++class InspectionResult:
++    path: str = ""
++    findings: List[Finding] = field(default_factory=list)
++
++    def status_for(self, stage: str) -> FieldStatus:
++        worst = FieldStatus.PASS
++        for f in self.findings:
++            if f.stage == stage and _RANK[f.status] > _RANK[worst]:
++                worst = f.status
++        return worst
++
++    @property
++    def spine_break(self) -> bool:
++        return any(self.status_for(s) != FieldStatus.PASS for s in STAGES)
++
++    @property
++    def structural_green(self) -> bool:
++        return not self.spine_break
++
++    def require_green(self) -> None:
++        if self.spine_break:
++            raise SpineBreak(f"spine break in {self.path or '<memory>'}: HALT")
++
++
++def _add(res, stage, status, detail):
++    res.findings.append(Finding(stage, status, detail))
++
++
++def _check_presence(rec: dict, res: InspectionResult) -> None:
++    for stage in STAGES:
++        stage_status = FieldStatus.PASS
++        for name in _FIELDS[stage]:
++            v = rec.get(name)
++            if v is None or (isinstance(v, str) and not v.strip()):
++                _add(res, stage, FieldStatus.FAIL, f"missing or empty field: {name}")
++                stage_status = FieldStatus.FAIL
++            elif not isinstance(v, str):
++                _add(res, stage, FieldStatus.FAIL, f"field {name} must be a string")
++                stage_status = FieldStatus.FAIL
++            elif v.strip().lower() in _UNKNOWN:
++                _add(res, stage, FieldStatus.UNKNOWN, f"field {name} is UNKNOWN; never upgraded to PASS")
++                if stage_status == FieldStatus.PASS:
++                    stage_status = FieldStatus.UNKNOWN
++        if stage == "STATUS" and stage_status == FieldStatus.PASS:
++            if rec["policy_status"].strip().lower() not in _STATUSES:
++                _add(res, stage, FieldStatus.FAIL, "policy_status not one of " + "|".join(sorted(_STATUSES)))
++        if stage_status == FieldStatus.PASS and not any(f.stage == stage for f in res.findings):
++            _add(res, stage, FieldStatus.PASS, "structurally present")
++
++
++def _check_conflicts(rec: dict, res: InspectionResult) -> None:
++    claim = str(rec.get("claim", "")).lower()
++    trusted = str(rec.get("trusted_for", "")).lower()
++    stype = str(rec.get("source_type", "")).lower()
++    if stype == "standard" and re.search(r"\b(is|as) law\b|jurisdictionally binding|legally binding", claim):
++        _add(res, "CLAIM", FieldStatus.CONFLICT, "STANDARD != LAW: a standard cannot assert legal or jurisdictional force")
++    if re.search(r"\bauthori[sz](ation|e|ed)\b|\bexecut(e|ion)\b|\bpermit\b", trusted) and not re.search(r"\bnot\b|\bno\b", trusted):
++        _add(res, "CLAIM", FieldStatus.CONFLICT, "SOURCE != AUTHORIZATION: trusted_for claims authorization")
++    if re.search(r"(api|vpn|network access)\W+(authori[sz]ation\W+)?(is\W+)?(grant|authori[sz])", claim) \
++            or re.search(r"source is authori[sz]ation", claim):
++        _add(res, "CLAIM", FieldStatus.CONFLICT, "API != AUTHORIZATION / SOURCE != AUTHORIZATION: access or source treated as authority")
++
++
++def inspect_record(record, path: Optional[str] = None) -> InspectionResult:
++    res = InspectionResult(path=path or "")
++    if not isinstance(record, dict):
++        for s in STAGES:
++            _add(res, s, FieldStatus.FAIL, "record is not a JSON object")
++        return res
++    _check_presence(record, res)
++    _check_conflicts(record, res)
++    return res
++
++
++def inspect_paths(paths: Iterable) -> List[InspectionResult]:
++    out = []
++    for p in paths:
++        try:
++            data = json.loads(Path(p).read_text(encoding="utf-8"))
++        except (OSError, ValueError) as e:
++            r = InspectionResult(path=str(p))
++            for s in STAGES:
++                _add(r, s, FieldStatus.FAIL, f"unreadable or malformed JSON: {type(e).__name__}")
++            out.append(r)
++            continue
++        out.append(inspect_record(data, path=str(p)))
++    return out
++
++
++def format_report(results: Iterable[InspectionResult]) -> str:
++    lines = ["SWI TRUSTED-SOURCE SPINE INSPECTOR (structural only, fail-closed)"]
++    if RECONSTRUCTED:
++        lines.append("NOTE: reconstructed module, not the original")
++    for r in results:
++        lines.append(f"\nRECORD  {r.path or '<memory>'}")
++        for s in STAGES:
++            lines.append(f"  {s:<13}{r.status_for(s).value}")
++        for f in r.findings:
++            if f.status != FieldStatus.PASS:
++                lines.append(f"    - {f.stage}: {f.detail}")
++        if r.spine_break:
++            lines.append("  RESULT        SPINE BREAK -> HALT -> NO GREEN -> NO BINDING")
++        else:
++            lines.append("  RESULT        STRUCTURAL GREEN ONLY (NOT PROVEN)")
++        lines.append("  AUTHORIZATION      NO")
++    return "\n".join(lines) + "\n"
++
++
++def main(argv: Optional[List[str]] = None) -> int:
++    args = list(sys.argv[1:] if argv is None else argv)
++    if not args:
++        print("usage: spine_inspector.py RECORD.json [RECORD.json ...]", file=sys.stderr)
++        return 2
++    results = inspect_paths(args)
++    print(format_report(results))
++    return 1 if any(r.spine_break for r in results) else 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+-- 
+2.43.0
+
