@@ -1,0 +1,10 @@
+{
+  "HEAD": "15312ac425cba5e2c08b8719a2967b5bdd94649c",
+  "origin/repair/iso-evidence-replay-integrity": "15312ac425cba5e2c08b8719a2967b5bdd94649c",
+  "origin/feature/swi-iso-evidence-replay-lab": "81019ff0954b9e0d36dc9ee4ca9174a4878c48b6",
+  "origin/main": "1456d9a0a1acf172c7329feed30d5f7b2ab0bcc4",
+  "merge_base_repair_feature": "b245eb98cea9c475303bb19a26a9b5da45c8b29d",
+  "local_phase24_commit": "9109f373bcfb179e8a818f6d503cce50d5c33cfb",
+  "PROVEN": false,
+  "PRODUCTION_AUTHORIZED": false
+}
