@@ -11,7 +11,7 @@
     "governance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["PROVEN", "SEALED", "PRODUCTION_AUTHORIZED", "ISO_CONFORMITY"],
+      "required": ["PROVEN", "SEALED", "PRODUCTION_AUTHORIZED", "ISO_CONFORMITY", "CONFORMITY_CLAIM"],
       "properties": {
         "PROVEN": { "type": "boolean" },
         "SEALED": { "type": "boolean" },
@@ -19,7 +19,13 @@
         "ISO_CONFORMITY": {
           "type": "string",
           "enum": ["NOT_ESTABLISHED", "UNDER_ASSESSMENT", "ESTABLISHED"]
-        }
+        },
+        "CONFORMITY_CLAIM": {
+          "type": "string",
+          "enum": ["SEALED", "OPEN", "WITHDRAWN"]
+        },
+        "CLAIM_GENERATION": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] }
       }
     },
     "standards": {
@@ -32,6 +38,7 @@
         "properties": {
           "standard_id": { "type": "string", "minLength": 3 },
           "edition": { "type": "string", "minLength": 4 },
+          "display": { "type": ["string", "null"] },
           "scope": { "type": ["string", "null"] },
           "gate_status": {
             "type": "string",
@@ -42,14 +49,52 @@
           "implementation_refs": { "type": "array", "items": { "type": "string" } },
           "evidence_hashes": {
             "type": "array",
-            "items": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            "items": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
           },
           "test_results_ref": { "type": ["string", "null"] },
           "independent_review": { "type": ["object", "null"] },
           "critical_gaps": { "type": "array", "items": { "type": "string" } },
           "certificate": { "type": ["object", "null"] },
           "not_applicable_rationale": { "type": ["string", "null"] },
-          "notes": { "type": "string" }
+          "notes": { "type": ["string", "null"] },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["requirement_id", "claim_status", "applicability"],
+              "properties": {
+                "requirement_id": { "type": "string" },
+                "title": { "type": ["string", "null"] },
+                "applicability": {
+                  "type": "string",
+                  "enum": ["APPLICABLE", "NOT_APPLICABLE", "NOT_ASSESSED"]
+                },
+                "claim_status": {
+                  "type": "string",
+                  "enum": ["SEALED", "PROVEN", "NOT_PROVEN", "NOT_APPLICABLE"]
+                },
+                "claim_source": { "type": ["string", "null"] },
+                "swi_allocation": { "type": ["string", "null"] },
+                "implementation_ref": { "type": ["string", "null"] },
+                "evidence_ref": { "type": ["string", "null"] },
+                "evidence_hash": { "type": ["string", "null"] },
+                "source_commit": { "type": ["string", "null"] },
+                "test_procedure": { "type": ["string", "null"] },
+                "test_result": { "type": ["string", "null"] },
+                "replay_status": {
+                  "type": "string",
+                  "enum": ["NOT_RUN", "PASS", "FAIL", "PARTIAL"]
+                },
+                "reproducibility_status": {
+                  "type": "string",
+                  "enum": ["NOT_RUN", "PASS", "FAIL", "PARTIAL"]
+                },
+                "environment": { "type": ["string", "null"] },
+                "critical_gaps": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
         }
       }
     }
