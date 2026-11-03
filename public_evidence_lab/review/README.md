@@ -36,7 +36,18 @@ The author of the implementation cannot occupy a reviewer position for their own
 
 | File | Purpose |
 |------|--------|
-| `reviewer_registry.json` | Machine-readable five-position registry |
+| `reviewer_registry.json` | Machine-readable five-position registry (all EMPTY) |
+| `receipt_generator.py` | Stub that builds/writes receipt JSON; never invents reviewers |
+| `../schemas/review_receipt.schema.json` | JSON Schema for receipts |
 | `README.md` | This document |
 
-Immutable review receipts and automatic README registration of admitted reviews are not yet implemented.
+## Receipt generation (stub)
+
+```bash
+cd public_evidence_lab
+python3 review/receipt_generator.py --position 1 --state REVIEW_SUBMITTED --out-dir receipts
+```
+
+Output is a structured receipt with all claim fields locked false and stage results marked `NOT_RUN` unless supplied. This does **not** admit a review or update the registry.
+
+Automatic README registration of admitted reviews is not yet implemented.
