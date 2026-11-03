@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "swi.public-evidence-lab.review-receipt.v1",
+  "title": "SWI Public Evidence Lab — Review Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "receipt_id",
+    "position",
+    "state",
+    "reviewed_commit",
+    "run_id",
+    "generated_utc",
+    "claims",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "swi.public-evidence-lab.review-receipt.v1"
+    },
+    "receipt_id": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Unique immutable receipt identifier"
+    },
+    "position": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "REVIEW_SUBMITTED",
+        "SOURCE_VERIFIED",
+        "VERSION_MATCHED",
+        "EVIDENCE_VALIDATED",
+        "REPRODUCED",
+        "REVIEW_ADMITTED",
+        "REJECTED",
+        "WITHDRAWN"
+      ]
+    },
+    "reviewer": {
+      "type": ["object", "null"],
+      "properties": {
+        "reviewer_id": { "type": ["string", "null"] },
+        "display_name": { "type": ["string", "null"] },
+        "institution": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "reviewed_commit": {
+      "type": ["string", "null"],
+      "description": "40-char commit SHA under review, or null if not yet bound"
+    },
+    "run_id": {
+      "type": ["string", "null"]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": ["string", "null"] },
+          "status": {
+            "type": "string",
+            "enum": ["PRESENT", "MISSING", "HASH_MISMATCH", "NOT_VERIFIED"]
+          }
+        },
+        "required": ["path", "status"],
+        "additionalProperties": false
+      }
+    },
+    "stage_results": {
+      "type": "object",
+      "description": "Per-stage outcome; failed stages remain visible",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "NOT_RUN", "NOT_VERIFIED"]
+          },
+          "detail": { "type": ["string", "null"] }
+        },
+        "required": ["status"]
+      }
+    },
+    "generated_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "claims": {
+      "type": "object",
+      "required": ["proven", "sealed", "production_authorized", "independent_review_approved"],
+      "properties": {
+        "proven": { "const": false },
+        "sealed": { "const": false },
+        "production_authorized": { "const": false },
+        "independent_review_approved": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
