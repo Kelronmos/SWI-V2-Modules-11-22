@@ -1,0 +1,111 @@
+{
+  "schema": "swi.public-evidence-lab.reviewer-registry.v1",
+  "branch": "prototype/public-evidence-lab-2026-11-03",
+  "capacity": 5,
+  "public_review_capacity": 5,
+  "public_review_verified": 0,
+  "public_review_admitted": 0,
+  "states": [
+    "EMPTY",
+    "REVIEW_SUBMITTED",
+    "SOURCE_VERIFIED",
+    "VERSION_MATCHED",
+    "EVIDENCE_VALIDATED",
+    "REPRODUCED",
+    "REVIEW_ADMITTED",
+    "REJECTED",
+    "WITHDRAWN"
+  ],
+  "state_rules": {
+    "EMPTY": "Position available; no submission.",
+    "REVIEW_SUBMITTED": "Submission received; identity and source not yet verified.",
+    "SOURCE_VERIFIED": "Reviewer identity and repository source confirmed.",
+    "VERSION_MATCHED": "Reviewed commit matches the declared target commit.",
+    "EVIDENCE_VALIDATED": "Evidence hashes and manifest independently checked.",
+    "REPRODUCED": "Reviewer reproduced the run on an independent machine.",
+    "REVIEW_ADMITTED": "All prior stages passed; review registered. Does NOT set PROVEN/SEALED/PRODUCTION_AUTHORIZED.",
+    "REJECTED": "Failed a required stage; reason recorded.",
+    "WITHDRAWN": "Reviewer or maintainer withdrew the submission."
+  },
+  "positions": [
+    {
+      "position": 1,
+      "state": "EMPTY",
+      "reviewer_id": null,
+      "reviewer_display": null,
+      "institution": null,
+      "reviewed_commit": null,
+      "run_id": null,
+      "submitted_utc": null,
+      "admitted_utc": null,
+      "receipt_id": null,
+      "notes": null
+    },
+    {
+      "position": 2,
+      "state": "EMPTY",
+      "reviewer_id": null,
+      "reviewer_display": null,
+      "institution": null,
+      "reviewed_commit": null,
+      "run_id": null,
+      "submitted_utc": null,
+      "admitted_utc": null,
+      "receipt_id": null,
+      "notes": null
+    },
+    {
+      "position": 3,
+      "state": "EMPTY",
+      "reviewer_id": null,
+      "reviewer_display": null,
+      "institution": null,
+      "reviewed_commit": null,
+      "run_id": null,
+      "submitted_utc": null,
+      "admitted_utc": null,
+      "receipt_id": null,
+      "notes": null
+    },
+    {
+      "position": 4,
+      "state": "EMPTY",
+      "reviewer_id": null,
+      "reviewer_display": null,
+      "institution": null,
+      "reviewed_commit": null,
+      "run_id": null,
+      "submitted_utc": null,
+      "admitted_utc": null,
+      "receipt_id": null,
+      "notes": null
+    },
+    {
+      "position": 5,
+      "state": "EMPTY",
+      "reviewer_id": null,
+      "reviewer_display": null,
+      "institution": null,
+      "reviewed_commit": null,
+      "run_id": null,
+      "submitted_utc": null,
+      "admitted_utc": null,
+      "receipt_id": null,
+      "notes": null
+    }
+  ],
+  "governance": {
+    "author_cannot_self_review": true,
+    "admission_does_not_set_proven": true,
+    "admission_does_not_set_sealed": true,
+    "admission_does_not_set_production_authorized": true,
+    "states_are_not_interchangeable": true,
+    "failed_stage_remains_visible": true
+  },
+  "claims": {
+    "proven": false,
+    "sealed": false,
+    "production_authorized": false,
+    "independent_review_approved": false
+  }
+}
