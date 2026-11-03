@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SWI Public Evidence Lab — Prototype</title>
+<style>
+:root{font-family:system-ui,Segoe UI,sans-serif;color:#17202a;background:#f4f6f8}
+body{max-width:1100px;margin:0 auto;padding:20px}header,section{background:white;border:1px solid #d7dde3;border-radius:12px;padding:18px;margin-bottom:14px}
+h1{margin:0 0 6px;font-size:1.5rem}h2{font-size:1.1rem;margin-top:0}
+small,.muted{color:#5c6670}.pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#edf0f2;font-size:.85rem;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.card{border:1px solid #d7dde3;border-radius:9px;padding:12px}.status{font-weight:700}.ok{color:#176b3a}.warn{color:#8a5900}.bad{color:#a52121}
+button{border:1px solid #64707b;background:#fff;border-radius:8px;padding:10px 13px;font-weight:650;cursor:pointer;margin:3px}
+button.primary{background:#17202a;color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f6f8;padding:12px;border-radius:8px;max-height:300px;overflow:auto}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #e0e4e8;padding:8px;font-size:.92rem}
+input{padding:9px;border:1px solid #bbc4cc;border-radius:7px;width:min(100%,420px)}
+.notice{border-left:4px solid #9b6a00;padding:10px;background:#fff8e8}
+footer{padding:10px;color:#5c6670;font-size:.85rem}
+</style></head>
+<body>
+<header>
+  <span class="pill">PUBLIC PROTOTYPE · NOT PRODUCTION</span>
+  <h1>SWI Public Evidence Lab</h1>
+  <p class="muted">A browser-local demonstrator for place-hold interactions, runtime checks, evidence capture and export.</p>
+  <div class="notice"><b>Truth boundary:</b> this standalone HTML cannot inspect or prove the repository, host runtime, CI, or production authorization. Its records are prototype observations only.</div>
+</header>
+<section>
+<h2>Place holds / test controls</h2>
+<p>Tap a hold to reserve a test slot in this page's in-memory state. It is not a real booking or persistent lock.</p>
+<div class="grid" id="holds"></div>
+<p><button class="primary" id="run">Run prototype checks</button><button id="reset">Reset demo state</button></p>
+<p id="summary" class="status">Checks have not run.</p>
+</section>
+<section>
+<h2>Runtime binding examination</h2>
+<table><thead><tr><th>Check</th><th>Observed condition</th><th>Result</th></tr></thead><tbody id="checks"></tbody></table>
+<p class="muted">A passing browser-local check is not evidence of binding to the SWI authorization spine. Repository/commit/runtime identity must be supplied by a trusted runner.</p>
+</section>
+<section>
+<h2>Evidence record</h2>
+<p><label for="commit">Repository commit SHA (optional; unverified input):</label><br><input id="commit" placeholder="Enter a 40-character commit SHA only if known"></p>
+<p><button id="json">Export JSON</button><button id="txt">Export TXT</button><button id="csv">Export CSV</button><button id="html">Export HTML snapshot</button></p>
+<pre id="record">No run record yet.</pre>
+</section>
+<section>
+<h2>Badge policy demonstration</h2>
+<div class="grid">
+<div class="card"><span class="status ok">GREEN · scoped</span><p>Only when a trusted runner supplies passing evidence for a declared scope.</p></div>
+<div class="card"><span class="status warn">HALF · review pending</span><p>Internal checks passed; independent review is still outstanding.</p></div>
+<div class="card"><span class="status bad">RED · claim mismatch</span><p>Claim exceeds evidence, or commit, run, artifact, or runtime binding conflicts.</p></div>
+<div class="card"><span class="status">LOCKED · unknown</span><p>Required evidence is absent, stale, invalid, or unverifiable.</p></div>
+</div>
+</section>
+<footer>Prototype v0.1 · Evidence generated here is local to this page until explicitly exported. No server upload, repository write, or production action is performed.</footer>
+<script>
+const slots = [
+ {id:"HOLD-A",name:"Node inventory",desc:"Hold a place for inventory inspection"},
+ {id:"HOLD-B",name:"Runtime binding",desc:"Hold a place for binding test"},
+ {id:"HOLD-C",name:"Report generation",desc:"Hold a place for export test"},
+ {id:"HOLD-D",name:"Firefly presentation",desc:"Hold a place for renderer check"}
+];
+let held = new Set(), lastRecord = null;
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[c]));
+function renderHolds(){document.getElementById("holds").innerHTML=slots.map(s=>`<div class="card"><b>${s.id} · ${s.name}</b><p class="muted">${s.desc}</p><button data-hold="${s.id}">${held.has(s.id)?"Release hold":"Place hold"}</button><span class="status ${held.has(s.id)?"ok":""}">${held.has(s.id)?" HELD (demo)":" AVAILABLE"}</span></div>`).join("");document.querySelectorAll("[data-hold]").forEach(b=>b.onclick=()=>{const id=b.dataset.hold;held.has(id)?held.delete(id):held.add(id);renderHolds()})}
+function makeRecord(){
+ const checks=[
+ {id:"HTML_LOAD",observed:"Document loaded in browser",pass:true,scope:"prototype only"},
+ {id:"HOLD_STATE",observed:`${held.size} demo hold(s) in page memory`,pass:true,scope:"prototype only"},
+ {id:"COMMIT_BINDING",observed:"No trusted repository runner attached",pass:false,scope:"repository binding not verified"},
+ {id:"AUTHORIZATION_SPINE",observed:"No SWI authority API connected",pass:false,scope:"authorization not verified"},
+ {id:"INDEPENDENT_REVIEW",observed:"No independent reviewer evidence supplied",pass:false,scope:"review pending"},
+ {id:"PRODUCTION_AUTHORIZATION",observed:"Never granted by this prototype",pass:false,scope:"production unauthorized"}
+ ];
+ return {schema:"swi.public-evidence-lab.run.v1",run_id:"LOCAL-"+new Date().toISOString().replace(/[-:.TZ]/g,"").slice(0,14),timestamp_utc:new Date().toISOString(),prototype_version:"0.1",source:"standalone-browser-prototype",repository:{commit_sha_input:document.getElementById("commit").value.trim()||null,commit_verified:false},holds:[...held],checks,summary:{passed:checks.filter(c=>c.pass).length,failed:checks.filter(c=>!c.pass).length},claims:{proven:false,sealed:false,independent_review_approved:false,production_authorized:false},limitations:["Browser-local demonstration only.","No repository pull/build/restart occurred.","No trusted runtime binding to SWI authorization spine.","A commit SHA typed by the user is unverified input.","No independent review or production authorization."],evidence_integrity:{hash:"NOT_COMPUTED_IN_BROWSER_PROTOTYPE",signed:false,independently_verified:false}};
+}
+function renderChecks(r){document.getElementById("checks").innerHTML=r.checks.map(c=>`<tr><td>${esc(c.id)}</td><td>${esc(c.observed)}</td><td class="${c.pass?"ok":"bad"}">${c.pass?"PASS (local)":"NOT VERIFIED"}</td></tr>`).join("");document.getElementById("summary").textContent=`${r.summary.passed} local checks passed · ${r.summary.failed} required bindings/review checks not verified.`;document.getElementById("summary").className="status warn";document.getElementById("record").textContent=JSON.stringify(r,null,2)}
+function download(name,content,type){const a=document.createElement("a"),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+document.getElementById("run").onclick=()=>{lastRecord=makeRecord();renderChecks(lastRecord)};
+document.getElementById("reset").onclick=()=>{held.clear();lastRecord=null;renderHolds();document.getElementById("checks").innerHTML="";document.getElementById("summary").textContent="Checks have not run.";document.getElementById("record").textContent="No run record yet."};
+function requireRun(){if(!lastRecord){lastRecord=makeRecord();renderChecks(lastRecord)}return lastRecord}
+document.getElementById("json").onclick=()=>download("swi-prototype-run.json",JSON.stringify(requireRun(),null,2),"application/json");
+document.getElementById("txt").onclick=()=>{let r=requireRun();download("swi-prototype-run.txt",`SWI PUBLIC EVIDENCE LAB\\nRun: ${r.run_id}\\nUTC: ${r.timestamp_utc}\\nPassed local checks: ${r.summary.passed}\\nNot verified: ${r.summary.failed}\\nPROVEN=${r.claims.proven}\\nSEALED=${r.claims.sealed}\\nPRODUCTION_AUTHORIZED=${r.claims.production_authorized}\\n\\nChecks:\\n${r.checks.map(c=>`${c.id}: ${c.pass?"PASS (LOCAL)":"NOT VERIFIED"} — ${c.observed}`).join("\\n")}\\n\\nLimitations:\\n- ${r.limitations.join("\\n- ")}\\n`,"text/plain")};
+document.getElementById("csv").onclick=()=>{let r=requireRun();download("swi-prototype-checks.csv","id,observed,pass,scope\\n"+r.checks.map(c=>[c.id,c.observed,c.pass,c.scope].map(x=>'"'+String(x).replaceAll('"','""')+'"').join(",")).join("\\n"),"text/csv")};
+document.getElementById("html").onclick=()=>download("swi-prototype-snapshot.html",document.documentElement.outerHTML,"text/html");
+renderHolds();
+</script></body></html>
