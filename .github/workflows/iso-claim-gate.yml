@@ -15,6 +15,9 @@ on:
       - "tests/test_iso_claim_gate.py"
       - ".github/workflows/iso-claim-gate.yml"
 
+permissions:
+  contents: read
+
 jobs:
   gate:
     runs-on: ubuntu-latest
