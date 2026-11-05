@@ -1,0 +1,45 @@
+From a0b2f4d6a646fd0965ede47966b741c019282566 Mon Sep 17 00:00:00 2001
+From: local-verifier <local@example.invalid>
+Date: Sun, 1 Nov 2026 16:33:26 +0000
+Subject: [PATCH 2/3] docs(iso): NOT_ESTABLISHED is unknown, not false; colour
+ black
+
+---
+ evidence/iso_compatibility_claim_level_1.json | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/evidence/iso_compatibility_claim_level_1.json b/evidence/iso_compatibility_claim_level_1.json
+index e4ef2e8..3eaa45d 100644
+--- a/evidence/iso_compatibility_claim_level_1.json
++++ b/evidence/iso_compatibility_claim_level_1.json
+@@ -1,11 +1,11 @@
+ {
+   "claim_id": "SWI-ISO-COMPATIBILITY-LEVEL1-2026-11-01",
+   "claim_proven": false,
+-  "claim_true": false,
+-  "claim_false": true,
++  "claim_true": null,
++  "claim_false": null,
+   "standard_level": 1,
+   "standard_status": "NOT_ESTABLISHED",
+-  "color": "red",
++  "color": "black",
+   "legend": {
+     "green": "proven compliant / pass",
+     "yellow": "partial / limited evidence",
+@@ -18,8 +18,9 @@
+     "import_note": "Local Independent Tests/LOCAL_EVIDENCE_IMPORT_UPDATE_2026-11-01.md",
+     "not_proven": [
+       "No ISO conformity, certification, PROVEN, SEALED, or production authorization.",
+-      "The optional ISO claim validator and ISO gate test files are absent from this checkout."
++      "The ISO claim validator and ISO gate test files are not on this branch; they exist on review/iso-gate-repro-2026-11-01."
+     ],
+-    "final_verdict": "ISO conformity remains NOT_ESTABLISHED; the compatibility claim is false and unproven."
+-  }
++    "final_verdict": "ISO conformity remains NOT_ESTABLISHED; no assessment has been performed."
++  },
++  "note": "NOT_ESTABLISHED means no assessment evidence exists. It does not mean the claim was tested and found false. claim_true and claim_false are therefore unknown (null)."
+ }
+-- 
+2.43.0
+

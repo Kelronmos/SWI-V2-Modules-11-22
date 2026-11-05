@@ -1,0 +1,52 @@
+{
+  "suite": "camera_telemetry_authority",
+  "command": "/opt/pyvenv/bin/python -m pytest -q tests/test_camera_telemetry_gate.py",
+  "return_code": 0,
+  "stdout": ".......                                                                  [100%]\n7 passed in 0.07s\n",
+  "stderr": "",
+  "timestamp_utc": "2026-11-04T19:23:26.897797+00:00",
+  "scope": "isolated research harness; simulated protected action only; no physical hardware or live sensor connected",
+  "development_history": [
+    "Initial run: 3 failed, 4 passed; exposed bytes-vs-Ed25519PublicKey handling and replay-test key conversion defects.",
+    "Corrections applied to public-key construction and replay-test serialization.",
+    "Evidence enrichment briefly produced 7 failures because Result did not declare new telemetry metadata fields; dataclass schema was extended and full suite rerun.",
+    "Final run rerun from source after corrections."
+  ],
+  "cases": [
+    {
+      "id": "T01",
+      "case": "fresh signed sensor telemetry",
+      "expected": "PASS"
+    },
+    {
+      "id": "T02",
+      "case": "camera-only observation",
+      "expected": "UNKNOWN / no execution"
+    },
+    {
+      "id": "T03",
+      "case": "mathematical explanation only",
+      "expected": "UNKNOWN / no execution"
+    },
+    {
+      "id": "T04",
+      "case": "stale sensor telemetry",
+      "expected": "HALT / no execution"
+    },
+    {
+      "id": "T05",
+      "case": "wrong sensor identity",
+      "expected": "HALT / no execution"
+    },
+    {
+      "id": "T06",
+      "case": "tampered telemetry signature",
+      "expected": "HALT / no execution"
+    },
+    {
+      "id": "T07",
+      "case": "identical input replay",
+      "expected": "same decision and evidence hash"
+    }
+  ]
+}

@@ -1,0 +1,635 @@
+From cd9ba7437e178b68352e3a4bef0a2ae77b054ed7 Mon Sep 17 00:00:00 2001
+From: local-verifier <local@example.invalid>
+Date: Sun, 1 Nov 2026 16:33:26 +0000
+Subject: [PATCH 1/3] fix(execution_integrity): restore compilable body from
+ 77ee326 (the lineage named in the loader); remove corrupt payload parts
+
+---
+ swi_v2/_ei_payload_0.txt      |   1 -
+ swi_v2/_ei_payload_1.txt      |   1 -
+ swi_v2/_ei_payload_4.txt      |   1 -
+ swi_v2/execution_integrity.py | 583 ++++++++++++++++++++++++++++++++--
+ 4 files changed, 557 insertions(+), 29 deletions(-)
+ delete mode 100644 swi_v2/_ei_payload_0.txt
+ delete mode 100644 swi_v2/_ei_payload_1.txt
+ delete mode 100644 swi_v2/_ei_payload_4.txt
+
+diff --git a/swi_v2/_ei_payload_0.txt b/swi_v2/_ei_payload_0.txt
+deleted file mode 100644
+index 14f992c..0000000
+--- a/swi_v2/_ei_payload_0.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-IiIiClNXSSBFeGVjdXRpb24gSW50ZWdyaXR5IC8gTm9kZSBRdWFyYW50aW5lIOKAlCBib3VuZGVkIGNvbXBvbmVudC4KClN0YXR1czogSU1QTEVNRU5URUQgKyBURVNURUQgKGdhdGUgQVBJKTsgZnVsbCBFWEVDVVRFIGNvbmp1bmN0aW9uIFBBUlRJQUwuCkRvZXMgTk9UIG1vZGlmeSBNMTEsIFNlY3VyaXR5IE1hemUsIEIxLCBvciBDUlRHLgpEb2VzIE5PVCBjbGFpbSBwcm9kdWN0aW9uIHJlYWRpbmVzcywgcHJvY2Vzcy13aWRlIE9TIGlzb2xhdGlvbiwgb3IgdW5pdmVyc2FsIHNhZmV0eS4KU3VwcG9ydGVkIEFQSTogY2hlY2soKS9leGVjdXRlKCk7IGRpcmVjdCBfZGVtb19hY3Rpb24gd2l0aG91dCBwZXJtaXQgaXMgYmxvY2tlZC4KTUFUQ0ggYWxvbmUgZG9lcyBOT1QgbWludCBhIHBlcm1pdC4gTWlzc2luZyBISVZFL1NXSS1OL2F1dGhvcml0eS9ldmlkZW5jZSDihpIgVU5LTk9XTi9CTE9DSy4KUFJPVkVOL1NFQUxFRC9QUk9EVUNUSU9OX0FVVEhPUklaRUQ6IE5PLgoKQ2xhaW0gdW5kZXIgdGVzdDoKICBBbiBhcnJpdmluZyBub2RlIHJlbWFpbnMgcXVhcmFudGluZWQgdW50aWwgU1dJIHZlcmlmaWVzIHRoYXQgaXRzCiAgZXhlY3V0aW9uIHJlcXVlc3QgaXMgc3RpbGwgYm91bmQgdG8gdGhlIGFkbWl0dGVkIHdvcmtmbG93LCBhcHByb3ZlZAogIG5vZGUsIGV4cGVjdGVkIHJvdXRlLCByZWxldmFudCBwb2xpY3ksIGFuZCBsYXN0IHZlcmlmaWVkIGV4ZWN1dGlvbi4KICBPbiBtaXNtYXRjaDogSEFMVCDihpIgUkVDT1JEIOKGkiBSRVZBTElEQVRFL1JFVFJZIOKGkiBFU0NBTEFURS4KICBSZXRyeSBkb2VzIG5vdCBncmFudCBhdXRob3JpdHkuIEV4ZWN1dGlvbiBjb3VudGVyIHByb3ZlcyBub24tZXhlY3V0aW9uLgogIE5ldyBpbmZvcm1hdGlvbiB0aGF0IGFmZmVjdHMgdGhlIGV2aWRlbmNlIGJvdW5kYXJ5IElOVkFMSURBVEVTIHByaW9yCiAgZGVjaXNpb25zOyB3aXRob3V0IGJvdW5kIGF1dGhvcml0eSB0aGUgcmVzdWx0IGlzIFVOS05PV04gKG5vIGV4ZWN1dGlvbikuCiIiIgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgppbXBvcnQgaGFzaGxpYgppbXBvcnQganNvbgppbXBvcnQgdGltZQpmcm9tIGRhdGFjbGFzc2VzIGltcG9ydCBkYXRhY2xhc3MsIGZpZWxkCmZyb20gZW51bSBpbXBvcnQgRW51bQpmcm9tIHR5cGluZyBpbXBvcnQgQW55LCBEaWN0LCBMaXN0LCBPcHRpb25hbAoKZnJvbSBzd2lfdjIua2VybmVsLmhhbHQgaW1wb3J0IEhhbHRSZWNvcmQsIEhhbHRlZFdvcmtmbG93CgoKY2xhc3MgTm9kZVN0YXRlKHN0ciwgRW51bSk6CiAgICBRVUFSQU5USU5FRCA9ICJRVUFSQU5USU5FRCIKICAgIENIRUNLSU5HID0gIkNIRUNLSU5HIgogICAgTUFUQ0ggPSAiTUFUQ0giCiAgICBIQUxURUQgPSAiSEFMVEVEIgogICAgUEFVU0VEID0gIlBBVVNFRCIKICAgIEVYRUNVVElORyA9ICJFWEVDVVRJTkciCiAgICBFU0NBTEFURUQgPSAiRVNDQUxBVEVEIgoKCmNsYXNzIERlY2lzaW9uKHN0ciwgRW51bSk6CiAgICBFWEVDVVRJT05fQUxMT1dFRCA9ICJFWEVDVVRJT05fQUxMT1dFRCIKICAgIEhBTFQgPSAiSEFMVCIKICAgIEVTQ0FMQVRFID0gIkVTQ0FMQVRFIgogICAgVU5LTk9XTiA9ICJVTktOT1dOIgoKCmNsYXNzIEZhaWx1cmVSZWFzb24oc3RyLCBFbnVtKToKICAgIE5PREVfTUlTTUFUQ0ggPSAiTk9ERV9NSVNNQVRDSCIKICAgIFdPUktGTE9XX01JU01BVENIID0gIldPUktGTE9XX01JU01BVENIIgogICAgUk9VVEVfQ0hBTkdFRCA9ICJST1VURV9DSEFOR0VEIgogICAgSU5QVVRfQ0hBTkdFRCA9ICJJTlBVVF9DSEFOR0VEIgogICAgUE9MSUNZX0NIQU5HRUQgPSAiUE9MSUNZX0NIQU5HRUQiCiAgICBBRE1JU1NJT05fTUlTTUFUQ0ggPSAiQURNSVNTSU9OX01JU01BVENIIgogICAg
+\ No newline at end of file
+diff --git a/swi_v2/_ei_payload_1.txt b/swi_v2/_ei_payload_1.txt
+deleted file mode 100644
+index e844ba0..0000000
+--- a/swi_v2/_ei_payload_1.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-IGF1dGhvcml0eS50b2tlbjoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJhdXRob3JpdHlfaWQgYW5kIHRva2VuIHJlcXVpcmVkIikKICAgIGlmIGF1dGhvcml0eS53b3JrZmxvd19pZCAhPSB3b3JrZmxvd19pZCBvciBhdXRob3JpdHkuYWN0aW9uX2lkICE9IGFjdGlvbl9pZDoKICAgICAgICByYWlzZSBWYWx1ZUVycm9yKCJhdXRob3JpdHkgbm90IGJvdW5kIHRvIHJlcXVlc3RlZCB3b3JrZmxvdy9hY3Rpb24iKQogICAgcmV0dXJuIFZhbGlkYXRlZEF1dGhvcml0eSgKICAgICAgICBhdXRob3JpdHlfaWQ9YXV0aG9yaXR5LmF1dGhvcml0eV9pZCwKICAgICAgICB3b3JrZmxvd19pZD13b3JrZmxvd19pZCwKICAgICAgICBhY3Rpb25faWQ9YWN0aW9uX2lkLAogICAgICAgIGJvdW5kPVRydWUsCiAgICApCgoKQGRhdGFjbGFzcwphY2xhc3MgSW50ZWdyaXR5RXZpZGVuY2U6CiAgICBldmVudDogc3RyCiAgICB3b3JrZmxvd19pZDogc3RyCiAgICBub2RlX2lkOiBzdHIKICAgIGV4cGVjdGVkOiBEaWN0W3N0ciwgQW55XQogICAgcmVjZWl2ZWQ6IERpY3Rbc3RyLCBBbnldCiAgICBkZWNpc2lvbjogc3RyCiAgICBleGVjdXRpb25fYWxsb3dlZDogYm9vbAogICAgZXhlY3V0aW9uX29jY3VycmVkOiBib29sCiAgICByZWFzb25zOiBMaXN0W3N0cl0KICAgIG5vZGVfc3RhdGU6IHN0cgogICAgcmV0cnlfY291bnQ6IGludAogICAgcmV0cnlfcmVxdWlyZWQ6IGJvb2wKICAgIGVzY2FsYXRlZDogYm9vbAogICAgZXZpZGVuY2VfaGFzaDogc3RyID0gIiIKICAgIHRpbWVzdGFtcDogZmxvYXQgPSBmaWVsZChkZWZhdWx0X2ZhY3Rvcnk9dGltZS50aW1lKQoKICAgIGRlZiBmaW5hbGl6ZShzZWxmKSAtPiAiSW50ZWdyaXR5RXZpZGVuY2UiOgogICAgICAgIHBheWxvYWQgPSB7CiAgICAgICAgICAgICJldmVudCI6IHNlbGYuZXZlbnQsCiAgICAgICAgICAgICJ3b3JrZmxvd19pZCI6IHNlbGYud29ya2Zsb3dfaWQsCiAgICAgICAgICAgICJub2RlX2lkIjogc2VsZi5ub2RlX2lkLAogICAgICAgICAgICAiZXhwZWN0ZWQiOiBzZWxmLmV4cGVjdGVkLAogICAgICAgICAgICAicmVjZWl2ZWQiOiBzZWxmLnJlY2VpdmVkLAogICAgICAgICAgICAiZGVjaXNpb24iOiBzZWxmLmRlY2lzaW9uLAogICAgICAgICAgICAiZXhlY3V0aW9uX2FsbG93ZWQiOiBzZWxmLmV4ZWN1dGlvbl9hbGxvd2VkLAogICAgICAgICAgICAiZXhlY3V0aW9uX29jY3VycmVkIjogc2VsZi5leGVjdXRpb25fb2NjdXJyZWQsCiAgICAgICAgICAgICJyZWFzb25zIjogc2VsZi5yZWFzb25zLAogICAgICAgICAgICAibm9kZV9zdGF0ZSI6IHNlbGYubm9kZV9zdGF0ZSwKICAgICAgICAgICAgInJldHJ5X2NvdW50Ijogc2VsZi5yZXRyeV9jb3VudCwKICAgICAgICAgICAgInJldHJ5X3JlcXVpcmVkIjogc2VsZi5yZXRyeV9yZXF1aXJlZCwKICAgICAgICAgICAgImVzY2FsYXRlZCI6IHNlbGYuZXNjYWxhdGVkLAogICAgICAgICAgICAidGltZXN0YW1wIjogc2VsZi50aW1lc3RhbXAsCiAgICAgICAgfQogICAgICAgIGNhbm9uaWNhbCA9IGpzb24uZHVtcHMocGF5bG9hZCwgc29ydF9rZXlzPVRydWUsIHNlcGFyYXRvcnM9KCI6IiwgIjoiKSkKICAgICAgICBzZWxmLmV2aWRlbmNlX2hhc2ggPSBoYXNobGliLnNoYTI1NihjYW5vbmljYWwuZW5jb2RlKCJ1dGYtOCIpKS5oZXhleGdlc3QoKQogICAgICAgIHJldHVybiBzZWxmCgoKQGRhdGFjbGFzcwphY2xhc3MgQ2hlY2tSZXN1bHQ6CiAgICBkZWNpc2lvbjogRGVjaXNpb24KICAgIHJlYXNvbnM6IExpc3RbRmFpbHVyZVJlYXNvbl0KICAgIGV2aWRlbmNlOiBJbnRlZ3JpdHlFdmlkZW5jZQogICAgZXhlY3V0aW9uX29jY3VycmVkOiBib29sCiAgICBub2RlX3N0YXRlOiBOb2RlU3RhdGUKCgpjbGFzcyBfRXhlY3V0aW9uUGVybWl0OgogICAgX19zbG90c19fID0gKCJfZ2F0ZV9pZCIsICJfbm9uY2UiLCAiX2NvbnN1bWVkIikKCiAgICBkZWYgX19pbml0X18oc2VsZiwgZ2F0ZV9pZDogaW50LCBub25jZTogaW50KSAtPiBOb25lOgogICAgICAgIHNlbGYuX2dhdGVfaWQgPSBnYXRlX2lkCiAgICAgICAgc2VsZi5fbm9uY2UgPSBub25jZQogICAgICAgIHNlbGYuX2NvbnN1bWVkID0gRmFsc2UKCgpjbGFzcyBFeGVjdXRpb25JbnRlZ3JpdHlHYXRlOgogICAgZGVmIF9faW5pdF9fKAogICAgICAgIHNlbGYsCiAgICAgICAgYWRtaXR0ZWQ6IEFkbWl0dGVkUm91dGUsCiAgICAgICAgbGFzdF9leGVjdXRpb246IE9wdGlvbmFsW0V4ZWN1dGlvblJlY29yZF0gPSBOb25lLAogICAgICAgIHRpbWVfdG9sZXJhbmNlOiBmbG9hdCA9IDAuMDAwOCwKICAgICAgICBtYXhfcmV0cmllczogaW50ID0gMiwKICAgICk6CiAgICAgICAgc2VsZi5hZG1pdHRlZCA9IGFkbWl0dGVkCiAgICAgICAgc2VsZi5sYXN0X2V4ZWN1dGlvbiA9IGxhc3RfZXhlY3V0aW9uCiAgICAgICAgc2VsZi50aW1lX3RvbGVyYW5jZSA9IHRpbWVfdG9sZXJhbmNlCiAgICAgICAgc2VsZi5tYXhfcmV0cmllcyA9IG1heF9yZXRyaWVzCiAgICAgICAgc2VsZi5yZXRyeV9jb3VudCA9IDAKICAgICAgICBzZWxmLmV4ZWN1dGlvbl9jb3VudGVyID0gMAogICAgICAgIHNlbGYuZXZpZGVuY2VfbG9nOiBMaXN0W0ludGVncml0eUV2aWRlbmNlXSA9IFtdCiAgICAgICAgc2VsZi5ub2RlX3N0YXRlID0gTm9kZVN0YXRlLlFVQVJBTlRJTkVECiAgICAgICAgc2VsZi5fcGVybWl0X25vbmNlID0gMAogICAgICAgIHNlbGYuX2RlY2lzaW9uX2ludmFsaWRhdGVkOiBib29sID0gRmFsc2UKICAgICAgICBzZWxmLl9ib3VuZGFyeV9pbnN1ZmZpY2llbnQ6IGJvb2wgPSBGYWxzZQogICAgICAgIHNlbGYuX2JvdW5kX2F1dGhvcml0eTogT3B0aW9uYWxbVmFsaWRhdGVkQXV0aG9yaXR5XSA9IE5vbmUKICAgICAgICBzZWxmLl9wZW5kaW5nX25ld19pbmZvcm1hdGlvbjogT3B0aW9uYWxbTmV3SW5mb3JtYXRpb25dID0gTm9uZQogICAgICAgICMgR292ZXJuaW5nIHByZWRpY2F0ZXM6IE5vbmUgPSBVTktOT1dOIChmYWlsIGNsb3NlZCksIG5vdCBpbXBsaWNpdGx5IFRSVUUKICAgICAgICBzZWxmLl9oaXZlX2hlYWRlcl92YWxpZDogT3B0aW9uYWxbYm9vbF0gPSBOb25lCiAgICAgICAgc2VsZi5fc3dpX25fdmFsaWQ6IE9wdGlvbmFsW2Jvb2xdID0gTm9uZQogICAgICAgIHNlbGYuX2V2aWRlbmNlX3N1ZmZpY2llbnQ6IE9wdGlvbmFsW2Jvb2xdID0gTm9uZQogICAgICAgIHNlbGYuX2Zsb3dfYm91bmQ6IGJvb2wgPSBUcnVlICAjIEFkbWl0dGVkUm91dGUgZXN0YWJsaXNoZXMgZmxvdyBpZGVudGl0eSBmb3IgdGhpcyBnYXRlCiAgICAgICAgc2VsZi5fcmVwbGF5X2lkczogc2V0ID0gc2V0KCkKICAgICAgICBzZWxmLl9hY3Rpb25faWQ6IHN0ciA9ICJkZWZhdWx0X2FjdGlvbiIKCiAgICBkZWYgYmluZF9oaXZlX2hlYWRlcihzZWxmLCAqLCB2YWxpZDogYm9vbCkgLT4gTm9uZToKICAgICAgICAiIiJSZWNvcmQgSElWRSBoZWFkZXIgdmFsaWRpdHkuIERvZXMgbm90IGF1dGhvcml6ZSBleGVjdXRpb24uIiIiCiAgICAgICAgc2VsZi5faGl2ZV9oZWFkZXJfdmFsaWQgPSBib29sKHZhbGlkKQoKICAgIGRlZiBiaW5kX3N3aV9uKHNlbGYsICosIHZhbGlkOiBib29sKSAtPiBOb25lOgogICAgICAgICIiIlJlY29yZCBTVzktTiB2YWxpZGl0eS4gRG9lcyBub3QgYXV0aG9yaXplIGV4ZWN1dGlvbi4iIiIKICAgICAgICBzZWxmLl9zd2lfbl92YWxpZCA9IGJvb2wodmFsaWQpCgogICAgZGVmIGJpbmRfZXZpZGVuY2Vfc3VmZmljaWVuY3koc2VsZiwgKiwgc3VmZmljaWVudDogYm9vbCkgLT4gTm9uZToKICAgICAgICAiIiJSZWNvcmQgZXZpZGVuY2Ugc3VmZmljaWVuY3kuIFByZXNlbmNlIOKJsCBzdWZmaWNpZW5jeS4iIiIKICAgICAgICBzZWxmLl9ldmlkZW5jZV9zdWZmaWNpZW50ID0gYm9vbChzdWZmaWNpZW50KQoKICAgIGRlZiBzZXRfYWN0aW9uX2lkKHNlbGYsIGFjdGlvbl9pZDogc3RyKSAtPiBOb25lOgogICAgICAgIHNlbGYuX2FjdGlvbl9pZCA9IGFjdGlvbl9pZAoKICAgIGRlZiBfZXZhbHVhdGVfZ292ZXJuaW5nX2NoYWluKHNlbGYsICosIGFjdGlvbl9pZDogc3RyKSAtPiBMaXN0W0ZhaWx1cmVSZWFzb25dOgogICAgICAgICIiIlJldHVybiByZWFzb25zIGJsb2NraW5nIHBlcm1pdCBtaW50LiBVTktOT1dOIHByZWRpY2F0ZXMgZmFpbCBjbG9zZWQuIiIiCiAgICAgICAgcmVhc29uczogTGlzdFtGYWlsdXJlUmVhc29uXSA9IFtdCiAgICAgICAgaWYgbm90IHNlbGYuX2Zsb3dfYm91bmQ6CiAgICAgICAgICAgIHJlYXNvbnMuYXBwZW5kKEZhaWx1cmVSZWFzb24uRkxPV19VTkJPVU5EKQogICAgICAgIGlmIHNlbGYuX2hpdmVfaGVhZGVyX3ZhbGlkIGlzIE5vbmU6CiAgICAgICAgICAgIHJlYXNvbnMuYXBwZW5kKEZhaWx1cmVSZWFzb24uSElWRV9VTktOT1dOKQogICAgICAgIGVsaWYgc2VsZi5faGl2ZV9oZWFkZXJfdmFsaWQgaXMgRmFsc2U6CiAgICAgICAgICAgIHJlYXNvbnMuYXBwZW5kKEZhaWx1cmVSZWFzb24uR09WRVJOSU5HX0NIQUlOX0lOQ09NUExFVEUpCiAgICAgICAgaWYgc2VsZi5fc3dpX25fdmFsaWQgaXM=
+\ No newline at end of file
+diff --git a/swi_v2/_ei_payload_4.txt b/swi_v2/_ei_payload_4.txt
+deleted file mode 100644
+index 3943b14..0000000
+--- a/swi_v2/_ei_payload_4.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-ICAgICAgICAgICBlc2NhbGF0aW9uX3JlcXVpcmVkPXJlc3VsdC5ldmlkZW5jZS5lc2NhbGF0ZWQsCiAgICAgICAgICAgIGV2aWRlbmNlX3JlZmVyZW5jZT1yZXN1bHQuZXZpZGVuY2UuZXZpZGVuY2VfaGFzaCBvciBOb25lLAogICAgICAgICkKICAgICAgICByZXR1cm4gcmVjLndpdGhfZXZpZGVuY2VfaGFzaCgpCgogICAgZGVmIHRvX2hhbHRlZF93b3JrZmxvdyhzZWxmLCByZXN1bHQ6IENoZWNrUmVzdWx0KSAtPiBIYWx0ZWRXb3JrZmxvdzoKICAgICAgICByZXR1cm4gSGFsdGVkV29ya2Zsb3coc2VsZi50b19oYWx0X3JlY29yZChyZXN1bHQpKQoKICAgIGRlZiBleGVjdXRlKAogICAgICAgIHNlbGYsCiAgICAgICAgaW5jb21pbmc6IEluY29taW5nTm9kZSwKICAgICAgICAqLAogICAgICAgIGF0dGVtcHRfcmV0cnk6IGJvb2wgPSBGYWxzZSwKICAgICAgICBhY3Rpb25faWQ6IHN0ciA9ICJkZWZhdWx0X2FjdGlvbiIsCiAgICApIC0+IENoZWNrUmVzdWx0OgogICAgICAgIHJldHVybiBzZWxmLmNoZWNrKAogICAgICAgICAgICBpbmNvbWluZywgYXR0ZW1wdF9yZXRyeT1hdHRlbXB0X3JldHJ5LCBhY3Rpb25faWQ9YWN0aW9uX2lkCiAgICAgICAgKQo=
+\ No newline at end of file
+diff --git a/swi_v2/execution_integrity.py b/swi_v2/execution_integrity.py
+index 7d114af..9e99655 100644
+--- a/swi_v2/execution_integrity.py
++++ b/swi_v2/execution_integrity.py
+@@ -1,30 +1,561 @@
+-"""SWI Execution Integrity — restored body via embedded base64 payloads.
++"""
++SWI Execution Integrity / Node Quarantine — bounded component.
++
++Status: IMPLEMENTED + TESTED (bounded component + boundary hardening).
++Does NOT modify M11, Security Maze, B1, or CRTG.
++Does NOT claim production readiness, process-wide OS isolation, or universal safety.
++Supported API: check()/execute(); direct _demo_action without permit is blocked.
+ 
+-Source lineage: 77ee326 / fix/new-information-boundary + MATCH≠PERMIT closure.
+-MATCH ≠ PERMIT ≠ EXECUTE. Status: RESEARCH · NOT SEALED · NOT PRODUCTION_AUTHORIZED.
++Claim under test:
++  An arriving node remains quarantined until SWI verifies that its
++  execution request is still bound to the admitted workflow, approved
++  node, expected route, relevant policy, and last verified execution.
++  On mismatch: HALT → RECORD → REVALIDATE/RETRY → ESCALATE.
++  Retry does not grant authority. Execution counter proves non-execution.
++  New information that affects the evidence boundary INVALIDATES prior
++  decisions; without bound authority the result is UNKNOWN (no execution).
+ """
+ from __future__ import annotations
+ 
+-import base64
+-import sys
+-import types
+-from pathlib import Path
+-
+-_DIR = Path(__file__).resolve().parent
+-_parts = []
+-for i in range(100):
+-    p = _DIR / f"_ei_payload_{i}.txt"
+-    if not p.is_file():
+-        break
+-    _parts.append(p.read_text())
+-if not _parts:
+-    raise ImportError("execution_integrity payload parts missing")
+-_src = base64.b64decode("".join(_parts)).decode("utf-8")
+-_mod = types.ModuleType("swi_v2._execution_integrity_body")
+-_mod.__file__ = str(_DIR / "execution_integrity_body.py")
+-sys.modules[_mod.__name__] = _mod
+-exec(compile(_src, _mod.__file__, "exec"), _mod.__dict__)
+-
+-for _n in dir(_mod):
+-    if not _n.startswith("__"):
+-        globals()[_n] = getattr(_mod, _n)
++import hashlib
++import json
++import time
++from dataclasses import dataclass, field
++from enum import Enum
++from typing import Any, Dict, List, Optional
++
++from swi_v2.kernel.halt import HaltRecord, HaltedWorkflow
++
++
++class NodeState(str, Enum):
++    QUARANTINED = "QUARANTINED"
++    CHECKING = "CHECKING"
++    MATCH = "MATCH"
++    HALTED = "HALTED"
++    PAUSED = "PAUSED"
++    EXECUTING = "EXECUTING"
++    ESCALATED = "ESCALATED"
++
++
++class Decision(str, Enum):
++    EXECUTION_ALLOWED = "EXECUTION_ALLOWED"
++    HALT = "HALT"
++    ESCALATE = "ESCALATE"
++    UNKNOWN = "UNKNOWN"
++
++
++class FailureReason(str, Enum):
++    NODE_MISMATCH = "NODE_MISMATCH"
++    WORKFLOW_MISMATCH = "WORKFLOW_MISMATCH"
++    ROUTE_CHANGED = "ROUTE_CHANGED"
++    INPUT_CHANGED = "INPUT_CHANGED"
++    POLICY_CHANGED = "POLICY_CHANGED"
++    ADMISSION_MISMATCH = "ADMISSION_MISMATCH"
++    LAST_EXECUTION_MISMATCH = "LAST_EXECUTION_MISMATCH"
++    TIME_CONTINUITY_EXCEEDED = "TIME_CONTINUITY_EXCEEDED"
++    RETRY_LIMIT_EXCEEDED = "RETRY_LIMIT_EXCEEDED"
++    NOT_ADMITTED = "NOT_ADMITTED"
++    NEW_INFORMATION_INVALIDATES = "NEW_INFORMATION_INVALIDATES"
++    BOUNDARY_INSUFFICIENT = "BOUNDARY_INSUFFICIENT"
++    AUTHORITY_REQUIRED = "AUTHORITY_REQUIRED"
++    AUTHORITY_INVALID = "AUTHORITY_INVALID"
++
++
++@dataclass(frozen=True)
++class AdmittedRoute:
++    workflow_id: str
++    route_hash: str
++    node_id: str
++    input_hash: str
++    policy_hash: str
++    admission_hash: str
++
++    def identity_tuple(self) -> tuple:
++        return (
++            self.workflow_id,
++            self.route_hash,
++            self.node_id,
++            self.input_hash,
++            self.policy_hash,
++            self.admission_hash,
++        )
++
++
++@dataclass(frozen=True)
++class ExecutionRecord:
++    execution_id: str
++    workflow_id: str
++    node_id: str
++    route_hash: str
++    input_hash: str
++    timestamp: float
++
++
++@dataclass
++class IncomingNode:
++    """Candidate only. Never mutates AdmittedRoute."""
++    node_id: str
++    workflow_id: str
++    route_hash: str
++    input_hash: str
++    policy_hash: str
++    admission_hash: Optional[str] = None
++    current_time: Optional[float] = None
++
++
++@dataclass(frozen=True)
++class NewInformation:
++    """Candidate new information. Does not mutate AdmittedRoute."""
++    description: str
++    affects_evidence_boundary: bool
++    information_id: str = ""
++    proposed_route_hash: Optional[str] = None
++    proposed_input_hash: Optional[str] = None
++    proposed_policy_hash: Optional[str] = None
++
++
++@dataclass(frozen=True)
++class HumanAuthority:
++    authority_id: str
++    workflow_id: str
++    action_id: str
++    token: str
++
++
++@dataclass(frozen=True)
++class ValidatedAuthority:
++    authority_id: str
++    workflow_id: str
++    action_id: str
++    bound: bool = True
++
++    def covers(self, workflow_id: str, action_id: str) -> bool:
++        return self.bound and self.workflow_id == workflow_id and self.action_id == action_id
++
++
++def validate_human_authority(
++    authority: HumanAuthority, *, workflow_id: str, action_id: str
++) -> ValidatedAuthority:
++    """Bind human authority to exact workflow/action. Library-level only."""
++    if not isinstance(authority, HumanAuthority):
++        raise ValueError("authority must be HumanAuthority")
++    if not authority.authority_id or not authority.token:
++        raise ValueError("authority_id and token required")
++    if authority.workflow_id != workflow_id or authority.action_id != action_id:
++        raise ValueError("authority not bound to requested workflow/action")
++    return ValidatedAuthority(
++        authority_id=authority.authority_id,
++        workflow_id=workflow_id,
++        action_id=action_id,
++        bound=True,
++    )
++
++
++@dataclass
++class IntegrityEvidence:
++    event: str
++    workflow_id: str
++    node_id: str
++    expected: Dict[str, Any]
++    received: Dict[str, Any]
++    decision: str
++    execution_allowed: bool
++    execution_occurred: bool
++    reasons: List[str]
++    node_state: str
++    retry_count: int
++    retry_required: bool
++    escalated: bool
++    evidence_hash: str = ""
++    timestamp: float = field(default_factory=time.time)
++
++    def finalize(self) -> "IntegrityEvidence":
++        payload = {
++            "event": self.event,
++            "workflow_id": self.workflow_id,
++            "node_id": self.node_id,
++            "expected": self.expected,
++            "received": self.received,
++            "decision": self.decision,
++            "execution_allowed": self.execution_allowed,
++            "execution_occurred": self.execution_occurred,
++            "reasons": self.reasons,
++            "node_state": self.node_state,
++            "retry_count": self.retry_count,
++            "retry_required": self.retry_required,
++            "escalated": self.escalated,
++            "timestamp": self.timestamp,
++        }
++        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
++        self.evidence_hash = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
++        return self
++
++
++@dataclass
++class CheckResult:
++    decision: Decision
++    reasons: List[FailureReason]
++    evidence: IntegrityEvidence
++    execution_occurred: bool
++    node_state: NodeState
++
++
++class _ExecutionPermit:
++    __slots__ = ("_gate_id", "_nonce", "_consumed")
++
++    def __init__(self, gate_id: int, nonce: int) -> None:
++        self._gate_id = gate_id
++        self._nonce = nonce
++        self._consumed = False
++
++
++class ExecutionIntegrityGate:
++    def __init__(
++        self,
++        admitted: AdmittedRoute,
++        last_execution: Optional[ExecutionRecord] = None,
++        time_tolerance: float = 0.0008,
++        max_retries: int = 2,
++    ):
++        self.admitted = admitted
++        self.last_execution = last_execution
++        self.time_tolerance = time_tolerance
++        self.max_retries = max_retries
++        self.retry_count = 0
++        self.execution_counter = 0
++        self.evidence_log: List[IntegrityEvidence] = []
++        self.node_state = NodeState.QUARANTINED
++        self._permit_nonce = 0
++        self._decision_invalidated: bool = False
++        self._boundary_insufficient: bool = False
++        self._bound_authority: Optional[ValidatedAuthority] = None
++        self._pending_new_information: Optional[NewInformation] = None
++
++    def _mint_permit(self) -> _ExecutionPermit:
++        self._permit_nonce += 1
++        return _ExecutionPermit(gate_id=id(self), nonce=self._permit_nonce)
++
++    def _demo_action(self, permit: Optional[_ExecutionPermit] = None) -> str:
++        if permit is None:
++            raise PermissionError(
++                "protected operation requires a valid integrity permit; "
++                "use check()/execute() — direct invocation is blocked"
++            )
++        if not isinstance(permit, _ExecutionPermit):
++            raise PermissionError("invalid permit type")
++        if permit._gate_id != id(self) or permit._nonce != self._permit_nonce:
++            raise PermissionError("stale or foreign integrity permit")
++        if permit._consumed:
++            raise PermissionError("permit already consumed")
++        permit._consumed = True
++        self.execution_counter += 1
++        return "DEMO_ACTION_EXECUTED"
++
++    def _compare(self, incoming: IncomingNode) -> List[FailureReason]:
++        reasons: List[FailureReason] = []
++        adm = self.admitted
++        if incoming.admission_hash is None or incoming.admission_hash != adm.admission_hash:
++            reasons.append(
++                FailureReason.ADMISSION_MISMATCH
++                if incoming.admission_hash
++                else FailureReason.NOT_ADMITTED
++            )
++        if incoming.node_id != adm.node_id:
++            reasons.append(FailureReason.NODE_MISMATCH)
++        if incoming.workflow_id != adm.workflow_id:
++            reasons.append(FailureReason.WORKFLOW_MISMATCH)
++        if incoming.route_hash != adm.route_hash:
++            reasons.append(FailureReason.ROUTE_CHANGED)
++        if incoming.input_hash != adm.input_hash:
++            reasons.append(FailureReason.INPUT_CHANGED)
++        if incoming.policy_hash != adm.policy_hash:
++            reasons.append(FailureReason.POLICY_CHANGED)
++        if self.last_execution is not None:
++            le = self.last_execution
++            if (
++                le.workflow_id != adm.workflow_id
++                or le.node_id != adm.node_id
++                or le.route_hash != adm.route_hash
++            ):
++                reasons.append(FailureReason.LAST_EXECUTION_MISMATCH)
++            t = incoming.current_time if incoming.current_time is not None else time.time()
++            if abs(t - le.timestamp) > self.time_tolerance:
++                reasons.append(FailureReason.TIME_CONTINUITY_EXCEEDED)
++        return reasons
++
++    def apply_new_information(
++        self, info: NewInformation, *, action_id: str = "default_action"
++    ) -> CheckResult:
++        """Invalidate current decision when new information arrives.
++
++        If it affects the evidence boundary and required authority is absent,
++        result is UNKNOWN — execution must not proceed.
++        """
++        if not isinstance(info, NewInformation):
++            raise TypeError("info must be NewInformation")
++        self._decision_invalidated = True
++        self._pending_new_information = info
++        self._permit_nonce += 1
++        expected = {
++            "workflow_id": self.admitted.workflow_id,
++            "route_hash": self.admitted.route_hash,
++            "node_id": self.admitted.node_id,
++            "input_hash": self.admitted.input_hash,
++            "policy_hash": self.admitted.policy_hash,
++            "admission_hash": self.admitted.admission_hash,
++        }
++        received = {
++            "information_id": info.information_id,
++            "description": info.description,
++            "affects_evidence_boundary": info.affects_evidence_boundary,
++            "proposed_route_hash": info.proposed_route_hash,
++            "proposed_input_hash": info.proposed_input_hash,
++            "proposed_policy_hash": info.proposed_policy_hash,
++        }
++        if not info.affects_evidence_boundary:
++            evidence = IntegrityEvidence(
++                event="NEW_INFORMATION_NO_BOUNDARY_IMPACT",
++                workflow_id=self.admitted.workflow_id,
++                node_id=self.admitted.node_id,
++                expected=expected,
++                received=received,
++                decision=Decision.HALT.value,
++                execution_allowed=False,
++                execution_occurred=False,
++                reasons=[FailureReason.NEW_INFORMATION_INVALIDATES.value],
++                node_state=NodeState.QUARANTINED.value,
++                retry_count=self.retry_count,
++                retry_required=True,
++                escalated=False,
++            ).finalize()
++            self.evidence_log.append(evidence)
++            self.node_state = NodeState.QUARANTINED
++            return CheckResult(
++                decision=Decision.HALT,
++                reasons=[FailureReason.NEW_INFORMATION_INVALIDATES],
++                evidence=evidence,
++                execution_occurred=False,
++                node_state=self.node_state,
++            )
++        self._boundary_insufficient = True
++        auth_ok = self._bound_authority is not None and self._bound_authority.covers(
++            self.admitted.workflow_id, action_id
++        )
++        if not auth_ok:
++            reasons = [
++                FailureReason.NEW_INFORMATION_INVALIDATES,
++                FailureReason.BOUNDARY_INSUFFICIENT,
++                FailureReason.AUTHORITY_REQUIRED,
++            ]
++            self.node_state = NodeState.PAUSED
++            evidence = IntegrityEvidence(
++                event="NEW_INFORMATION_BOUNDARY_INSUFFICIENT",
++                workflow_id=self.admitted.workflow_id,
++                node_id=self.admitted.node_id,
++                expected=expected,
++                received=received,
++                decision=Decision.UNKNOWN.value,
++                execution_allowed=False,
++                execution_occurred=False,
++                reasons=[r.value for r in reasons],
++                node_state=NodeState.PAUSED.value,
++                retry_count=self.retry_count,
++                retry_required=True,
++                escalated=False,
++            ).finalize()
++            self.evidence_log.append(evidence)
++            return CheckResult(
++                decision=Decision.UNKNOWN,
++                reasons=reasons,
++                evidence=evidence,
++                execution_occurred=False,
++                node_state=self.node_state,
++            )
++        self.node_state = NodeState.QUARANTINED
++        evidence = IntegrityEvidence(
++            event="NEW_INFORMATION_AUTHORITY_PRESENT_RECHECK_REQUIRED",
++            workflow_id=self.admitted.workflow_id,
++            node_id=self.admitted.node_id,
++            expected=expected,
++            received=received,
++            decision=Decision.HALT.value,
++            execution_allowed=False,
++            execution_occurred=False,
++            reasons=[FailureReason.NEW_INFORMATION_INVALIDATES.value],
++            node_state=NodeState.QUARANTINED.value,
++            retry_count=self.retry_count,
++            retry_required=True,
++            escalated=False,
++        ).finalize()
++        self.evidence_log.append(evidence)
++        return CheckResult(
++            decision=Decision.HALT,
++            reasons=[FailureReason.NEW_INFORMATION_INVALIDATES],
++            evidence=evidence,
++            execution_occurred=False,
++            node_state=self.node_state,
++        )
++
++    def bind_authority(self, authority: ValidatedAuthority, *, action_id: str) -> None:
++        if not isinstance(authority, ValidatedAuthority) or not authority.bound:
++            raise ValueError("ValidatedAuthority required")
++        if not authority.covers(self.admitted.workflow_id, action_id):
++            raise ValueError("authority does not cover this workflow/action")
++        self._bound_authority = authority
++        if self._boundary_insufficient:
++            self._boundary_insufficient = False
++
++    def recheck(
++        self,
++        incoming: IncomingNode,
++        *,
++        authority: Optional[ValidatedAuthority] = None,
++        action_id: str = "default_action",
++        attempt_retry: bool = False,
++    ) -> CheckResult:
++        if authority is not None:
++            self.bind_authority(authority, action_id=action_id)
++        if self._boundary_insufficient:
++            auth_ok = self._bound_authority is not None and self._bound_authority.covers(
++                self.admitted.workflow_id, action_id
++            )
++            if not auth_ok:
++                return self.apply_new_information(
++                    self._pending_new_information
++                    or NewInformation(description="pending", affects_evidence_boundary=True),
++                    action_id=action_id,
++                )
++        result = self.check(incoming, attempt_retry=attempt_retry)
++        if result.decision == Decision.EXECUTION_ALLOWED:
++            self._decision_invalidated = False
++            self._pending_new_information = None
++        return result
++
++    def check(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
++        if self._boundary_insufficient:
++            auth_ok = self._bound_authority is not None and self._bound_authority.covers(
++                self.admitted.workflow_id, "default_action"
++            )
++            if not auth_ok:
++                info = self._pending_new_information or NewInformation(
++                    description="boundary_insufficient", affects_evidence_boundary=True
++                )
++                return self.apply_new_information(info, action_id="default_action")
++        self.node_state = NodeState.CHECKING
++        reasons = self._compare(incoming)
++        expected = {
++            "workflow_id": self.admitted.workflow_id,
++            "route_hash": self.admitted.route_hash,
++            "node_id": self.admitted.node_id,
++            "input_hash": self.admitted.input_hash,
++            "policy_hash": self.admitted.policy_hash,
++            "admission_hash": self.admitted.admission_hash,
++        }
++        received = {
++            "workflow_id": incoming.workflow_id,
++            "route_hash": incoming.route_hash,
++            "node_id": incoming.node_id,
++            "input_hash": incoming.input_hash,
++            "policy_hash": incoming.policy_hash,
++            "admission_hash": incoming.admission_hash,
++        }
++        if not reasons:
++            self.node_state = NodeState.MATCH
++            permit = self._mint_permit()
++            self._demo_action(permit)
++            evidence = IntegrityEvidence(
++                event="EXECUTION_INTEGRITY_PASS",
++                workflow_id=self.admitted.workflow_id,
++                node_id=incoming.node_id,
++                expected=expected,
++                received=received,
++                decision=Decision.EXECUTION_ALLOWED.value,
++                execution_allowed=True,
++                execution_occurred=True,
++                reasons=[],
++                node_state=NodeState.EXECUTING.value,
++                retry_count=self.retry_count,
++                retry_required=False,
++                escalated=False,
++            ).finalize()
++            self.evidence_log.append(evidence)
++            self.node_state = NodeState.EXECUTING
++            return CheckResult(
++                decision=Decision.EXECUTION_ALLOWED,
++                reasons=[],
++                evidence=evidence,
++                execution_occurred=True,
++                node_state=self.node_state,
++            )
++        self.node_state = NodeState.HALTED
++        escalated = False
++        retry_required = True
++        if attempt_retry:
++            self.retry_count += 1
++            reasons_after = self._compare(incoming)
++            if reasons_after:
++                if self.retry_count >= self.max_retries:
++                    escalated = True
++                    self.node_state = NodeState.ESCALATED
++                    reasons = reasons_after + [FailureReason.RETRY_LIMIT_EXCEEDED]
++                    retry_required = False
++                else:
++                    reasons = reasons_after
++        evidence = IntegrityEvidence(
++            event="EXECUTION_INTEGRITY_FAILURE",
++            workflow_id=self.admitted.workflow_id,
++            node_id=incoming.node_id,
++            expected=expected,
++            received=received,
++            decision=Decision.ESCALATE.value if escalated else Decision.HALT.value,
++            execution_allowed=False,
++            execution_occurred=False,
++            reasons=[r.value for r in reasons],
++            node_state=self.node_state.value,
++            retry_count=self.retry_count,
++            retry_required=retry_required,
++            escalated=escalated,
++        ).finalize()
++        self.evidence_log.append(evidence)
++        return CheckResult(
++            decision=Decision.ESCALATE if escalated else Decision.HALT,
++            reasons=reasons,
++            evidence=evidence,
++            execution_occurred=False,
++            node_state=self.node_state,
++        )
++
++    def to_halt_record(self, result: CheckResult) -> HaltRecord:
++        if result.decision == Decision.EXECUTION_ALLOWED:
++            raise ValueError("to_halt_record requires HALT, ESCALATE, or UNKNOWN decision")
++        primary = result.reasons[0].value if result.reasons else "INTEGRITY_FAILURE"
++        reason_codes = [r.value for r in result.reasons]
++        rec = HaltRecord(
++            module="execution_integrity",
++            reason_code=primary,
++            stage="CHECK_PIPE",
++            detail=";".join(reason_codes) if reason_codes else None,
++            workflow_id=result.evidence.workflow_id,
++            route_id=result.evidence.expected.get("route_hash"),
++            node_id=result.evidence.node_id,
++            input_id=result.evidence.expected.get("input_hash"),
++            policy_id=result.evidence.expected.get("policy_hash"),
++            admission_id=result.evidence.expected.get("admission_hash"),
++            decision=result.decision.value,
++            reason=primary,
++            expected_state=dict(result.evidence.expected),
++            received_state=dict(result.evidence.received),
++            execution_allowed=False,
++            execution_occurred=bool(result.execution_occurred),
++            retry_count=result.evidence.retry_count,
++            retry_required=result.evidence.retry_required,
++            escalation_required=result.evidence.escalated,
++            evidence_reference=result.evidence.evidence_hash or None,
++        )
++        return rec.with_evidence_hash()
++
++    def to_halted_workflow(self, result: CheckResult) -> HaltedWorkflow:
++        return HaltedWorkflow(self.to_halt_record(result))
++
++    def execute(self, incoming: IncomingNode, *, attempt_retry: bool = False) -> CheckResult:
++        return self.check(incoming, attempt_retry=attempt_retry)
+-- 
+2.43.0
+

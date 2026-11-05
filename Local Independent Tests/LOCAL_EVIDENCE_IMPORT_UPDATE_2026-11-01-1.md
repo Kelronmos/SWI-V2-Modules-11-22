@@ -1,0 +1,61 @@
+# Local SWI repository evidence import — 1 November 2026
+
+## Change decision
+
+The public-main reconciliation package was compared file-by-file with the
+existing `feature/swi-dcre-core-doctrine` checkout. The supplied reconciliation
+patch was not applied wholesale: it is based on a different source tree and
+fails `git apply --check` against this newer feature checkout. Fourteen shared
+files differ, and the existing checkout contains later DCRE runner, README,
+workflow, schema and documentation work. Those files were preserved; no
+existing file was overwritten or deleted.
+
+Thirty files that were absent from the feature checkout were imported:
+
+- source-snapshot reconciliation report;
+- source-only verification command outputs and their checksum manifest;
+- the 18-record immutable claim-history snapshot guide and provenance note.
+
+The source-snapshot `current_verification_run.json` was deliberately not copied
+to the canonical current-record path because it has `checkout_present=false`,
+no branch and no HEAD. Promoting it would misrepresent source-ZIP evidence as a
+Git-checkout verification.
+
+## Checkout-bound verification
+
+The current checkout was tested at source commit
+`52567d1a496bd90d04385b3456ae7c0fa2e36750` on
+`feature/swi-dcre-core-doctrine`.
+
+| Check | Result |
+|---|---|
+| DCRE claim tests | 44 passed |
+| README status-gate tests | 5 passed |
+| Governing formula tests | 11 passed |
+| Kernel subset | 535 passed, 1 failed |
+| Python compileall | PASS |
+| Three DCRE schemas + aggregate record | VALID |
+| Claim history | 18 records; valid hash chain |
+| Full suite | 703 passed, 1 failed, 5 collection errors |
+| Captured run-directory checksums | 22/22 valid |
+
+The kernel freshness failure reports that source tip
+`8245e3f03d8673c966abf9c63be9d838073159b0` is absent from this local Git object
+database and is not an ancestor of the synthetic local HEAD. It was not
+rewritten or bypassed. Full-suite collection errors remain associated with
+execution-integrity imports and the trusted-source inspector placeholder.
+
+The optional ISO claim validator and ISO gate test files are absent from this
+checkout. They are recorded as absent, not passed. ISO conformity remains
+`NOT_ESTABLISHED`.
+
+## Claim boundary
+
+The machine-readable current record is `evidence/claims/current_verification_run.json`.
+The README panel is regenerated from that record and reports `PARTIAL / UNKNOWN`,
+`L3_TESTED`, and `PUBLIC MAIN NOT VERIFIED`. Evidence hashes are valid for this
+record's 25 referenced files. CI was not run.
+
+`proven=false`; `sealed=false`; `production_authorized=false`.
+This is a local feature-branch evidence import, not an upstream GitHub update,
+proof, ISO conformity assessment, or production authorization.
