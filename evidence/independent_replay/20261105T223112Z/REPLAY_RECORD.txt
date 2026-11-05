@@ -1,0 +1,19 @@
+SWI INDEPENDENT REPLAY RECORD
+Timestamp UTC: 20261105T223112Z
+Base commit: 6e54f85cd8683c9c60f6191291c6cd90b4719252
+Branch: recovery/ei-authority-before-execute
+Test command: python -m pytest -q
+Test exit: 2
+Compile command: python -m compileall -q swi_v2 swi_policy_mapper
+Compile exit: 0
+Diff check exit: 0
+Overall status: FAIL_OR_BLOCKED_NOT_SEALED
+
+CLAIM: Repository tests were invoked and their output recorded.
+LIMITATION: This run is not an independent reproduction.
+LIMITATION: Compile success is not test success.
+LIMITATION: Test success is not proof, seal, compliance or authorization.
+HUMAN AUTHORITY: Not authenticated by this runner.
+PROVEN: NO
+SEALED: NO
+PRODUCTION AUTHORIZED: NO

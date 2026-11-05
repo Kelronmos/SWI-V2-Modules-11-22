@@ -1,0 +1,75 @@
+
+==================================== ERRORS ====================================
+______ ERROR collecting test/adversarial/test_authority_bound_execute.py _______
+ImportError while importing test module '/data/data/com.termux/files/home/SWI-V2-Modules-11-22/test/adversarial/test_authority_bound_execute.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../usr/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/adversarial/test_authority_bound_execute.py:9: in <module>
+    from swi_v2.execution_integrity import (
+E   ImportError: cannot import name 'AdmittedRoute' from 'swi_v2.execution_integrity' (/data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/execution_integrity.py)
+________ ERROR collecting test/adversarial/test_execution_integrity.py _________
+ImportError while importing test module '/data/data/com.termux/files/home/SWI-V2-Modules-11-22/test/adversarial/test_execution_integrity.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../usr/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/adversarial/test_execution_integrity.py:21: in <module>
+    from swi_v2.execution_integrity import (
+E   ImportError: cannot import name 'AdmittedRoute' from 'swi_v2.execution_integrity' (/data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/execution_integrity.py)
+_______ ERROR collecting test/adversarial/test_gate_pass_fail_matrix.py ________
+ImportError while importing test module '/data/data/com.termux/files/home/SWI-V2-Modules-11-22/test/adversarial/test_gate_pass_fail_matrix.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../usr/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/adversarial/test_gate_pass_fail_matrix.py:21: in <module>
+    from swi_v2.execution_integrity import (
+E   ImportError: cannot import name 'AdmittedRoute' from 'swi_v2.execution_integrity' (/data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/execution_integrity.py)
+__ ERROR collecting test/adversarial/test_new_information_boundary_attacks.py __
+ImportError while importing test module '/data/data/com.termux/files/home/SWI-V2-Modules-11-22/test/adversarial/test_new_information_boundary_attacks.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../usr/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/adversarial/test_new_information_boundary_attacks.py:12: in <module>
+    from swi_v2.execution_integrity import (
+E   ImportError: cannot import name 'AdmittedRoute' from 'swi_v2.execution_integrity' (/data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/execution_integrity.py)
+___________ ERROR collecting test/adversarial/test_universal_halt.py ___________
+ImportError while importing test module '/data/data/com.termux/files/home/SWI-V2-Modules-11-22/test/adversarial/test_universal_halt.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../usr/lib/python3.13/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test/adversarial/test_universal_halt.py:15: in <module>
+    from swi_v2.execution_integrity import (
+E   ImportError: cannot import name 'AdmittedRoute' from 'swi_v2.execution_integrity' (/data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/execution_integrity.py)
+_________ ERROR collecting test/test_trusted_source_spine_inspector.py _________
+test/test_trusted_source_spine_inspector.py:13: in <module>
+    from swi_v2.trusted_source.spine_inspector import (
+swi_v2/trusted_source/__init__.py:7: in <module>
+    from swi_v2.trusted_source.spine_inspector import (
+swi_v2/trusted_source/spine_inspector.py:1: in <module>
+    PLACEHOLDER_LOAD_FROM_LOCAL_FILE_20747_BYTES
+E   NameError: name 'PLACEHOLDER_LOAD_FROM_LOCAL_FILE_20747_BYTES' is not defined
+=============================== warnings summary ===============================
+swi_v2/reports/test_report.py:106
+  /data/data/com.termux/files/home/SWI-V2-Modules-11-22/swi_v2/reports/test_report.py:106: PytestCollectionWarning: cannot collect test class 'TestReportBuilder' because it has a __init__ constructor (from: test/adversarial/test_observation_claim_separation.py)
+    class TestReportBuilder:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR test/adversarial/test_authority_bound_execute.py
+ERROR test/adversarial/test_execution_integrity.py
+ERROR test/adversarial/test_gate_pass_fail_matrix.py
+ERROR test/adversarial/test_new_information_boundary_attacks.py
+ERROR test/adversarial/test_universal_halt.py
+ERROR test/test_trusted_source_spine_inspector.py - NameError: name 'PLACEHOL...
+!!!!!!!!!!!!!!!!!!! Interrupted: 6 errors during collection !!!!!!!!!!!!!!!!!!!!
+1 warning, 6 errors in 3.13s
