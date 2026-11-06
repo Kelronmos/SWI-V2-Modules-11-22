@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-11-06T04:50:00+00:00",
+  "original_run": {
+    "operation_id": "SWI-FIREFLY-FULL-REPLAY-001",
+    "processed_transactions": 100000,
+    "elapsed_seconds": 27.216156058,
+    "overall_replay_status": "PASS",
+    "independent_reproduction": "NOT_ESTABLISHED",
+    "full_target_proven": false,
+    "production_authorization": "NOT_GRANTED",
+    "replay_chain_sha256": "c83c7028c56c715234647331fff5ee8d6c7824b745b092737d7d00aaef19c64a",
+    "environment": "Android-13-aarch64, Python 3.13.13, seed 20261105"
+  },
+  "independent_replay_2026_11_06": {
+    "processed_transactions": 100,
+    "status": "PASS",
+    "production_authorization": "NOT_GRANTED",
+    "target_3_5B_1_2s": "NOT_TESTED",
+    "scope": "Minimal synthetic verification that the harness executes and continues to refuse production claims"
+  },
+  "comparison": {
+    "match_on_large_run": "NOT_ATTEMPTED",
+    "match_on_authorization_ceiling": "YES — both report NOT_GRANTED",
+    "match_on_independent_reproduction_claim": "YES — original already said NOT_ESTABLISHED; new run does not upgrade it"
+  }
+}

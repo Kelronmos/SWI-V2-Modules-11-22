@@ -1,0 +1,43 @@
+{
+  "generated_at_utc": "2026-11-06T04:50:00+00:00",
+  "source_main_commit": "378c856e9081cbaea580a2c433881ea24c54b7e9",
+  "baseline_main_suite": {
+    "status": "NOT_RUN",
+    "reason": "Full repository pytest not executed in this recovery turn; package-isolated tests preferred for incoming archives"
+  },
+  "educational_package": {
+    "command": "python3 -m pytest -q tests/",
+    "cwd": ".recovery_work/educational",
+    "exit_code": 0,
+    "summary": "20 passed in 12.46s",
+    "status": "PASS"
+  },
+  "multiplatform_package": {
+    "command": "python3 -m pytest -q tests/",
+    "cwd": ".recovery_work/multiplatform",
+    "exit_code": 0,
+    "summary": "13 passed in 9.86s",
+    "status": "PASS"
+  },
+  "firefly_small_independent_replay": {
+    "command": "python3 swi_firefly.py --transactions 100 --subjects 20",
+    "exit_code": 0,
+    "self_test": "PASS",
+    "replay_status": "PASS",
+    "production_authorization": "NOT_GRANTED",
+    "target_3_5B_1_2s": "NOT_TESTED",
+    "note": "Small synthetic replay only; does not claim independent reproduction of original 100k run or 3.5B target"
+  },
+  "security_negative_paths_device": {
+    "status": "COVERED_BY_PACKAGE_TESTS",
+    "cases_exercised": [
+      "missing human authentication → PAUSE / EXECUTE=False",
+      "unverified authority → PAUSE",
+      "device / workflow / action mismatch → PAUSE",
+      "consent false → PAUSE",
+      "cost limit exceeded → PAUSE",
+      "missing evidence_hash → PAUSE"
+    ],
+    "note": "These are package-local tests, not integration against the live SWI V2 kernel"
+  }
+}
