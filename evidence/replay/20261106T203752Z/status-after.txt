@@ -1,0 +1,46 @@
+ M swi_v2/execution_integrity.py
+?? "-iname *.tar -o -iname *.tar.gz ) \\"
+?? assert
+?? dist/
+?? evidence/independent_replay/20261105T222508Z/
+?? evidence/recovery/
+?? evidence/replay/
+?? evidence/runtime/
+?? experimental/__pycache__/
+?? experimental/cek_alignment_monitor/__pycache__/
+?? experimental/law/__pycache__/
+?? experimental/response_boundary/__pycache__/
+?? experimental/swi_runtime_evidence/
+?? "how --format=fuller --no-patch 27981fb"
+?? "how cryptography"
+?? "pine*' -o -iname '*execution*integrity*' ) "
+?? runner/__pycache__/
+?? scripts/run_swi_runtime_evidence.sh
+?? swi_policy_mapper/__pycache__/
+?? swi_v2/__pycache__/
+?? swi_v2/kernel/__pycache__/
+?? swi_v2/module11/__pycache__/
+?? swi_v2/module12/__pycache__/
+?? swi_v2/module13/__pycache__/
+?? swi_v2/module14/__pycache__/
+?? swi_v2/module15/__pycache__/
+?? swi_v2/module16/__pycache__/
+?? swi_v2/module17/__pycache__/
+?? swi_v2/module18/__pycache__/
+?? swi_v2/module19/__pycache__/
+?? swi_v2/module20/__pycache__/
+?? swi_v2/module21/__pycache__/
+?? swi_v2/module22/__pycache__/
+?? swi_v2/reports/__pycache__/
+?? swi_v2/trusted_source/__pycache__/
+?? "t --version"
+?? "tatus --short"
+?? test/__pycache__/
+?? test/adversarial/__pycache__/
+?? tests/__pycache__/
+?? tests/adversarial/__pycache__/
+?? tests/cek_alignment_monitor/__pycache__/
+?? tests/law/__pycache__/
+?? tests/pre_r/__pycache__/
+?? tests/test_policy_mapper/__pycache__/
+?? tools/__pycache__/

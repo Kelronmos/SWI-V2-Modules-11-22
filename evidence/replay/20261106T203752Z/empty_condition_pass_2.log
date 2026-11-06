@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/SWI-V2-Modules-11-22/evidence/replay/20261106T203752Z/empty_condition_repro.py", line 1, in <module>
+    from swi_v2.kernel.governing_permit import evaluate_governing_permit
+ModuleNotFoundError: No module named 'swi_v2'

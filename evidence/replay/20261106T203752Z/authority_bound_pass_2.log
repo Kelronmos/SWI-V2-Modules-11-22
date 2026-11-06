@@ -1,0 +1,12 @@
+..F.                                                                     [100%]
+=================================== FAILURES ===================================
+_________________ test_wrong_action_authority_does_not_execute _________________
+test/adversarial/test_authority_bound_execute.py:82: in test_wrong_action_authority_does_not_execute
+    assert r.decision == Decision.EXECUTION_ALLOWED
+E   AssertionError: assert <Decision.UNKNOWN: 'UNKNOWN'> == <Decision.EXE...TION_ALLOWED'>
+E     
+E     - EXECUTION_ALLOWED
+E     + UNKNOWN
+=========================== short test summary info ============================
+FAILED test/adversarial/test_authority_bound_execute.py::test_wrong_action_authority_does_not_execute
+1 failed, 3 passed in 0.33s

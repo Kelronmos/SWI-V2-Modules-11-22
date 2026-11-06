@@ -1,0 +1,68 @@
+SWI REPLAY RECORD
+RUN_ID=20261106T203752Z
+UTC=2026-11-06T20:37:52+00:00
+BRANCH=recovery/ei-authority-before-execute
+HEAD=d4b86c655971910890958d0b1e7643ee98c9af8e
+
+===== WORKING TREE BEFORE TESTS =====
+ M swi_v2/execution_integrity.py
+?? "-iname *.tar -o -iname *.tar.gz ) \\"
+?? assert
+?? dist/
+?? evidence/independent_replay/20261105T222508Z/
+?? evidence/recovery/
+?? evidence/replay/
+?? evidence/runtime/
+?? experimental/__pycache__/
+?? experimental/cek_alignment_monitor/__pycache__/
+?? experimental/law/__pycache__/
+?? experimental/response_boundary/__pycache__/
+?? experimental/swi_runtime_evidence/
+?? "how --format=fuller --no-patch 27981fb"
+?? "how cryptography"
+?? "pine*' -o -iname '*execution*integrity*' ) "
+?? runner/__pycache__/
+?? scripts/run_swi_runtime_evidence.sh
+?? swi_policy_mapper/__pycache__/
+?? swi_v2/__pycache__/
+?? swi_v2/kernel/__pycache__/
+?? swi_v2/module11/__pycache__/
+?? swi_v2/module12/__pycache__/
+?? swi_v2/module13/__pycache__/
+?? swi_v2/module14/__pycache__/
+?? swi_v2/module15/__pycache__/
+?? swi_v2/module16/__pycache__/
+?? swi_v2/module17/__pycache__/
+?? swi_v2/module18/__pycache__/
+?? swi_v2/module19/__pycache__/
+?? swi_v2/module20/__pycache__/
+?? swi_v2/module21/__pycache__/
+?? swi_v2/module22/__pycache__/
+?? swi_v2/reports/__pycache__/
+?? swi_v2/trusted_source/__pycache__/
+?? "t --version"
+?? "tatus --short"
+?? test/__pycache__/
+?? test/adversarial/__pycache__/
+?? tests/__pycache__/
+?? tests/adversarial/__pycache__/
+?? tests/cek_alignment_monitor/__pycache__/
+?? tests/law/__pycache__/
+?? tests/pre_r/__pycache__/
+?? tests/test_policy_mapper/__pycache__/
+?? tools/__pycache__/
+
+===== RUNTIME =====
+Python 3.13.13
+pytest 9.1.1
+
+===== RELEVANT SOURCE HASHES =====
+3aa4b53a4aa72ba6ebcc89f1435a745e6b8b85b0c264fe0be5f365c4d1b69659  swi_v2/kernel/governing_permit.py
+120528f42281e85c90aff3c275103accd65707244de17db23a25d49c801530b3  swi_v2/execution_integrity.py
+366aaffd413ef3adea84e90ed1ba49006c335228da45a6d3c14c6c910ff368fa  test/test_governing_formula.py
+848b148c484d530cec31133da5317bac9aff4034a5b90a8cba6500c2396a0529  test/adversarial/test_authority_bound_execute.py
+424acebab7eda78db9da2b25c80e0ceef6899cc5755a434a6bc75e40af6d44f0  tests/adversarial/test_execution_integrity_authority_gate.py
+484a155344111332494b70378a823241cda89291f8719ea00375e271abc674ae  test/adversarial/test_execution_integrity.py
+
+===== TRACKED DIFF HASH =====
+bdd88f6c9444837e17a24e3860b9179d0342b1533a869371b525a32f51cea4e9  -
