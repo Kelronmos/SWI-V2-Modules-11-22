@@ -1,0 +1,39 @@
+{
+  "generated_at_utc": "2026-11-06T04:52:00+00:00",
+  "source_main_commit": "378c856e9081cbaea580a2c433881ea24c54b7e9",
+  "packages": [
+    {
+      "name": "SWI-Educational-Reproducible-FULL",
+      "classification": "V1 educational application",
+      "sub_classifications": ["V1-compatible supporting component (demo only)", "Independent experiment"],
+      "implements_FoundationEvidenceEnvelope": false,
+      "implements_SCAR": false,
+      "implements_V1_pipeline_modules": false,
+      "produces_evidence_for_V2_admission": false,
+      "second_authorization_engine": false,
+      "notes": "Local fail-closed authorize() is demonstration logic. Status strings correctly use NOT_INDEPENDENTLY_VERIFIED / PAUSE. Must not be promoted into swi_v2 kernel."
+    },
+    {
+      "name": "SWI-Multiplatform-Device-Bound-FULL",
+      "classification": "V1 educational application (subset of Educational)",
+      "sub_classifications": ["Independent experiment"],
+      "implements_FoundationEvidenceEnvelope": false,
+      "implements_SCAR": false,
+      "implements_V1_pipeline_modules": false,
+      "produces_evidence_for_V2_admission": false,
+      "second_authorization_engine": false,
+      "notes": "Content-identical core with Educational; 13 package tests PASS. Device identity is string + fingerprint, not CRTG-grade attestation."
+    },
+    {
+      "name": "SWI_FIREFLY_REPLAY_EVIDENCE_2026-11-05",
+      "classification": "Independent experiment / Downstream evidence or memory subsystem",
+      "sub_classifications": ["Historical replay evidence"],
+      "implements_FoundationEvidenceEnvelope": false,
+      "implements_SCAR": false,
+      "v2_implementation_authorized": false,
+      "v2_status_from_MODULE_STATUS": "DESIGN / DEFERRED — NO IMPLEMENTATION AUTHORIZED",
+      "produces_evidence_for_V2_admission": false,
+      "notes": "Original evidence already records independent_reproduction=NOT_ESTABLISHED and production_authorization=NOT_GRANTED. Small independent replay (100 tx) PASS and does not upgrade claims. Respect SCAR → Firefly Consume/Refuse Contract; do not integrate adapter without explicit authorization gate."
+    }
+  ]
+}
