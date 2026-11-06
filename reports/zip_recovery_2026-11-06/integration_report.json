@@ -1,0 +1,33 @@
+{
+  "title": "SWI V2 ZIP Recovery Integration Report",
+  "date": "2026-11-06",
+  "source_main_commit": "378c856e9081cbaea580a2c433881ea24c54b7e9",
+  "working_branch": "fix/zip-recovery-integration-2026-11-06",
+  "status": "PARTIALLY_COMPLETE",
+  "authority_ceiling": {
+    "PROVEN": "NO",
+    "SEALED": "NO",
+    "PRODUCTION_AUTHORIZED": "NO"
+  },
+  "key_findings": [
+    "Educational package is a clean superset of Multiplatform; 25 content-identical files.",
+    "Device package correctly fails closed on missing human auth, authority, device mismatch, etc.",
+    "Firefly original evidence already records independent_reproduction=NOT_ESTABLISHED and production_authorization=NOT_GRANTED.",
+    "Package-isolated tests: Educational 20/20 PASS, Multiplatform 13/13 PASS.",
+    "Small independent Firefly replay (100 tx) PASS and still refuses production claims.",
+    "No files from these archives collide with or replace swi_v2/kernel/governing_permit.py or the authorization spine.",
+    "Full main-repository pytest baseline NOT_RUN in this turn."
+  ],
+  "limitations": [
+    "Full independent reproduction of the original 100k-transaction Firefly run was not performed.",
+    "No cryptographic device attestation beyond fingerprint strings is present in the device package.",
+    "Demonstration packages must not be mistaken for the live SWI V2 execution corridor."
+  ],
+  "relocation_policy": "Original archives preserved under Local Independent Tests/. Extracted research copies may be placed under clearly labelled research/demo paths. No promotion into production packages.",
+  "tests": {
+    "educational": {"passed": 20, "status": "PASS"},
+    "multiplatform": {"passed": 13, "status": "PASS"},
+    "firefly_small_replay": {"status": "PASS", "production_authorization": "NOT_GRANTED"},
+    "main_suite": {"status": "NOT_RUN"}
+  }
+}
