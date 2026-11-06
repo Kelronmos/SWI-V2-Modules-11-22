@@ -1,0 +1,15 @@
+{
+  "generated_at_utc": "2026-11-06T04:52:00+00:00",
+  "contract_document": "V1 docs/FOUNDATION_EVIDENCE_PRODUCER.md",
+  "producer_status": "IMPLEMENTED / TESTED · unsigned · not Seal 5 · not CRTG",
+  "envelope_digest_fields": ["payload", "foundation_version", "evidence_schema_version", "evidence_id", "source_reference"],
+  "excluded_from_digest": ["created_at"],
+  "packages_producing_compatible_envelope": [],
+  "packages_claiming_authenticated_origin": [],
+  "compatibility_result": {
+    "Educational": "NOT_APPLICABLE — does not produce FoundationEvidenceEnvelope",
+    "Multiplatform": "NOT_APPLICABLE — does not produce FoundationEvidenceEnvelope",
+    "Firefly": "NOT_APPLICABLE — memory/replay harness; not foundation producer; V2 implementation not authorized"
+  },
+  "v2_admission_rule": "V2 must independently verify any admitted envelope. Hash match ≠ authenticated sender. Sender authenticity requires future TaskEnvelope + signature + CRTG."
+}

@@ -1,0 +1,45 @@
+{
+  "generated_at_utc": "2026-11-06T04:52:00+00:00",
+  "mappings": [
+    {
+      "file_or_component": "swi_device/core.py::authorize",
+      "v1_module": null,
+      "v1_requirement": "Authority and permission boundaries (general principle)",
+      "relationship": "Independent demonstration of fail-closed checks",
+      "implementation": "Local boolean checks → PAUSE / EXECUTE=False",
+      "test": "tests/test_core.py (package)",
+      "evidence": "Package test PASS; not FoundationEvidenceEnvelope",
+      "v2_interface": "None — must not replace governing_permit"
+    },
+    {
+      "file_or_component": "swi_device/core.py::register_device / record_admission",
+      "v1_module": null,
+      "v1_requirement": "Identity and origin requirements (principle only)",
+      "relationship": "Educational application",
+      "implementation": "SHA-256 of JSON records; status REGISTERED_NOT_INDEPENDENTLY_VERIFIED",
+      "test": "package tests",
+      "evidence": "Local evidence files only",
+      "v2_interface": "None"
+    },
+    {
+      "file_or_component": "swi_firefly.py + exports/firefly_memory.json",
+      "v1_module": "SCAR (adjacent design only)",
+      "v1_requirement": "SCAR → Firefly design path (V1 SCAR_STATUS §4)",
+      "relationship": "Independent experiment / historical replay evidence",
+      "implementation": "Synthetic benchmark harness",
+      "test": "self_test PASS (original); small independent replay PASS (2026-11-06)",
+      "evidence": "Original replay_report.json records NOT_ESTABLISHED / NOT_GRANTED",
+      "v2_interface": "Blocked — V2 MODULE_STATUS: NO IMPLEMENTATION AUTHORIZED"
+    },
+    {
+      "file_or_component": "FoundationEvidenceEnvelope (V1)",
+      "v1_module": "foundation_evidence / Trainer pipeline",
+      "v1_requirement": "Evidence production and integrity (FOUNDATION_EVIDENCE_PRODUCER.md)",
+      "relationship": "V1 implementation (not present in the three ZIPs)",
+      "implementation": "swi_core/foundation_evidence.py",
+      "test": "test/test_foundation_evidence_export.py",
+      "evidence": "UNSIGNED envelope; verification_status=v1_trainer_pipeline_completed",
+      "v2_interface": "V2 must independently verify; must not import V1 internals as substitute"
+    }
+  ]
+}
