@@ -1,0 +1,42 @@
+{
+  "generated_at_utc": "2026-11-06T05:00:00+00:00",
+  "main_sha": "62f061e1533342a5d5ee41236285d04ab46b53a4",
+  "recovery_branch": "fix/zip-recovery-integration-2026-11-06",
+  "recovery_tip_prior": "834e77d7efd19fd6f43b9eb21a81477ced8f9e56",
+  "divergence": {
+    "recovery_ahead_of_old_main": true,
+    "main_advanced_one_commit": true,
+    "main_new_files": ["REPO_IMPORT.md", "SHA256SUMS", "test_run.json"],
+    "note": "Root-level REPO_IMPORT/SHA256SUMS/test_run.json appear to duplicate Local Independent Tests / research copies"
+  },
+  "archives": {
+    "SWI-Educational-Reproducible-FULL.zip": {
+      "sha256": "323843282ed45b9971c203b08133a683533ec76b85cdabe060794cb12095804e",
+      "status": "extracted; core relocated under Local Independent Tests/device-bound-educational-2026-11-05/"
+    },
+    "SWI-Multiplatform-Device-Bound-FULL.zip": {
+      "sha256": "effab95799be880149f8f5e2019b93ad2f19efc26a7482a2f2eea165d86999ea",
+      "status": "subset of educational; same relocation"
+    },
+    "SWI_FIREFLY_REPLAY_EVIDENCE_2026-11-05.zip": {
+      "sha256": "80aa5fb26a922c6086daab25e1cef256a2d40c7888c829d431aa2404c723b032",
+      "status": "retained; NO IMPLEMENTATION AUTHORIZED"
+    },
+    "camera_telemetry_authority_research.zip": {
+      "sha256": "dfda95e8db1ce895d4d17ac42edd38d19bbf30f4ba3e989314bd12c9bcb09c8d",
+      "status": "source present locally; research/ tree incomplete on remote — restore pending"
+    }
+  },
+  "authority_ceiling": {
+    "PROVEN": "NO",
+    "SEALED": "NO",
+    "PRODUCTION_AUTHORIZED": "NO"
+  },
+  "outstanding": [
+    "Complete camera telemetry source under research/camera-telemetry-authority/",
+    "Correct GAP-07 (EDUCATION_ARCHITECTURE_V1.md exists)",
+    "Reconcile root-level duplicate import files with research/ and Local Independent Tests/",
+    "Full repository pytest NOT_RUN this session",
+    "ZIP deletion blocked until recovery complete"
+  ]
+}
