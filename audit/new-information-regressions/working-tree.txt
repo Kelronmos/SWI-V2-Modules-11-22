@@ -1,0 +1,5 @@
+?? audit/
+?? swi_v2/__pycache__/
+?? swi_v2/kernel/__pycache__/
+?? test/adversarial/__pycache__/
+?? test/adversarial/test_new_information_regressions.py
