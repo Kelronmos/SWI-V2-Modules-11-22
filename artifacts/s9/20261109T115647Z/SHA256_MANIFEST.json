@@ -1,0 +1,12 @@
+{
+  "algorithm": "SHA-256",
+  "file_count": 4,
+  "files": {
+    "phase2/inventory.json": "4597585848613eee6d5c41683d5488790bccf44537a267386e8a45b676e9ff34",
+    "phase2/proof_gap_register.json": "9f16759a54da4bfc0974e9e3e61a72bd6971ac68207be23894c69f7a6e44f396",
+    "phase2/recent_history.txt": "9e5c3a5e37be90b17b6f4daee794d7a2601f1ea21faaae91cc2345fcaf4c45f9",
+    "phase2/tracked_files.txt": "1cd9b89e4157e50743331f6c8be95606442317648ce5ac57f2b599a13a4e55c7"
+  },
+  "production_authorized": false,
+  "s9_proven": false
+}

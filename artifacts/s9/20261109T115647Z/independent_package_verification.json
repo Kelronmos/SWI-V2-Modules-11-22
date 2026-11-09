@@ -1,0 +1,11 @@
+{
+  "clean_extraction_hash_check": "PASS",
+  "independent_replay_scope": "PACKAGE_HASH_AND_INTEGRITY_ONLY",
+  "manifest_files": 4,
+  "mathematical_independent_proof": "NOT_ESTABLISHED",
+  "mismatches": [],
+  "package": "S9_FINAL_EVIDENCE.zip",
+  "production_authorized": false,
+  "s9_proven": false,
+  "tamper_detection": "PASS"
+}

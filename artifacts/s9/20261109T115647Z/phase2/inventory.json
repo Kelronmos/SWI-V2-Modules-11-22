@@ -1,0 +1,5674 @@
+{
+  "import_reference_count": 628,
+  "imports": [
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "distance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "measurement",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "provenance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "observation",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "visibility",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "findings",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "replay",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/__init__.py",
+      "import": "monitor",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/demo.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/demo.py",
+      "import": "sys"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/demo.py",
+      "import": "monitor",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/demo.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/demo.py",
+      "import": "visibility",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "math"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/distance.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "json"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "time"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "uuid"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/findings.py",
+      "import": "observation",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "json"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "time"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "uuid"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "distance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/measurement.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "distance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "findings",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "measurement",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "observation",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "provenance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "replay",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/monitor.py",
+      "import": "visibility",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "json"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "time"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "uuid"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "measurement",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "provenance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/observation.py",
+      "import": "visibility",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "json"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "time"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "uuid"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/provenance.py",
+      "import": "measurement",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "distance",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "measurement",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/replay.py",
+      "import": "vector",
+      "level": 1
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/vector.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/vector.py",
+      "import": "math"
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/vector.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/vector.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/visibility.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/visibility.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/visibility.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/cek_alignment_monitor/visibility.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "models",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "integrity",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "registry",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "authority",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "replay",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/__init__.py",
+      "import": "policy",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/authority.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/authority.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/authority.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/authority.py",
+      "import": "swi_v2.kernel.authority",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/canonical.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/canonical.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/canonical.py",
+      "import": "swi_v2.kernel.canonical",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "uuid",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "canonical",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/events.py",
+      "import": "models",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "uuid",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "models",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "canonical",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "registry",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/ingest.py",
+      "import": "replay",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/integrity.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/integrity.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/integrity.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/integrity.py",
+      "import": "canonical",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/integrity.py",
+      "import": "models",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/models.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/models.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/models.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/models.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/policy.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/policy.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "authority",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "canonical",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "integrity",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/registry.py",
+      "import": "models",
+      "level": 1
+    },
+    {
+      "file": "experimental/law/replay.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/replay.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/law/replay.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/__init__.py",
+      "import": "core",
+      "level": 1
+    },
+    {
+      "file": "experimental/response_boundary/__init__.py",
+      "import": "enforcement",
+      "level": 1
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "json"
+    },
+    {
+      "file": "experimental/response_boundary/core.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "swi_v2.kernel.halt",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "experimental/response_boundary/enforcement.py",
+      "import": "core",
+      "level": 1
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "os"
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "subprocess"
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "formal/z3/law_authority.py",
+      "import": "z3",
+      "level": 0
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "swi_v2.kernel.enforcement",
+      "level": 0
+    },
+    {
+      "file": "scripts/admit_travel_evidence.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "scripts/demo_m11_crypto_seal.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "re"
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/historical_claim_verifier.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "pathlib"
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "datetime"
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "subprocess"
+    },
+    {
+      "file": "scripts/pre_r_manifest.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "subprocess"
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/s9_build_package.py",
+      "import": "swi_v2.s9.package",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "scripts/seal_travel_evidence.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "os"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "urllib.error"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "urllib.request"
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_ci_resolver.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "argparse"
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "json"
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "sys"
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "scripts/v47_live_m11_verify.py",
+      "import": "v47_ci_resolver",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "errors",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "contracts",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "admission",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "replay_guard",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "enforcement",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "halt",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/__init__.py",
+      "import": "authority",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "contracts",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "errors",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/admission.py",
+      "import": "canonical",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/authority.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/authority.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/authority.py",
+      "import": "enum",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/authority.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/authority.py",
+      "import": "errors",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/canonical.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/canonical.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/kernel/canonical.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/kernel/canonical.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/contracts.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/contracts.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/contracts.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "cryptography.exceptions",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "cryptography.hazmat.primitives.asymmetric.ed25519",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/ed25519_sig.py",
+      "import": "cryptography.hazmat.primitives.serialization",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/enforcement.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/enforcement.py",
+      "import": "contracts",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/enforcement.py",
+      "import": "errors",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/enforcement.py",
+      "import": "halt",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/halt.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/halt.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/halt.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/merkle.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/merkle.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/kernel/merkle.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/merkle.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "admission",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "contracts",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/replay_guard.py",
+      "import": "errors",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "contracts",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "ed25519_sig",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/seal.py",
+      "import": "merkle",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/kernel/sparse_merkle.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/sparse_merkle.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/kernel/sparse_merkle.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/kernel/sparse_merkle.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/module11/__init__.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/module11/__init__.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/module11/foundation_admission.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/module12/__init__.py",
+      "import": "swi_v2.kernel.enforcement",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/__init__.py",
+      "import": "evaluator",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/__init__.py",
+      "import": "package",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/__init__.py",
+      "import": "manifest",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/constraints.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/constraints.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/diagnostics.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/diagnostics.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/evaluator.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/evaluator.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/evaluator.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/evaluator.py",
+      "import": "constraints",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/evaluator.py",
+      "import": "evidence",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/evidence.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/evidence.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/inventory.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/inventory.py",
+      "import": "os"
+    },
+    {
+      "file": "swi_v2/s9/inventory.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/inventory.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/inventory.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/manifest.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/manifest.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/s9/manifest.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/s9/manifest.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/manifest.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "json"
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "zipfile"
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "evaluator",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "inventory",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "manifest",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "reconciliation",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "replay",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/package.py",
+      "import": "diagnostics",
+      "level": 1
+    },
+    {
+      "file": "swi_v2/s9/reconciliation.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/reconciliation.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/replay.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/replay.py",
+      "import": "typing",
+      "level": 0
+    },
+    {
+      "file": "swi_v2/s9/replay.py",
+      "import": "evaluator",
+      "level": 1
+    },
+    {
+      "file": "test/test_admission_hardening.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_admission_hardening.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_admission_hardening.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_admission_hardening.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_admission_hardening.py",
+      "import": "swi_v2.kernel.replay_guard",
+      "level": 0
+    },
+    {
+      "file": "test/test_authority_non_escalation.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_authority_non_escalation.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_authority_non_escalation.py",
+      "import": "swi_v2.kernel.authority",
+      "level": 0
+    },
+    {
+      "file": "test/test_authority_non_escalation.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonical_golden_vectors.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonical_golden_vectors.py",
+      "import": "json"
+    },
+    {
+      "file": "test/test_canonical_golden_vectors.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonical_golden_vectors.py",
+      "import": "swi_v2.kernel.canonical",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonicalization.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonicalization.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_canonicalization.py",
+      "import": "swi_v2.kernel.canonical",
+      "level": 0
+    },
+    {
+      "file": "test/test_ed25519_sig.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_ed25519_sig.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_ed25519_sig.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "test/test_foundation_contract.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_foundation_contract.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_enforcement.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_kernel_enforcement.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_enforcement.py",
+      "import": "swi_v2.kernel.enforcement",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_enforcement.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_enforcement.py",
+      "import": "swi_v2.module12",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "swi_v2.kernel.enforcement",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_kernel_isolation.py",
+      "import": "swi_v2.module12",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_end_to_end_seal.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_end_to_end_seal.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_end_to_end_seal.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_end_to_end_seal.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_end_to_end_seal.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.merkle",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_post_admission_seal.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "test/test_m11_seal_boundary_attacks.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_merkle_determinism.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_merkle_determinism.py",
+      "import": "swi_v2.kernel.merkle",
+      "level": 0
+    },
+    {
+      "file": "test/test_merkle_determinism.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "test/test_merkle_determinism.py",
+      "import": "swi_v2.kernel.seal",
+      "level": 0
+    },
+    {
+      "file": "test/test_merkle_determinism.py",
+      "import": "swi_v2.kernel.ed25519_sig",
+      "level": 0
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_module11_admission.py",
+      "import": "swi_v2.module12",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "json"
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "pytest"
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "swi_v2.kernel.admission",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "swi_v2.kernel.contracts",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "swi_v2.kernel.enforcement",
+      "level": 0
+    },
+    {
+      "file": "test/test_serialized_v1_travel.py",
+      "import": "swi_v2.module12",
+      "level": 0
+    },
+    {
+      "file": "test/test_sparse_merkle.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "test/test_sparse_merkle.py",
+      "import": "swi_v2.kernel.sparse_merkle",
+      "level": 0
+    },
+    {
+      "file": "test/test_sparse_merkle.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "test/test_sparse_merkle.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "sys"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_authority_matrix.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_authority_matrix.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_authority_matrix.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_authority_matrix.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_concurrency.py",
+      "import": "concurrent.futures",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_concurrency.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_context_injection.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_context_injection.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_determinism.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_distance.py",
+      "import": "math"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_distance.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_distance.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_distance.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_findings.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "tests.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "tests.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "import": "experimental.cek_alignment_monitor"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.measurement",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_nested_injection.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_observation.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "experimental.cek_alignment_monitor.provenance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_replay.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "time"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "ast"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "experimental.cek_alignment_monitor"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "math"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "import": "experimental.cek_alignment_monitor.provenance",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "json"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_vector.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_vector.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_visibility.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/cek_alignment_monitor/test_cek_visibility.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "math"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_concurrency.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_concurrency.py",
+      "import": "concurrent.futures",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_concurrency.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_context_injection.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_context_injection.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_context_injection.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_determinism.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_determinism.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_findings.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_full_invariants.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "import": "experimental.cek_alignment_monitor"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.distance",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_measurement.py",
+      "import": "experimental.cek_alignment_monitor.measurement",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_nested_injection.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_nested_injection.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_nested_injection.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_observation.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_provenance.py",
+      "import": "experimental.cek_alignment_monitor.provenance",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_replay.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "time"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "experimental.cek_alignment_monitor.vector",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "ast"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "experimental.cek_alignment_monitor"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "json"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_serialization.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "import": "tests.experimental.cek_alignment_monitor.conftest",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_visibility.py",
+      "import": "experimental.cek_alignment_monitor.visibility",
+      "level": 0
+    },
+    {
+      "file": "tests/experimental/cek_alignment_monitor/test_cek_visibility.py",
+      "import": "experimental.cek_alignment_monitor.monitor",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.integrity",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.events",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "experimental.law.replay",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_adversarial_surface.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_atomic_supersession.py",
+      "import": "experimental.law.events",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "experimental.law.events",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_authority.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "experimental.law.events",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_event_integrity.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "hashlib"
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "json"
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "subprocess"
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_evidence_freshness.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_integrity.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_integrity.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_integrity.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_integrity.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_integrity.py",
+      "import": "experimental.law.integrity",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_policy_boundary.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_policy_boundary.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_policy_boundary.py",
+      "import": "experimental.law.policy",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_policy_boundary.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_registry.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_replay.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_replay.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_replay.py",
+      "import": "experimental.law.replay",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_replay.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "experimental.law.models",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "experimental.law.canonical",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "experimental.law.registry",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "experimental.law.authority",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "experimental.law.events",
+      "level": 0
+    },
+    {
+      "file": "tests/law/test_supersession.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_math_002_authority_containment.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_math_002_authority_containment.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_math_002_authority_containment.py",
+      "import": "experimental.response_boundary.core",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "dataclasses",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "experimental.response_boundary",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "swi_v2.kernel.halt",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "swi_v2.kernel.errors",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "pickle"
+    },
+    {
+      "file": "tests/pre_r/test_pr009_enforcement.py",
+      "import": "copy"
+    },
+    {
+      "file": "tests/pre_r/test_response_boundary.py",
+      "import": "datetime",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_response_boundary.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/pre_r/test_response_boundary.py",
+      "import": "experimental.response_boundary",
+      "level": 0
+    },
+    {
+      "file": "tests/pre_r/test_response_boundary.py",
+      "import": "experimental.response_boundary.core",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_constraints.py",
+      "import": "swi_v2.s9.constraints",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_evaluator.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_evaluator.py",
+      "import": "swi_v2.s9.evaluator",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_evidence.py",
+      "import": "swi_v2.s9.evidence",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_inventory.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_inventory.py",
+      "import": "swi_v2.s9.inventory",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_manifest.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/s9/test_manifest.py",
+      "import": "swi_v2.s9.manifest",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_package.py",
+      "import": "__future__",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_package.py",
+      "import": "pathlib",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_package.py",
+      "import": "pytest"
+    },
+    {
+      "file": "tests/s9/test_package.py",
+      "import": "swi_v2.s9.package",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_reconciliation.py",
+      "import": "swi_v2.s9.reconciliation",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_replay.py",
+      "import": "swi_v2.s9.evaluator",
+      "level": 0
+    },
+    {
+      "file": "tests/s9/test_replay.py",
+      "import": "swi_v2.s9.replay",
+      "level": 0
+    }
+  ],
+  "inspection_failures": 5,
+  "inventory_count": 376,
+  "nodes": [
+    {
+      "path": ".github/workflows/law_adversarial.yml",
+      "sha256": "dd220977e5b3ffdff2387c426ddf1eb96e037a97440d21d909a2b1f8faf7aee5",
+      "size": 1925,
+      "status": "INSPECTED",
+      "type": ".yml"
+    },
+    {
+      "path": ".github/workflows/pre_r_boundary.yml",
+      "sha256": "a8e2934d6a5f8bae65559b8830e56f29d44ba19a82c13673d116aa6e01079f8e",
+      "size": 578,
+      "status": "INSPECTED",
+      "type": ".yml"
+    },
+    {
+      "path": ".github/workflows/swi_v2_ci.yml",
+      "sha256": "12180d046d6d356f77feac0de23357dcd9033facf9e19a6ad8a2b9d6b322bd32",
+      "size": 2098,
+      "status": "INSPECTED",
+      "type": ".yml"
+    },
+    {
+      "path": ".github/workflows/two_checkout_travel.yml",
+      "sha256": "1ee7eaddc40b1ca44a41c67dc0d2397b155fc2fac27bd38b532946fd3838fedd",
+      "size": 3809,
+      "status": "INSPECTED",
+      "type": ".yml"
+    },
+    {
+      "path": "AUTHORS_AND_LEGACY.md",
+      "sha256": "76a32052f2a2fdcb026a35d35f36a0decdbac8e02a534352645211ab52f74ba9",
+      "size": 2695,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "51f01ec69e929d8639e5d0a8d868b0f0eb2c095161f2c99f90405ca54d8e3f04",
+      "size": 2312,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "4e781d33d725adbe293b258fa7fbcdd62651f798c129c67f0c08c02b8cd9b18d",
+      "size": 11336,
+      "status": "INSPECTED",
+      "type": ""
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "947ff5cc595ce2bf2994a63d80b964b3419203b35cce509abd65e3e5cc221470",
+      "size": 1511,
+      "status": "INSPECTED",
+      "type": ""
+    },
+    {
+      "path": "README.md",
+      "sha256": "0358df2f8159b973d1cb5d6af98def5da97ecd6e42ef4df1a561cd2e057f1c87",
+      "size": 1638,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "04a44166cb353cc6d262da904f704a446e43808b911f6767bcd3e6c7f28bf322",
+      "size": 1027,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "config/swi_v2_config.yaml",
+      "sha256": "369eda3780d5814109c418b28b1a63ecd34afa406c4bcb6d222655cd12739784",
+      "size": 401,
+      "status": "INSPECTED",
+      "type": ".yaml"
+    },
+    {
+      "path": "docs/00_READ_ME_FIRST.md",
+      "sha256": "9f76d0409c31f4f3d2f38c80952b5ac52b51fa991f0959eba2b9a9a3dafb705a",
+      "size": 355,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/ADMISSION_CONTRACT.md",
+      "sha256": "79ab29c448e5e655fd39bb1868a90a892d0debd58db41b432041088b70d9d66d",
+      "size": 231,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/AUTHORITY_BOUNDARY_CI_RECORD.md",
+      "sha256": "2a6b5deefe171c48568a5598adec1cfa1afe8b25d4351807cef2fbb80ff97b27",
+      "size": 1841,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/AUTHORITY_BOUNDARY_MODEL.md",
+      "sha256": "c76765ca0bdca2fe86e12ef318eaffa8090a9a89f006323830a4cf9797577a56",
+      "size": 3098,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CANONICALIZATION_SPEC.md",
+      "sha256": "6461edb3162d9bfc8912389656051771640134eae27273f2bff861492f106dbb",
+      "size": 537,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CEK_GEOMETRY_CONTRACT.md",
+      "sha256": "8e39b3d9554e6e8f6007cb2b14c18aefabc028e0d45b1234a12550740b57330b",
+      "size": 3628,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CEK_GODSEYE_FLOW_OBSERVABILITY.md",
+      "sha256": "cd34e749b2b5222972f104398291f48e237e3fa459880e857f7527bc97881411",
+      "size": 9623,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CLAIM_LEDGER_M11.md",
+      "sha256": "2b8dd3eca7adffc0b67aa32d2ab31c27bfd3035109d4062d1468d79fed8fe438",
+      "size": 1210,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/COLLABORATION_MIGRATION_RECORD.md",
+      "sha256": "1d019f34c2609b2fad2becbc7534d6f312ab3d5eaaec56ac7894190046d06368",
+      "size": 1830,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CONTROLLED_CLOSING_M11_SEAL_M12_EXECUTION_MANUAL.md",
+      "sha256": "447bb2251940cad23afb0c923135ae248b386a03bbac48318e7f0d15923562c5",
+      "size": 1642,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CONTROLLED_EXECUTION_AND_SEALING_MANUAL.md",
+      "sha256": "fcd576def03e2d2173f400e1a4ca4fbe4066baaad5729e709c028bef93ba5c3a",
+      "size": 14388,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CONTROLLED_EXECUTION_M11_TO_M14_MANUAL.md",
+      "sha256": "b706383f230877c49d3b6909c6019c64780abc5234ff699f105955f25a0de3d1",
+      "size": 22966,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CONTROLLED_MODULE_DEVELOPMENT_AND_SEALING_MANUAL.md",
+      "sha256": "e447560bd525d548dbbc62238f3e2a5a378964137e7fba03103344cf664d5306",
+      "size": 26407,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CONTROLLED_MODULE_MANUAL_SCHEMA_v1.md",
+      "sha256": "77f3fdbc290e1f130aec92244857167cdcb1ddae2d145c33e20e4e673b546b96",
+      "size": 3662,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CROSS_REPOSITORY_TRUST_INTEGRATION.md",
+      "sha256": "71a65264bb5c4b72185c4b3f07537e530d17f8657dc72067fa8cd93ba0869b35",
+      "size": 1436,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CROSS_REPOSITORY_TRUST_SPECIFICATION.md",
+      "sha256": "0337cecb2aaf507b0333f2884c5d05e0a0c5f57b13369d33d3aa781f3fcefb78",
+      "size": 478,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CROSS_REPO_MECHANISM_CORRECTION_GUIDE.md",
+      "sha256": "1cbb32293211a586290a3926c057851d2df1d31302757be902cee0956c41b09c",
+      "size": 10335,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CROSS_REPO_TRAVEL.md",
+      "sha256": "69c94f48c2e7633d1ce52856732e2064af69382d71389028d80d858d310095cd",
+      "size": 1383,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CURRENT_POSITION.md",
+      "sha256": "2c0e3b4846ac583da887aa482d47ad615c1901e5b30b2777d9072907e0f7798b",
+      "size": 1097,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/CURRENT_TIP_AUDIT_AND_EVIDENCE_RECONCILIATION_MANUAL.md",
+      "sha256": "0d95658dbefc50e309f1eac85c9fb5e152d990774e98fa7c525e042c03ccee4f",
+      "size": 17706,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/DOCUMENT_DISCIPLINE_AND_CONFIDENTIALITY.md",
+      "sha256": "e244d23c8659d6e5dba46e094c71ae978229ef7757e09d709dca3bed7b9ae571",
+      "size": 1929,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/ED25519_SIGNATURE_PRIMITIVE.md",
+      "sha256": "cac5d57164ba0e6fd54783a6e873a47856f93f1000d015fc319f1669bdab93a3",
+      "size": 532,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/EVIDENCE_FRESHNESS_STATUS_2026-09-23.md",
+      "sha256": "ab5681df1094ea4246a756d03ecfc7f8c1d9557214956efcf4a5b1625a0ae2c5",
+      "size": 5483,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/EVIDENCE_MODEL.md",
+      "sha256": "fa9256c86f3d558b9c950626840c60ff086ada23bd138451bc4c3d1ae1fb0974",
+      "size": 304,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/FAILURE_SEMANTICS.md",
+      "sha256": "cd119b9dc921789d3bffd83b9570afce3e408bd33bce04d84131c59a5a8e19f3",
+      "size": 271,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/FOUNDATION_BRIDGE_AND_SEAL5_REMEDIATION_MANUAL.md",
+      "sha256": "9e92a1083954525a1afdafa385d8904e98faf9e6fd940b71133d66c95caa195e",
+      "size": 891,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/G1_BASELINE_RECONCILIATION_2026-09-22.md",
+      "sha256": "53207801a017bc916bc430d3a652680b7904d266b12ce0d5493a962ce8561b32",
+      "size": 5038,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/GOVERNANCE_LOCK.md",
+      "sha256": "53734c57be6de8f1e67b1694ce586248bade0a5d46fe8732872a233ec62a6c3c",
+      "size": 1025,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/HISTORICAL_CLAIM_VERIFIER.md",
+      "sha256": "4166263a680820852264ecae04dc7665e05a68e733b999438d3c1bbff500bc18",
+      "size": 3998,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/INTEGRATION_MATRIX.md",
+      "sha256": "9787aebba6b83e59eb261ebd24284333dfeada80e0320f2e709f8e014e0a54dd",
+      "size": 136,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/KERNEL_SPECIFICATION.md",
+      "sha256": "5fb75c3687795d1fdf1c56f35cd8faffa72ed23280be5b2eb2c6a26f2d696514",
+      "size": 579,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/KNOWN_LIMITATIONS.md",
+      "sha256": "aa4b61b266e375873c6a535fa8f20cd1b1f1242dd6556b8c374f6fcb6429fbfe",
+      "size": 877,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LAW_AUTHORITY_BOUNDARY.md",
+      "sha256": "d8761d621c24fa611bf81890edae21cf4164dc44f10d4085884f70b83fe13e0e",
+      "size": 696,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LAW_INGESTION_ARCHITECTURE.md",
+      "sha256": "4715997771d388bdc835206851d24f4746a9dbe86836f58738e68e0cc1c4b7ec",
+      "size": 1458,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LAW_INTEGRITY_MODEL.md",
+      "sha256": "05fd4d18461a7aa5613b485f0d8d6279792542e6c4c5a8948922c6ebb94a1c4c",
+      "size": 489,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LAW_POLICY_MAPPING.md",
+      "sha256": "88b3de9cf7ad698f0d20c3d6fc962286033fd921c75ce025ca8d36292e514ba3",
+      "size": 520,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LAW_TRUTH_CEK_GEO_RUNTIME.md",
+      "sha256": "35e0dd012b61217fb4f38f71e9a8807e655fc402321955e031e70638e88ae5ee",
+      "size": 6118,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/LIVE_DEMONSTRATION_NOTE.md",
+      "sha256": "2eeefecaedc4e102ec1f06c93d0c6726a03af1b969cc4f77f82e468031f020b7",
+      "size": 1168,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_AUDIT_BASELINE_FREEZE.md",
+      "sha256": "79aec9f6d0da9761e3ef779a7f601a6e61677a9f5472d76c7841ad89c436d80c",
+      "size": 957,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_AUDIT_SUMMARY.json",
+      "sha256": "fa07bbac00f6a6d92c56302b86547e0fa9b43a356250680131ada048855cef81",
+      "size": 1461,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/M11_CLOSURE_CHECKLIST.md",
+      "sha256": "24a83976f446c8d1de633a5c4fd4a2ac4963af3b35524984c2da94ec1a296fc3",
+      "size": 901,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_CLOSURE_PROGRESS_2026-09-16.md",
+      "sha256": "329cf699de3c6f94ec2f0b43b88bc8e3fd04614aebdf5077fe421b87fe6fb7d1",
+      "size": 1283,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_CLOSURE_PROGRESS_2026-09-17.md",
+      "sha256": "a9df848659ab081d36d3217c718de1ebc9da2295e979e398495b6214470ae49a",
+      "size": 479,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_CRYPTOGRAPHIC_SEAL_ARCHITECT_MANUAL.md",
+      "sha256": "1df9b58f7f1bd63e91409d49429a24a4fae67d47eb2c13a52eb35495469ed65f",
+      "size": 1999,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_CRYPTOGRAPHIC_SEAL_IMPLEMENTATION_AND_VERIFICATION_MANUAL.md",
+      "sha256": "365986a7e8a20d1fce632062d47648dcbb353370d0730e3dbc80f731be70ae88",
+      "size": 1970,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_CRYPTO_THREAT_MATRIX.md",
+      "sha256": "377d4072120730608c55d7ba05a5a0565ff0d29eb9653d57a1c411d42ddaa761",
+      "size": 1048,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_EVIDENCE_COLLECTION_AND_SEAL_VERIFICATION.md",
+      "sha256": "2e498110a73601b13c6c5ff4b65c011f96932e1cdbce62c87826e73589aaf4c3",
+      "size": 2852,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_FINAL_AUDIT_ADVERSARIAL_SEAL_MANUAL.md",
+      "sha256": "a070b8e5436e1fbd23e6f17256808518df5e877620608c3c33a292bccbcbeb48",
+      "size": 5861,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_FINAL_AUDIT_AND_SEAL_MANUAL.md",
+      "sha256": "5ad5666aa06e504512aa33dd757d38f8de9bfdad50ac8126455ffdfbd21fcb28",
+      "size": 717,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_FINAL_AUDIT_REPORT.md",
+      "sha256": "7ea1319d280fb4526a2ba5b91dbec94e895ad0939010a7bd8f86e2070b8a6c18",
+      "size": 4018,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_SEAL_AUDIT_WORKSHEET.md",
+      "sha256": "c32027a822383743743dd0ccbcf9bfa321ca6e32196943d9425811d74779ab4b",
+      "size": 8024,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_SEAL_RECORD.md",
+      "sha256": "ebfec16dd5bbd3721f6de9d4d78c2fe07e90c7f6980c7750b8b3e63c8e89c70f",
+      "size": 2760,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M11_TIP_FREEZE.md",
+      "sha256": "24715f381f5c2c84667a4706620bf42727c829702f79359a07d693844e39e14e",
+      "size": 1123,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M12_CONTRACT.md",
+      "sha256": "b393332f51c040728d729183646e1f19e351d812533a8286896fa213d7076c9f",
+      "size": 5919,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/M12_IMPLEMENTATION_MANUAL.md",
+      "sha256": "a28e27fe13ee25e03bf4ae1d00547a8a46be340c875281fff284ff48d97f7767",
+      "size": 896,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/MODULES_12_22_SPECIFICATION.md",
+      "sha256": "de54e19b5a622a3e1a59ce26bb50c57a31b09fed992f965d94b2cf656dc7be5f",
+      "size": 828,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/MODULE_AUTHORITY_BOUNDARY.md",
+      "sha256": "8cc6b134e75b8649b2dd59e97e2f080b156be451c7f46ac460e91e877b20aa1c",
+      "size": 866,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/MODULE_STATUS.md",
+      "sha256": "0bb602a8b62e40771877cc8000d10a337855e917b30c477be3db76ba398fb457",
+      "size": 1319,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/NEXT_STAGE_EXECUTION_GUIDE.md",
+      "sha256": "ef07f3fb928ae367850582766356f289ecc7ad107d8f4c2068081eff1cca2e5b",
+      "size": 6496,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/NEXT_STAGE_EXECUTION_MANUAL.md",
+      "sha256": "cf20db35dd1f9bc672d4ab78b4157ea28aa8d70f0c904239ebf2d8d0f8da5f9d",
+      "size": 10246,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/PRE_R_IMPLEMENTATION_STATUS.md",
+      "sha256": "55e3a83f3efb1124892e51d3f2d361b7e200b2cc1f4aee0f939c5f4e79b9630a",
+      "size": 460,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/REGRESSION_RECORD_2026-09-19.md",
+      "sha256": "95cef9a35574ba08c573d4cec64302b0fe167ef01af239616a75dc0d4b48fad6",
+      "size": 1252,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/RELEASE_GATE.md",
+      "sha256": "6f566ff812f3b211df6bb9b5ab8fb43f5d4cb4e4247438962bbc4706e28e0f63",
+      "size": 293,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "sha256": "1b914f7d2625a73361bf72fb985275442f455e89e63d95c87e83cccbfcfcd77a",
+      "size": 1089,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_ADAPTER_CONTRACT.md",
+      "sha256": "9d1c7043250cb2de916652291496744a138b473e8915784056bc330fd74e4813",
+      "size": 8163,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_ADAPTER_TEST_SPEC.md",
+      "sha256": "45c4c5c963d9905397800019f6c546674e81b8800be8fc16f3f60e0d57972706",
+      "size": 6907,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_BUILD_MANUAL.md",
+      "sha256": "9548985c4b2dbe1b90e63a16a06e14d67dffff623f14b34c3718568a6279b299",
+      "size": 8649,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_CONSUME_REFUSE_CONTRACT.md",
+      "sha256": "b21b2fc73f1b5ec88de4830fbd8077548de927f2350fe37723bcf6378c58d963",
+      "size": 7524,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_CONTRACT_AUDIT.md",
+      "sha256": "0554c554f6c133b35fc8c4b99f6b2e8b1cd3924dbd0a84ca0d7e7a9de13996a2",
+      "size": 7531,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_FIELD_CONTRACT.md",
+      "sha256": "c17e789e45073f13c718dadc58ecbb6eaa23666f56818445b59f8378151cd585",
+      "size": 1542,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_IMPLEMENTATION_AUTHORIZATION.md",
+      "sha256": "134e218b28b8d9a4bfd1d5fdc9b1cdec19396a31f7ece52909303e1828538bcd",
+      "size": 517,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_INDEX.md",
+      "sha256": "7b14fc745fedbeaa7254937fcd49a94a5baadac79cfb30a8daffdf10528f16d5",
+      "size": 1192,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_POLICY_RESOLUTION.md",
+      "sha256": "67549838f6d76ea8b5791f9b787da97ac1c0849ccb452c0054e5c83eef42d8da",
+      "size": 7111,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SCAR_FIREFLY_TEACHING_MANUAL.md",
+      "sha256": "c56b24be8b2c0008f787b4f162d9eb6768c2c22154a6220890cbe0c0a48d133e",
+      "size": 6593,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SECURITY_BOUNDARY.md",
+      "sha256": "6086c93f1e96922a1e33840d828a3c4fb9c57c12c5c6b4685e01c78c51829e70",
+      "size": 195,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SPARSE_MERKLE_AND_COMPACT_PROOFS.md",
+      "sha256": "087aac63c094e928d90cfff11532e13189d03e0ca173a1eed8efd8d5d98375af",
+      "size": 727,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SPIDER_WEB_REBORN_MANUAL.md",
+      "sha256": "418f54e1c6d3dc272ad1f422e3ac79f925a9582abf8d1339e080daa9e3e47cd2",
+      "size": 25137,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/STRUCTURAL_DEMONSTRATION_BOUNDARY.md",
+      "sha256": "35e7791938e4b41b391d92afdf7d6712ae3924c490169a2b36714da377305db2",
+      "size": 3219,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_BIDIRECTIONAL_RETURN_ADVERSARIAL_ACCEPTANCE.md",
+      "sha256": "4b9e77825beb22e5fd6ec11084cc31ac23aba2bb12d6bb24b42af00050c11798",
+      "size": 1606,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_BIDIRECTIONAL_RETURN_PATH_STATUS.md",
+      "sha256": "a0eb122b763ca9ba47b4a2daf8d051a451fbdb0a8b7fb1a1c7980c41cd01cd81",
+      "size": 624,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_BIDIRECTIONAL_VERIFIED_RETURN_PATH_BUILD_MANUAL.md",
+      "sha256": "2af79c9c9ec3e30a53fd19ecfeb7fb3ae6dc4d235f7e021dd8540ed5cd552bc8",
+      "size": 7249,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_COMPLETE_FIX_MANUAL_2026-09-23.md",
+      "sha256": "53def694ba86bd4668c4a3c677dd6c60ebc72f27daf066e346b134cdf8bb09fb",
+      "size": 10984,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_CONTROLLED_SEQUENCE_MANUAL.md",
+      "sha256": "9f04775e255b311f39a9b47fc86635d75cdbf19d9982b56dafd1a8813b7bf5ad",
+      "size": 5693,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_DISTRIBUTED_NODE_ISOLATION_AND_REBUILD_MANUAL.md",
+      "sha256": "9205b9624275a3ce0328b76057b2a7379540810367403c7bab04735f254ae06d",
+      "size": 21936,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_FOUNDATION_CORE_MANUAL.md",
+      "sha256": "234e9c89da1a37a055bca53e29608018dd523fd87ffd81fcbbb49dacfad50a8c",
+      "size": 11734,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_MODULE_LIFECYCLE_MANUAL.md",
+      "sha256": "67b1b880ba531222dc2116773ef76711c0c3ea0e72372a36caad5d2d8703e430",
+      "size": 1868,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_MODULE_SEALING_AND_REPRODUCIBLE_VERIFICATION_MANUAL.md",
+      "sha256": "11134e52ae302ff1250e3965c3cec535ce8db3ed6cf3e7581f38701b727bb645",
+      "size": 9123,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_NON_EXECUTION_FOUNDATION_STATUS_2026-09-23.md",
+      "sha256": "0d7e7e821ea60543c33e7727e040cb66b6ee03caacbbba5215de28bbdfb0a6c1",
+      "size": 7448,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_PRE_NAME_MAP.md",
+      "sha256": "902908a2d79d67d9def30bcae38b2295c2c786000f9d79909b5344685b829714",
+      "size": 2159,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_RESPONSE_ENVELOPE_FIELD_REVIEW.md",
+      "sha256": "b8187f965c6e1d217009f4f30290f04de12d94bcaf52760eb349fb8b68666df0",
+      "size": 1127,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_RETURN_PATH_IMPLEMENTATION_AUTHORIZATION.md",
+      "sha256": "40f98f45dcbadb95ee1974289ebe1c35edb97e5e0a599d935875d14612f262bb",
+      "size": 208,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_RETURN_PATH_INVARIANTS_MATRIX.md",
+      "sha256": "11c91bee3e2b2653e99e0eff0fbd49abe3aa856c8d004594b32f4a5d98742aeb",
+      "size": 2257,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_TEACHING_GUIDE_MEMORY_BOUNDARY_AUDIT.md",
+      "sha256": "cfdbaebcefa7869e394470d226bb711ec05b723b8ffaf7f33131a53b182f2f01",
+      "size": 8784,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_TRUST_SEQUENCE.md",
+      "sha256": "f270de47ae12a0887a4f770c25a384fc85e94a702bec669e14bec0136ce87845",
+      "size": 800,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/SWI_V2_CONTINUATION_DISTRIBUTED_NODE_AUTHORIZATION.md",
+      "sha256": "5c3a6b1d9571bb6855fd228eacf2612baf45116b246e612237c4f16ac378a980",
+      "size": 13917,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/TEST_RUN_RECORD_2026-09-19_FULL.md",
+      "sha256": "a5ca53a5a095e6ab128d4571de2d8eaa1a7d0dfb765892f86e344a0abc937080",
+      "size": 871,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/TRUTH_ASSUMPTION_LEDGER.md",
+      "sha256": "141f085da108e4d0c63c34333d6da95f402016bd7fae3b281a59bdd10936568c",
+      "size": 1800,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/TWO_CHECKOUT_CI_STATUS.md",
+      "sha256": "c514fc7064ce5588c4579c5750fc753b625b215c3aaec749f95068e94afb01d5",
+      "size": 3378,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/TWO_CHECKOUT_CI_TEST_PLAN.md",
+      "sha256": "97c8b71546c311be644ccb286629dbf9986ed35674a113fac1bdf4c622f3964a",
+      "size": 808,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/UNIFORM_PATH_LOCK_8X_PROTOCOL.md",
+      "sha256": "95d4cd3c22511c5ecfd32ba852bb9d47714e55a64d508a20aa0471783fe68b43",
+      "size": 7028,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/UPGRADE_AND_PROGRESSIVE_INTEGRATION_MANUAL.md",
+      "sha256": "a483bbb723d560c1daea8b98e6ca8e68e85d89ccfebc2feef316fb182e944743",
+      "size": 932,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V1_FOUNDATION_CONTRACT.md",
+      "sha256": "9047562a599d69ae06240f610443d9d342b5568ffc8584177fa6af518beb0861",
+      "size": 787,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V1_V2_FORENSIC_STAGES_2_31_COMPLETION.md",
+      "sha256": "aa477870db9b49e3e86cad6e60c099a8ed6a2b1cf70dc689a7e343b23d709a0e",
+      "size": 3607,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V2_ARCHITECTURE.md",
+      "sha256": "246648b5d36491ef9eb124c2abf489cf366117bbd263672858b213085b26614d",
+      "size": 422,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V2_CLOSING_AND_M11_SEAL_MANUAL.md",
+      "sha256": "fdbcfa402db87f474895e1a3a41f288848eb6a35c9170568e9a257d536cd250f",
+      "size": 2923,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V2_CLOSING_EXECUTION_MANUAL.md",
+      "sha256": "f137d0f5284f79e0f831b5383087275d42b8a02c512bc58dc056b49d3a28a3eb",
+      "size": 1291,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V2_MEMORY_WEB_STATUS.md",
+      "sha256": "83345618fd3906d029f9fe8b341b913ea7a29c144b98464e5d1f56597c3374f4",
+      "size": 2820,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V2_REPAIR_LOG.md",
+      "sha256": "38473e828248efe315df9039ca9052c4b1aa2bd04a557fc1bd1a807d6649b0b9",
+      "size": 1523,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_CLAIM_LEDGER.md",
+      "sha256": "7da295f3447d9d5b0ab215ff89f405dde7b92ec5967650a32538b188927629af",
+      "size": 2506,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_CLAIM_OPERATION_REGISTRY.md",
+      "sha256": "9ed6ad159eb7c76caf6102773a9418b0b301f099edffbaa53857204c46bffbdc",
+      "size": 1690,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_CLAIM_TO_OPERATION.md",
+      "sha256": "e4addc7e14343a44c188dbef3904292d02f82a34f05bd17d148d8b718162f45f",
+      "size": 750,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_GATE_FREEZE.md",
+      "sha256": "20a715a506c26695d85321d8bd7167dd2122602661d2b106a57b3e70d780afb4",
+      "size": 1332,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_M11_PROPERTY_MAP.json",
+      "sha256": "e32a027ea04c04c8ad56c2e5aca747c1c90d5b7966e79d43c84f1f4019d45ddb",
+      "size": 1985,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/V47_MODULE_RECONCILIATION.md",
+      "sha256": "72c2fbc8b86b1cafb86fa78319c5299a53f28fdf2beb430cfe3815d8f3abec2f",
+      "size": 3384,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_VERIFICATION_STATUS.md",
+      "sha256": "da2eae76b5f2bb14dfae39fa48eecdaf54c348eeb52a3ca4554ed22674652e61",
+      "size": 2671,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_VERIFIER_HARDENING.md",
+      "sha256": "180738c8ee30c7d6c53dd2b30290930119f59e434f75d41312eea89f65cd2f39",
+      "size": 992,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/V47_VERIFIER_PASS1.md",
+      "sha256": "41a3c963465e81bc59f0a365a9d5cca58f21ff54bcead01ffb746dd3039bde4c",
+      "size": 879,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/VOLUME2_MODULES_11_15_GUIDE_NOTE.md",
+      "sha256": "da7eb96431a2f5dd3d0cd06d71f7c7de4427a478e07aee7e470d47b29c824ef3",
+      "size": 2184,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/WP01_CLASSIFICATION_CLOSURE_2026-09-24.md",
+      "sha256": "329ef8fa8ed3641a606c0c421b67344e185b5ca01c0fe04a91d1209b34d932de",
+      "size": 1536,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/WP01_SOURCE_TIP_LOCATION_2026-09-24.md",
+      "sha256": "1824bdc6fcacbd6c9d549b300788d1184f8601a37b720ee9b8891db0c4c01d45",
+      "size": 5460,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/WP02_EVIDENCE_INHERITANCE_MATRIX_2026-09-24.md",
+      "sha256": "cebb8e6cf0cda199024fa0bc1c5cf1ca99ce45578e801309e2b17d6ac247ac3d",
+      "size": 4597,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/WRITE_ACCESS_TEST.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/adversarial/ATM_COVERAGE_MAP.md",
+      "sha256": "b0321b9f5a0d705a94a9992ca4068f330ad4647ac3cce4e8a3a8a60446c44416",
+      "size": 4036,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/adversarial/SWI-ATM-001.md",
+      "sha256": "216cd2f137bfc48993bf2ab7e428a391387ac5d6ed7c33ec8b8136773389312f",
+      "size": 3062,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/contracts/M11_OPERATIONAL_CONTRACT.json",
+      "sha256": "ce8013e260f705c25eae74a33754ea832a8e0fca12ac26ca474a15ce793a673b",
+      "size": 2256,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/design/MULTI_AGENT_SCHEMA_DRAFT_REVIEW.md",
+      "sha256": "e79bdae566ecf11bab729d9aacd5cf4fff00e45fa8218dc4dbf0e6f71588f98c",
+      "size": 6350,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/design/README.md",
+      "sha256": "a04f1a5bf60809999eacf129ca8ebcb9a01f0b90d10fa015e3818bd550a9502c",
+      "size": 348,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/design/SWI_V103_API_FOUNDATION_POSITION.md",
+      "sha256": "1504fc4e66ad95d5d5156774e4d15a7914fbe1b1c2d679aff732e63f992cbc9f",
+      "size": 853,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/evidence/foundation_evidence.json",
+      "sha256": "550eb1c59ff84d185a8673f765c280847b8a2c66b709bb147b552237b7d6a8d4",
+      "size": 695,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR.md",
+      "sha256": "0826e0cf9fd4582c9c54edfc848a54b4dd3f53fc739f195c4fe09f20421b7e67",
+      "size": 3654,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_G17_G19.md",
+      "sha256": "f74d1752c54d86ff82576b6e8fd30c59ae413242c7ccbf574a65d34a1041c9d0",
+      "size": 1291,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_LEDGER.json",
+      "sha256": "c42bc1ce22f801f5b9791267cc95ec887a2556d70614ff94d7848ed6e09b6102",
+      "size": 1934,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STAGE1.md",
+      "sha256": "bf398711e3423071ed1508a1bc61263cdde89aaa77b434ba93da63c0b3e78f29",
+      "size": 2860,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STAGE2.md",
+      "sha256": "a1811e90f4564645f4c3d4619377ace736d9e97581cd829cf6088ab6c08a2d3b",
+      "size": 1669,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STAGE3.md",
+      "sha256": "185bcd411ed6f01589b38050608dcb795679d2151f1092a1a40de18d88115ade",
+      "size": 2609,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STAGE3_4_EVIDENCE.md",
+      "sha256": "845366ddd2d621ddfc237bed44ce27e1bec63d59d2d6f93584d533992e205253",
+      "size": 688,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STAGE4.md",
+      "sha256": "fe281905eb1c3b42d8d8066b5539be069ad43d09bfba2a80f9d2ae563ea22d1e",
+      "size": 1815,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_STATUS.md",
+      "sha256": "7bff5f189c6a40e5e8593c2bfb752fc973a6f905533491e601e707754a8dc5a3",
+      "size": 2177,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/experimental/CEK_ALIGNMENT_MONITOR_TEST_RESULTS.json",
+      "sha256": "79757971ac2fdba081da1b5035fe068b5631cbb277be687e2eaa8bdf34c81028",
+      "size": 1056,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "docs/formal/S9_360_PHASE_OBLIGATION_BINDING.md",
+      "sha256": "e9363a275305027122ee1f1cf5e682337742fc3c4bbd50d80f18ec73a319e4e1",
+      "size": 7509,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/formal/S9_MATHEMATICAL_ATTACK_2026-09-24.md",
+      "sha256": "f49eac75682d0b5dd26312a0dbd8567ec057130d6b5912bd274480a1506d15c1",
+      "size": 8766,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/formal/S9_ZIP_PROOF_PACKAGE_MANUAL.md",
+      "sha256": "8caef2e7c22461e922873f43942e7a5e04c9e47fd55011621e0801f28b6e53a6",
+      "size": 1036,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/formal/school/NORMATIVE_RULES.md",
+      "sha256": "f6e8178a839ac11632368d260c878bf987ddd599427d3f30d0ee285259d14879",
+      "size": 9232,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/FAIL_CLOSED_FAIL_SAFE_REBUILD_MANUAL.md",
+      "sha256": "8fc6e95e83615e882d7804fb984a3e96efb037895cdf89bb0a570a0e93175d3c",
+      "size": 4188,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/IMPLEMENTATION_AUTHORIZATION.md",
+      "sha256": "7c55035b96a63ebfa082c29309f47e6d9152334c161d09568235a9dd2ab666cb",
+      "size": 465,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LAW_INGESTION_STATUS.md",
+      "sha256": "f27fdfb52d34f7bed9a946fc253edae762bb3d70f544381f9236865a905d5f17",
+      "size": 3000,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LAW_TRUTH_AUDIT_CHECKLIST.md",
+      "sha256": "f8fdb55aa8a8eb1be66181bec45cbe5c3f23a2e652357ef409ac0f0849ad0cdb",
+      "size": 1236,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LAW_TRUTH_EVIDENCE_RECORD.md",
+      "sha256": "05cb66a5c3a8cfd33f91f45d9f022e6e4356dc85a5f2c3fa4e6bb3f18d0d5b71",
+      "size": 1949,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LAW_TRUTH_LIMITATIONS.md",
+      "sha256": "80c002aa372d59c3267b312a369b44f31bb2c9b9ccbc900b6383b38516dbb72f",
+      "size": 972,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LAW_TRUTH_PHASE.md",
+      "sha256": "7f10bfeed2e08d1f383e9ff95cae4ff7ea033f80c2664eba86cd0925a1e8a152",
+      "size": 2523,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/LIMITATIONS.md",
+      "sha256": "86705429d36e7ef8d7ddb40ef4b049cb2d24723312ff3e093d86ae952fe8cc75",
+      "size": 1876,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/NEXT_STAGE_BUILD_SEQUENCE.md",
+      "sha256": "6dbabab629230aa7a75e03d47da89f13c27a4bb2843fc48e2f057fe125afc64c",
+      "size": 494,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PR009_DIAGNOSTIC_EVIDENCE_2026-09-21.md",
+      "sha256": "d0267027145bacde614a429cc959a500808fcfc5952bd8600b3ef9661410a6c7",
+      "size": 1912,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PR009_ENFORCEMENT.md",
+      "sha256": "e914c2e4a0320cf9a4e6aaa7ce573478ab40db282a55019c1db5c62dd1d98fee",
+      "size": 1831,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PRE_CONSEQUENCES_SURFACE_SEPARATION.md",
+      "sha256": "49ff7fd6cd134e882effc19884d19ec0f6b9cb380142fc05aeb684f1a5ab6b79",
+      "size": 2936,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PRE_MODULE_REGISTRY.md",
+      "sha256": "cb867438c2ef2759a938a0d25a6b95befbc52d9b2b2567aa034a26a3780b95dc",
+      "size": 1454,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PRE_R_REPAIR_RECORD.md",
+      "sha256": "b4fae731549d29d8134cf24d9a7b013035867cba1f2f21f3e3c4d9afea084e8e",
+      "size": 1150,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/PROMOTION_CRITERIA.md",
+      "sha256": "d910140090346b44ceb8336ae1fa93eac2f6c475960e115249e56f81878d3d64",
+      "size": 583,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/README.md",
+      "sha256": "1b5c61c3e0f8bc048be3b26a71c2d93c9ae4e35cba2efede8df822cb34f291f3",
+      "size": 1537,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/RESPONSE_BOUNDARY_REPAIR_AND_VERIFICATION_MANUAL.md",
+      "sha256": "3d07fbccce31e071b6b20321442a9b2bd3d1d2135afa1261ebf4da39ec1ef77a",
+      "size": 2737,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/RETURN_BOUNDARY_SPEC.md",
+      "sha256": "2a1dfbfd5539aef4ea6321186e461857fadad4028707b25b2fdc66bbfd51457a",
+      "size": 3103,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/TECHNICAL_DIAGNOSTIC_AND_NEXT_PHASE_MANUAL.md",
+      "sha256": "e64c30cb05316823eceb2e3110d907d4a2abf161345dd596b8e173a57f9ac7ed",
+      "size": 14092,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/TEST_COVERAGE_FAIL_CLOSED_FAIL_SAFE.md",
+      "sha256": "e0d4394584db88def18bb420ba9971cd00040586ad7a7747dff53de718b0ce76",
+      "size": 585,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/pre-R/TEST_MATRIX.md",
+      "sha256": "606b724397fea30dfc08c36b2c987684b9b9246b30160d4603108f7fb91bf2fb",
+      "size": 1569,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/repair/SWI_REPAIR_CHECKLIST.md",
+      "sha256": "fb5ca3694b8ff751b489ea69ac17842c7726a6efae2f2abff67f90b0824b05f1",
+      "size": 4215,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/BINDING_CONTRACT.md",
+      "sha256": "75389fcb8fdbe8dd29745c61c1e92c254264fe41f85a9d7646fc907c8a7d0f49",
+      "size": 2193,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/CLAIM_EVIDENCE_LEDGER.md",
+      "sha256": "2e483fb26f0fa7802e44359064177af718348fca3bb430178141e9b163137265",
+      "size": 3159,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/CLOSURE_BASELINE_2026-09-24.md",
+      "sha256": "e3ad1774b0f3abc2dc8156d06675e2eb4ee7554ccf806e31a36d7eab2c6f6507",
+      "size": 4276,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/COMPLETE_CLOSURE_PROGRAMME.md",
+      "sha256": "29fcbb418b2925ebb8bc727e8d344d9b00ad590d783f5bcbf0e6c11f0f434b44",
+      "size": 2375,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/DECISION_ENVELOPE.md",
+      "sha256": "33e32b70cc2ea7ae05955e5da591d29462ab6cc3eaadebe288831d6bf6e04686",
+      "size": 1369,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/DEPENDENCY_GRAPH_MODEL.md",
+      "sha256": "b2d9652d7d4b8e0102833731eb3037716d54fd36b3fe3b5b1801d49e69e002bb",
+      "size": 1463,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/EVIDENCE_FRESHNESS_CONTRACT.md",
+      "sha256": "5537a725f602636069e9d67f6cd8ab32d604d1f90e3d0296c7ffc7f0b2cf2b0c",
+      "size": 5869,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/FIREFLY_PRE_IMPLEMENTATION_TEST_PROTOCOL_F00_F10.md",
+      "sha256": "a354fa3e3cc45cf25cb85bed22d24a299299a3527187170a685d15bad6cbb653",
+      "size": 8823,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/HUMAN_AUTHORITY.md",
+      "sha256": "c34148c47ac3c245bb6db1191a51e68e9e564d25cb4c3dc6f3ed706c63f18c6d",
+      "size": 2923,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/MEMORY_DEFINITION_AUTHORITY_CHAIN.md",
+      "sha256": "1e66de158aac6559014b8edb0e22c2273828641331d558069248e279863e3bee",
+      "size": 3893,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/MODULE_COMPLETION_CONTRACT.md",
+      "sha256": "fafde2a02f48666efc02edb51f053391983b1ec0211d7f74456e72a3454e3587",
+      "size": 1581,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/PHASE3_RUNTIME_CLOSURE_CONTINUATION.md",
+      "sha256": "e2cf866fd8d7e857206caddc18c56b9fabab8511d75935b6741cbaa1254ba375",
+      "size": 8756,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/README.md",
+      "sha256": "52970b5f7388a699ad1f6f95d3267b34fee1439c3cf5d8a974f688c6153a600c",
+      "size": 1432,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/RUNTIME_CLOSURE_MANUAL.md",
+      "sha256": "be1446a124e11793f754244e3b4800352793aa821292353edab14ddae6c0076b",
+      "size": 10399,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/RUNTIME_ENTRY_GATE.md",
+      "sha256": "b7a95544c2ee1514ad16a83a2324c9a815c2bdc1af86ca87c96f501e25468604",
+      "size": 2199,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/RUNTIME_PATH.md",
+      "sha256": "d3c088c5d618e098aed4c34c15f417e6c178c40d116c65b91680a59ed1e3b181",
+      "size": 1594,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/RUNTIME_STATE_MACHINE.md",
+      "sha256": "a7ff9aea5f120bade59b1cd31c636c605273786b71e9601057b4d366d09574ef",
+      "size": 1109,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/runtime/SNYDER_COMPATIBILITY_MATRIX.md",
+      "sha256": "c681bc1c2ce7c579415df6a6a87845171b740c9a33995a3438e8c7f2e5fde76e",
+      "size": 1645,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "docs/security/TAMPER_AND_PRIVACY_BOUNDARY.md",
+      "sha256": "607ca61162443dcfc91c27ba661bc9262030510d9ab2b0c6e43b9d7303413b44",
+      "size": 2089,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "evidence/claim-ledger.json",
+      "sha256": "6e63f810eea1a496dc9b1b0976ce7966e99825a754ee687c47a48f4e0a4c5134",
+      "size": 16060,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "evidence/law/README.md",
+      "sha256": "736e526e7a1b4905b0d73f6e4aa06c749b8deb2404abe1ac1763bc0cd79e4096",
+      "size": 414,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "evidence/law/formal-results.json",
+      "sha256": "52d27d54423ca24b699b5106b2b32ad508d2c9d7fd80eef969ef3786bebe88fe",
+      "size": 1023,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "evidence/law/manifest.json",
+      "sha256": "fc058293f3978b9fda25beee794ea668a50d6771a9d3df704009095bc4b04947",
+      "size": 2889,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "evidence/law/replay-results.json",
+      "sha256": "0ebb879048eecf956703c72ea1d0f6299b985456761ac4361e03e91068503301",
+      "size": 730,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "evidence/law/test-results.json",
+      "sha256": "b402af1d0b29e76ea8c283918a1efc0a2495395f369378121fad2de6d46d5644",
+      "size": 425,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "evidence/pre_r/README.md",
+      "sha256": "d2e531fe00e876459a17013744485c79a3744cb1e89cf33410d346156ed43fc0",
+      "size": 1215,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "evidence/pre_r/baseline.branch",
+      "sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+      "size": 5,
+      "status": "INSPECTED",
+      "type": ".branch"
+    },
+    {
+      "path": "evidence/pre_r/baseline.pytest",
+      "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518",
+      "size": 13,
+      "status": "INSPECTED",
+      "type": ".pytest"
+    },
+    {
+      "path": "evidence/pre_r/baseline.python",
+      "sha256": "5b3e43dc38ca01e3f5a7854ba50d4330864b0c1e0f646650b2c78cf072acc366",
+      "size": 14,
+      "status": "INSPECTED",
+      "type": ".python"
+    },
+    {
+      "path": "evidence/pre_r/baseline.sha",
+      "sha256": "c723174d03fbe78238605434bd682efd0ade366dddbfc690b81b70eb6c36babc",
+      "size": 41,
+      "status": "INSPECTED",
+      "type": ".sha"
+    },
+    {
+      "path": "evidence/pre_r/baseline.timestamp",
+      "sha256": "dea0ab1a75b518f555f0e910e33e3ced9dd036ccb9db75468483849bed04d382",
+      "size": 21,
+      "status": "INSPECTED",
+      "type": ".timestamp"
+    },
+    {
+      "path": "experimental/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/__init__.py",
+      "sha256": "a49bdd8b6731368eaf74222f78a819b62dfc7941b21d30788455a3a8a105eb71",
+      "size": 1508,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/demo.py",
+      "sha256": "5a01decd37b743e3ec61424332a896253ec78ff2727eb85b45be34ec78636787",
+      "size": 3430,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/distance.py",
+      "sha256": "a93190d12fd68f9f4de569f63fd692f7860a4218d251b23fc59d42c21b976de2",
+      "size": 5784,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/findings.py",
+      "sha256": "2800f712417434957c9c09e1567298b9368ca8b609e248f8145abb2ee96a99b1",
+      "size": 3247,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/measurement.py",
+      "sha256": "f78cdc65c3f197d4a57d36ba9cf6a39d4f39ff83b63139399b686cb9c8e4ca10",
+      "size": 3522,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/monitor.py",
+      "sha256": "95d8bc95e8dc3e93436961eba879595f3ab4270997ddd3be07e1d66688d568bf",
+      "size": 5370,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/observation.py",
+      "sha256": "f310687dc3eac507f61eef380c7441850f9efccd1c58eb2081980cf6b0d3de6e",
+      "size": 5191,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/provenance.py",
+      "sha256": "2d8e95fb6d309addda6ec0040f23070a1e756d3e47fc55fc611e44bba9200283",
+      "size": 3790,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/replay.py",
+      "sha256": "fde5396b5443352c5f7c319c4a548d9adb3d6ce0f64db383143b41a8214c0824",
+      "size": 2654,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/vector.py",
+      "sha256": "9e49594bd75016d5bb68886283ddd5a21a8d58a2102b305f5d2b418257c67993",
+      "size": 4604,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/cek_alignment_monitor/visibility.py",
+      "sha256": "c494040c3aea017be556c506231ce11df30b6946e56a5d113db9dedce4e6ca2d",
+      "size": 3024,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/__init__.py",
+      "sha256": "e2cffbbb0c55e48454caf4056746f26d043b1d3292ae206f69fd618480c379a4",
+      "size": 1167,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/authority.py",
+      "sha256": "2004cb7b875e2005ebcf852ae95f975294ab8b4ac56f35d093418178b725a064",
+      "size": 1895,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/canonical.py",
+      "sha256": "6fbe364a70af8f52d40aa1197ab91c106ca38999da9aebb27daef42409e4a948",
+      "size": 1834,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/events.py",
+      "sha256": "f67a8f441b68475427bf58e19e5cd1eb580da1fdbb0ea17dbf8acc3b1a998ad5",
+      "size": 1580,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/ingest.py",
+      "sha256": "60fa7aa565c27bdd73c391247d1e190f753477d2c6c87dd203b4e7e0062239d1",
+      "size": 2111,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/integrity.py",
+      "sha256": "8aa421a397d86c9ab5167ba5a5e366a6eafec928b63752e44532117c392f6745",
+      "size": 2134,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/models.py",
+      "sha256": "9168aa025d092443fc93bbc9b9247449ccdac4b50103ae75280f42a7fbf33d64",
+      "size": 2044,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/policy.py",
+      "sha256": "654bc6e665255a309bb7ae429abac47129208ac109ed06641b9bd3814ff8f6d8",
+      "size": 542,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/registry.py",
+      "sha256": "9912082396845f51ee0a1213861b5fb0b3f42d365695e2a6149ae8f5e63a38cb",
+      "size": 6536,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/law/replay.py",
+      "sha256": "6a071d778a8cc44b110a8a9fb8b0de916f2b0874f16cb55d735f71f46a568ad1",
+      "size": 731,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/math_properties/README.md",
+      "sha256": "1e9c1d480cd4c29b00c02540e3629755192c6c9475adc766f59831385e2ed5e8",
+      "size": 837,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "experimental/math_properties/__init__.py",
+      "sha256": "ef6bf0cd58429c736b5403d60da05f7476ab225fed1905342be65abac9473cfb",
+      "size": 257,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/response_boundary/README.md",
+      "sha256": "78c19fed2d4bd527d5332be0b1e163e99c67a021f7bfcb712d1854a874c9af7e",
+      "size": 1021,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "experimental/response_boundary/__init__.py",
+      "sha256": "017728455fcde1d1cde7a190cc11f6082455b70c82b2871ce27c80a155df0f86",
+      "size": 944,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/response_boundary/core.py",
+      "sha256": "c420f01951d4e06b9e7404a647f4eb8a2b2f78756d81d8504bd1db1b02af8dfc",
+      "size": 5947,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "experimental/response_boundary/enforcement.py",
+      "sha256": "bc250b09efff904b9743ac8b29ccd15bbb1b9b02c646b7699bb98bfa717e99a8",
+      "size": 3632,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "formal/requirements.txt",
+      "sha256": "1a1fac9afd85e11a5eb0f1444560e3653faba6c25b813940bac73baa5e92a187",
+      "size": 88,
+      "status": "INSPECTED",
+      "type": ".txt"
+    },
+    {
+      "path": "formal/z3/README.md",
+      "sha256": "403ff8e7aeb80c60a88cb64d8d6e14ffe78ec2c796d915e69bf3b7560ee75f6a",
+      "size": 1404,
+      "status": "INSPECTED",
+      "type": ".md"
+    },
+    {
+      "path": "formal/z3/__init__.py",
+      "sha256": "0f63387fffc7c5cc114c356df6162bdf0a2f2ca8168ffd1419de608608acc211",
+      "size": 244,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "formal/z3/law_authority.py",
+      "sha256": "3168ee922a82cbb93de19a404d819ea57c50527132f8797a8e17b8c17ac503b7",
+      "size": 11275,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "pytest.ini",
+      "sha256": "10add27682aa082f731ce3bdd454066dd6fb6d874f497c5769df39a24745e03a",
+      "size": 187,
+      "status": "INSPECTED",
+      "type": ".ini"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "df349dfacb0425a6a2f5983f158c71d4bd8c6ba67f6fb6acd6e0a0fb1a7b71af",
+      "size": 33,
+      "status": "INSPECTED",
+      "type": ".txt"
+    },
+    {
+      "path": "scripts/admit_travel_evidence.py",
+      "sha256": "7307c3561e94de8daffe4b8ce76548ee9f9d9be8a6d92e266339c8d3607e5a82",
+      "size": 1701,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/close_law_boundary.sh",
+      "sha256": "1515eeef213fa344fd4114ced126928eb93cffffbe2034693022e2e171b5645c",
+      "size": 2913,
+      "status": "INSPECTED",
+      "type": ".sh"
+    },
+    {
+      "path": "scripts/demo_m11_crypto_seal.py",
+      "sha256": "6e148b97b34d9de46694fb0ed8c3baa358e1f4a939c450485b4ea27267091d50",
+      "size": 2504,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/historical_claim_verifier.py",
+      "sha256": "b9e2f0cf74755b52471804e92a26128c08e04a0addd190e40da7774a1505580a",
+      "size": 13961,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/pre_r_manifest.py",
+      "sha256": "c05ad474ef6648b20cf237c5e1a690912ffdda40c618992f75badefa216e0ca8",
+      "size": 2134,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/pre_r_verify.sh",
+      "sha256": "ba7b35f34ee4f680108b5bf7b4670359034267efc99dd734813147fad273ec8c",
+      "size": 1301,
+      "status": "INSPECTED",
+      "type": ".sh"
+    },
+    {
+      "path": "scripts/s9_build_package.py",
+      "sha256": "a835504523a998bd103966b13a38404ce646d8f951ae0587244747230fa98bdb",
+      "size": 2447,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/seal_travel_evidence.py",
+      "sha256": "09355416fb8c8ea1d6cc22c659352d5b4817a1620cddd9a5227a14395e9ae2fe",
+      "size": 2024,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/v47_ci_resolver.py",
+      "sha256": "13eb91c98962e398727359f5efefcb90a60cccd455cdd3f28a66d8f3df6e1e6e",
+      "size": 4223,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/v47_live_m11_verify.py",
+      "sha256": "fec320789dbf43a6198620968a24e4bdc2ff8106c8e0d9ce351253ee11aa233c",
+      "size": 5143,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "sha256": "ea784e0f46e6164cf15fd664f29f8407860b63f8f703a606a15cb074c62dabfd",
+      "size": 632,
+      "status": "INSPECTED",
+      "type": ".sh"
+    },
+    {
+      "path": "swi_v2/__init__.py",
+      "sha256": "a110f22e72a03a4d53a69b3765bfe5e9b81b5b3eb432356a297dab140b9f2259",
+      "size": 229,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/__init__.py",
+      "sha256": "47460894b615ec591229e04d3c668359d72f0fc60b92d3bb08296e49a4f802e0",
+      "size": 1408,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/admission.py",
+      "sha256": "c7fea618e4e7c8cc792b4f23f7a1738b8601d6bba69cb5f4b6adced6031e9bcf",
+      "size": 4498,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/authority.py",
+      "sha256": "3e76e5bcdd0fb5d8ffbc0b980857e1ba8004756a6018e57b5c138237c6c11940",
+      "size": 4986,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/canonical.py",
+      "sha256": "a088a8e7831d9c560915212373fa1e2254d02399599515b23e2012d8009bd31f",
+      "size": 2058,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/contracts.py",
+      "sha256": "104a28aad54c9f837a43b0eea4b09bee62c6466a3d450bdcaad9ea50cb2a255a",
+      "size": 2122,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/ed25519_sig.py",
+      "sha256": "60ca9208f1f3a798beecb26a696e913fe6c942a05d6473e200954eec0ee4878a",
+      "size": 4533,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/enforcement.py",
+      "sha256": "e990e7549ac3a716ac18f2a44d6b45552b01f1afccbd002b3ca4a0c6ddd24b5f",
+      "size": 1023,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/errors.py",
+      "sha256": "21d45edd5c5755079cdde6b25fabe184a74c5c4fab944d1f8f69921e6e88ea57",
+      "size": 1391,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/halt.py",
+      "sha256": "748e99a607a73d7454a6391455ad4def6f0d5bf311df6066cdedb0f45a1f30a4",
+      "size": 583,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/merkle.py",
+      "sha256": "13e288ba6a7539d1a0ce1a81815e8ebe292355d89b8cc581c160097015420ed2",
+      "size": 2447,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/replay_guard.py",
+      "sha256": "59485d70763ff6adb91b44cc69be741cee62754d6988bd58e39bd016ff919bc9",
+      "size": 1762,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/seal.py",
+      "sha256": "8bb943c8d28f9ebc9eb2f262034a7a30cbfc2cdb66e51ce02f2e51dea1875149",
+      "size": 6578,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/kernel/sparse_merkle.py",
+      "sha256": "e45677f9e08e84e50529f70896d1a165e4d07b72b5fcba3bbb7a175a12832e85",
+      "size": 7007,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module11/__init__.py",
+      "sha256": "c2ceb23e84b78203f76c77ac0283c4d038fff4cf6b64e2b0c9e925888812f1e3",
+      "size": 222,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module11/foundation_admission.py",
+      "sha256": "0be1dc55ad7d38ef409098c8c88f6cbf4b6235c03f3c3f9c7d6487e75f872eb1",
+      "size": 218,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module12/__init__.py",
+      "sha256": "d4119cddbbe442bc0b18ea1b8958960badd17e3e6c3b0f25b6ee05806f6d6a5e",
+      "size": 476,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module13/__init__.py",
+      "sha256": "f6f446f87576bcfbf5afd83272e695c0bdb431e4d4643839cf1f24d89b208724",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module14/__init__.py",
+      "sha256": "beff84843c732c28398eb21cb1f18b8367b88cf8281b7c0ab9de4d928e2b4cd9",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module15/__init__.py",
+      "sha256": "435728d98a5ae74d4e0e3fd281e78a2a647fc16698b9953c3939962dd6340212",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module16/__init__.py",
+      "sha256": "326535dc6c89b0540f735fccaa79bf599955fce2dd3efe1eb0af9b4d4eaea692",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module17/__init__.py",
+      "sha256": "d38183bccbb85db87376885f108098537cb3a14dc9aafc4a83f6368b0fe55250",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module18/__init__.py",
+      "sha256": "2255b5ecfd06600ced453e689cc518185e96c19e1fa6af4bcbda0a5751562bd3",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module19/__init__.py",
+      "sha256": "de0b474354e4abb8cac31b3f737c020f49c2fd5eacc918270706b4943b8d9d66",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module20/__init__.py",
+      "sha256": "2a71e3cb1a1faa779d73335a36adf7817c6367eb3984645a4b82c0e8824eaa37",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module21/__init__.py",
+      "sha256": "359176f3cfbff5b64cda35344dd7d838708e535e73e238d60feaeddf47316259",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/module22/__init__.py",
+      "sha256": "3f504970ef9909c3d4e679d6d2675c5c331116da70ee1b9f0db977723f5b6883",
+      "size": 61,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/__init__.py",
+      "sha256": "b8dd8f0e868206510a303f987c6498d6cccfff06c2e78b2a49c89394ec24a3a1",
+      "size": 530,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/constraints.py",
+      "sha256": "693433af8207fc6fe57afb3c28abe71326c42be87d23b99183bdbe17ee08700d",
+      "size": 1696,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/diagnostics.py",
+      "sha256": "b3bf1fa2b7198d1afdeab32bbc6f051139b66aad7089041a0a3d2413177ce0ad",
+      "size": 1076,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/evaluator.py",
+      "sha256": "67006306e18a045ad572d16c07c324e215113be92bac22bdddb06da61ca444a6",
+      "size": 3747,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/evidence.py",
+      "sha256": "334c40e1f56e0227e5aaa78c31618dd48309afb263ff6329434cb3ad09fc8372",
+      "size": 2010,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/inventory.py",
+      "sha256": "1fdc757606dfd2ea4457a155c76812a49219fa41f88a792da0c9091bd58a8472",
+      "size": 3533,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/manifest.py",
+      "sha256": "5bb0b98cdcb698192ffe85ca24d28befde06c385397769273abc8b3545fd6fd7",
+      "size": 1649,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/package.py",
+      "sha256": "3e77c5472a0ec31c08cad320809a8e49eb3602fb54752c84c02cdcbcb51ca40d",
+      "size": 5918,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/reconciliation.py",
+      "sha256": "60dd9edf358e9c521cbde54c488519b87d3b8b5c9f064cc281110f8b44e02426",
+      "size": 1895,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "swi_v2/s9/replay.py",
+      "sha256": "30f8790a912f5379c30a07d0943105fa3bfbb54a75d916c62a0ccd79566e7cf0",
+      "size": 971,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/fixtures/canonical_vectors.json",
+      "sha256": "e14c4dd3bbe7fc960809a99dd751ded358069d9b3611171298250f4e647dfc64",
+      "size": 1599,
+      "status": "INSPECTED",
+      "type": ".json"
+    },
+    {
+      "path": "test/test_admission_hardening.py",
+      "sha256": "fb6f8e44cde7c68b89421da4321956205c22cd1fa511e211f0be420d7396323d",
+      "size": 3459,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_authority_non_escalation.py",
+      "sha256": "7526996804630624c0422404c9a6ee25252798be448a71efc80bbd4a10eaff1d",
+      "size": 4349,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_canonical_golden_vectors.py",
+      "sha256": "16961bbbe83a767c0dfa15b65786d7613c7404f695a90ce9729ef0cd7a2fd6a1",
+      "size": 476,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_canonicalization.py",
+      "sha256": "d321c0bcd4a96e38e3667159757cd44b71fccfd501c1e7d1e2c917bbb7ee33be",
+      "size": 1023,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_ed25519_sig.py",
+      "sha256": "7c878e7ef8478c2341bbbb6f80016d7395889c423c7101e556150f28e19978f1",
+      "size": 2178,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_foundation_contract.py",
+      "sha256": "0db93ceb0a2f72ea41dd779c637dbc816393ac8fda13a1e73eac9acae0138309",
+      "size": 692,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_kernel_enforcement.py",
+      "sha256": "0aa2915c5cda3806415a4a43a097c78fa5c42169096d7ec1197829c5491268ce",
+      "size": 1682,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_kernel_isolation.py",
+      "sha256": "41b0aebcb6fa1f8609a5f4d0fe2936d8afdb34997eb5dbca13eee5115219a30d",
+      "size": 1686,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_m11_end_to_end_seal.py",
+      "sha256": "613d83e8872538dfbd1f25ea693be50b6de1b8ed16ee899e3a2dc5b3486b4c6d",
+      "size": 2981,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_m11_post_admission_seal.py",
+      "sha256": "87c78aa23e7c71a7ffe8773b14d302078ef49abd16294af641c124d91ec5df0a",
+      "size": 6240,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_m11_seal_boundary_attacks.py",
+      "sha256": "f1e6f4643a4d4b036722f572f9d14fd527f6402c8c53945843ef27cbfda88879",
+      "size": 2381,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_merkle_determinism.py",
+      "sha256": "ed51738e80748e016fb965f987925cd56a2f03921362252c377f96a95e0dff60",
+      "size": 1744,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_module11_admission.py",
+      "sha256": "aad907a7530604faaea3650696d4801ab0a966427b29d50fba611278fdfee13a",
+      "size": 3870,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_serialized_v1_travel.py",
+      "sha256": "0fcaaa881629034742aa76c498e222725479d3809f41475c0b17f00ed6088290",
+      "size": 5923,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "test/test_sparse_merkle.py",
+      "sha256": "602e5d57bd4f1c755025ecd3e0143cdb161727d48f66305e2d63d2f4ddd504a3",
+      "size": 2366,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/conftest.py",
+      "sha256": "73ea70036321fcc36e1c86590dbdd576974596e06caaf3d2dd00fff77ef77669",
+      "size": 2243,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_adversarial.py",
+      "sha256": "7c06ddbfd34f34d99092c5f54958c7634539eb37334224cfdc51ada0abbf8a17",
+      "size": 1319,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_authority_matrix.py",
+      "sha256": "d51acbec25f367baa309fe9aa980e27dfaf8371f995f5b072eb0cd54695e0cb7",
+      "size": 4117,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_concurrency.py",
+      "sha256": "409f2710dfb7b4445caf5e237c6c0e5d996f4ba889e11e7bddd318f4e9e3f37c",
+      "size": 951,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_context_injection.py",
+      "sha256": "8bfbadba51d0b14ab1313255a024603a0520f402846604df86c4b8b974d04c2a",
+      "size": 1168,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_determinism.py",
+      "sha256": "639e194f77475b6d82cf2f866d3c3e7bd4e937d77cdf25ee3e0670df0fb5bb62",
+      "size": 487,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_distance.py",
+      "sha256": "0991b2020ada5324c52a5465ef4080d845b365b7ea39d8e247aa27041a4cc55c",
+      "size": 1289,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_findings.py",
+      "sha256": "4fb19bd4e3ce2f7e3fc7edf81a619c95d57cb506e9d799ce05857ba42683aff4",
+      "size": 551,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_full_invariants.py",
+      "sha256": "8a3a3588ca7a652a4fff6b4eb498735794bd5e058aa0d4c75bc5c1f65195939b",
+      "size": 1435,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_halt_reject.py",
+      "sha256": "0ba9ec99cc60e2b43affbb60d1fbc824a3f4e3cce0a8b7cfa0ce90b95f984734",
+      "size": 1460,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "sha256": "ffbf37c076a4fe863af9c003bbca56896d830487d174f67e490bc3713a07ca0f",
+      "size": 908,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "sha256": "37a44a19b26aababa94da9659ceaa681b22b635eb2a78f2bef349876a433575b",
+      "size": 732,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_measurement.py",
+      "sha256": "5a90a4d8e812b8429d457243b490c765cf104c226414058ccba21405c9414558",
+      "size": 1161,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_nested_injection.py",
+      "sha256": "1efa50576501f74ab90774e56c058312fd0372f4a2002dbb0fcdf3b4649786ec",
+      "size": 1192,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_observation.py",
+      "sha256": "e3cd3be15b01623ceb8de7bd5e451c9901707e4625299910e6da671afac247db",
+      "size": 586,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_provenance.py",
+      "sha256": "ac915f24e16498938769ee0b546a298871524f9cd96f10e303514ebb77fbd3bb",
+      "size": 722,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_replay.py",
+      "sha256": "dcb66b4ecd84ea02a0d69ed17029ba3ac68469820e0f7ce7ad2a65eeaa9a6bd9",
+      "size": 688,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_resource_limits.py",
+      "sha256": "0cbf173a530d4482c3a080904edb0b84974046a3d3aa74bf090cb17815dbab80",
+      "size": 1006,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "sha256": "a37247a33e8bf45e39f13997171bd709cee50d363ecf2b1240905174c35d2c3c",
+      "size": 1250,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_scenario_suite.py",
+      "sha256": "8335dc36f47e3df51d292b29373aaeeeffeaafe3df70c64172aef4a1fe29803a",
+      "size": 5304,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_serialization.py",
+      "sha256": "21984fdc84a6c59a1cabf24edd770f377a3bf3bc52990ed2a0e4d679b1223ee4",
+      "size": 1123,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "sha256": "165f5a797e0ca0ca1d3afeb07da97203e85d5f7c0fe12245cdb4d384e6863765",
+      "size": 948,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_vector.py",
+      "sha256": "2dbe1adfe4094c3180a3218d550e415daa87501de41f6119784bfca5245c1e44",
+      "size": 1491,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/cek_alignment_monitor/test_cek_visibility.py",
+      "sha256": "f2ba50360ece363f056eb9279f4288e41fd217177029c16c642e01e997ee930c",
+      "size": 904,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/conftest.py",
+      "sha256": "76f2418556a1eac67b581f36e9e2ac7832bd08f2bb45527c35c02f483bf6576f",
+      "size": 2053,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_adversarial.py",
+      "sha256": "b1acdec7dbefeb1167965de4ccb327b692ef7c1bc5de881a62f038e533a547f3",
+      "size": 1331,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_concurrency.py",
+      "sha256": "b4de730d5c971c1752f59e6bd8ef47b670fdac8d760ed7c61f1c59cdb4cc7b0d",
+      "size": 1003,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_context_injection.py",
+      "sha256": "8a849aecb76a7f3ac6c1f10517cf0f7fda8fdc4c359b44ce19b21d9431be00a4",
+      "size": 1543,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_determinism.py",
+      "sha256": "c8e9ac7da5dda0e7d5965d783bab4ddec84d8806694b4c735781a6e74a0bf3b2",
+      "size": 585,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_findings.py",
+      "sha256": "4d8b7f1582f488a3a130398494aafc44dae38c4b0c8c778d09fb8cb1d8cf5441",
+      "size": 559,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_full_invariants.py",
+      "sha256": "4dd8be7eb28af1875aba21af8fdfa89d2be20fcd28d7764d3560f39917281ff1",
+      "size": 2636,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_halt_reject.py",
+      "sha256": "a6d1220711c7acff41b0e3f3d4ed77b1074dc5d0c8f94ab4e74346b0d4fc20c4",
+      "size": 1795,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_hidden_edges.py",
+      "sha256": "1898a67ed60f3ff5b596188e84a9d5bc4a5daef90289b0940ad6640ff5f1e602",
+      "size": 1614,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_m11_boundary.py",
+      "sha256": "0249c8d4fc55a708201e2746de0da0904f0d1cb35a85f93c40cf1cb9c2968de7",
+      "size": 881,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_measurement.py",
+      "sha256": "81690e70ff796ab60c883e05a451fdca9a6345fd88205b682662789140395dc0",
+      "size": 1474,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_nested_injection.py",
+      "sha256": "202bc45df764b6b61affb68f5f3e8dfe73d8247854de9e109fbdb78eab3911c3",
+      "size": 1507,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_observation.py",
+      "sha256": "e3cd3be15b01623ceb8de7bd5e451c9901707e4625299910e6da671afac247db",
+      "size": 586,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_provenance.py",
+      "sha256": "ac915f24e16498938769ee0b546a298871524f9cd96f10e303514ebb77fbd3bb",
+      "size": 722,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_replay.py",
+      "sha256": "0ee8e7376b1ebdb61869bf132f3ec3d47016e4d8e5190374ac17d0fc7c7120e8",
+      "size": 734,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_resource_limits.py",
+      "sha256": "6684228ead5cd007d30fd56b0a874581995f16f44488299bef9939c1d80b2fc9",
+      "size": 1141,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_runtime_isolation.py",
+      "sha256": "c497325186de4bb7717cd16691fbe6b3c93bdc688947ce02039fb72eb49f9446",
+      "size": 1352,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_serialization.py",
+      "sha256": "93d6675177d4e3b9dd714088e62508fbf6eba49076f0fd91796abf12d56e41ff",
+      "size": 1267,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_signature_boundary.py",
+      "sha256": "09cb7b5bdf9ad71cdf39a5b6415384ac062e3a3f95b28c69ab306e73903fdb61",
+      "size": 1140,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/experimental/cek_alignment_monitor/test_cek_visibility.py",
+      "sha256": "f2ba50360ece363f056eb9279f4288e41fd217177029c16c642e01e997ee930c",
+      "size": 904,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_adversarial_surface.py",
+      "sha256": "33ac5ebcfcbaa32378f15359f648477474ee86bcf22e208725f3047f6e3e1530",
+      "size": 10816,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_atomic_supersession.py",
+      "sha256": "9047f24e4aeeff899c60f24950acf23d47458640136fb505bb04b9dcce19464c",
+      "size": 2447,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_authority.py",
+      "sha256": "3170510c6fd820781a0e0d3d7f83c71cd60066cea846b61fea60fb350f149b59",
+      "size": 5352,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_event_integrity.py",
+      "sha256": "724936c474e1264e08aa8809fdd9ede541f82e18039b17c83573f7205f318f89",
+      "size": 2809,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_evidence_freshness.py",
+      "sha256": "4c4f3656b4eace80e67bf08bbbbe3014bad42de570da50700c7517b0234c2121",
+      "size": 2050,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_integrity.py",
+      "sha256": "3a3a7dd534a1931dc204237e24de63fb84e35c94c7ab4b659d89c81c49c16a72",
+      "size": 3459,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_policy_boundary.py",
+      "sha256": "cc2ce61b28163d6f02d29ca6a4d18cc530fbae38bcfb742e8f252de816d9edbb",
+      "size": 1621,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_registry.py",
+      "sha256": "32f61fb14a82901bff77f500f22778bfedb2e7903d9364abfaf85eca5e8531fc",
+      "size": 1895,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_replay.py",
+      "sha256": "0002c0f55ec6254fd5fe43346036f8cfeb43375fd588343224a68d8a7da24d26",
+      "size": 693,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/law/test_supersession.py",
+      "sha256": "aae0f9ea12721faa810e5f7574eac4a8fef60550f1dd75f043c54a2cbf9692b2",
+      "size": 3858,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/pre_r/test_math_002_authority_containment.py",
+      "sha256": "6b12b89fff688319fb650ceecab56199c1cfe3171b456151b3f16f2e41a7368c",
+      "size": 3832,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/pre_r/test_pr009_enforcement.py",
+      "sha256": "4134b4d0fde8880f4b21107d1c21a41978766c28548d480d9abcf5ad06dbdf3e",
+      "size": 8847,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/pre_r/test_response_boundary.py",
+      "sha256": "b910339a91099e96296fba97d25558ed205d2c957de63fe58dc4b7dfb0d29528",
+      "size": 4515,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_constraints.py",
+      "sha256": "ce9103234d34ad09364fa31b4c05787cf5ad82ad13db4e56e691b2bb59614f00",
+      "size": 1002,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_evaluator.py",
+      "sha256": "3998af1acff787fb0c4981a823876fa37953eb345ace787eda0e428a0cbad1d0",
+      "size": 3989,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_evidence.py",
+      "sha256": "c406294000eec458f61775c9cb4c839f01ce0f77558cbfdc610ef6672fe7202a",
+      "size": 984,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_inventory.py",
+      "sha256": "40a0756ec733f1deb14a3955c67ecaf9ed3d1ddd04668e784e32d257b6f70e28",
+      "size": 504,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_manifest.py",
+      "sha256": "964fea07b1a7cd2994aa05dbda904fd1ee92e8c86d00546c6134f3367c6cf284",
+      "size": 580,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_package.py",
+      "sha256": "ffbeb09e962731346c169ed730945499c698e846d479273f8ddb55ae1b8c5679",
+      "size": 1172,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_reconciliation.py",
+      "sha256": "5d5d54d4e5bd823e592fb4af2860f89793778d7fef4a45a805df7f67f725f17c",
+      "size": 723,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tests/s9/test_replay.py",
+      "sha256": "ef327b9e2874ddf7935e919ac3b146ea351be0d5575345b0bdc458294405329a",
+      "size": 493,
+      "status": "INSPECTED",
+      "type": ".py"
+    },
+    {
+      "path": "tools/node_info.cmd",
+      "sha256": "48dab6ec667b66c0fb333572a12e6d85c4ab1fc7c084e5c3b6a349705b3408ea",
+      "size": 571,
+      "status": "INSPECTED",
+      "type": ".cmd"
+    },
+    {
+      "path": "tools/node_info.sh",
+      "sha256": "a6912f606c67dac8b0faf3d3d562aee31c79fdd53c46234c122e0a41721d8b62",
+      "size": 704,
+      "status": "INSPECTED",
+      "type": ".sh"
+    },
+    {
+      "path": "tools/rebuild_swi.bat",
+      "sha256": "1c80bbf775fa7b5248bf71ab3b283d605634d32ed3c6c63900af63b50718c96e",
+      "size": 798,
+      "status": "INSPECTED",
+      "type": ".bat"
+    },
+    {
+      "path": "tools/rebuild_swi.sh",
+      "sha256": "d508dd620cd7d09287799bc61d65f2f1d2915ba7ea414a32e474e39410ec74cb",
+      "size": 743,
+      "status": "INSPECTED",
+      "type": ".sh"
+    }
+  ],
+  "production_authorized": false,
+  "proof_gaps": [
+    {
+      "gap": "FORMAL_MODEL",
+      "path": "swi_v2/s9/formal_model.py"
+    },
+    {
+      "gap": "AUTHORITY_VERIFIER",
+      "path": "swi_v2/s9/authority.py"
+    },
+    {
+      "gap": "DEPENDENCY_GRAPH",
+      "path": "swi_v2/s9/dependency_graph.py"
+    },
+    {
+      "gap": "INDEPENDENT_VERIFIER",
+      "path": "swi_v2/s9/independent_verifier.py"
+    },
+    {
+      "gap": "ADVERSARIAL_SUITE",
+      "path": "tests/s9/test_adversarial_x1_x10.py"
+    }
+  ],
+  "proof_status": "NOT_PROVEN"
+}

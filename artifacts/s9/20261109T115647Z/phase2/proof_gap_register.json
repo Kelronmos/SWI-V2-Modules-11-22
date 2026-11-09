@@ -1,0 +1,22 @@
+[
+  {
+    "gap": "FORMAL_MODEL",
+    "path": "swi_v2/s9/formal_model.py"
+  },
+  {
+    "gap": "AUTHORITY_VERIFIER",
+    "path": "swi_v2/s9/authority.py"
+  },
+  {
+    "gap": "DEPENDENCY_GRAPH",
+    "path": "swi_v2/s9/dependency_graph.py"
+  },
+  {
+    "gap": "INDEPENDENT_VERIFIER",
+    "path": "swi_v2/s9/independent_verifier.py"
+  },
+  {
+    "gap": "ADVERSARIAL_SUITE",
+    "path": "tests/s9/test_adversarial_x1_x10.py"
+  }
+]

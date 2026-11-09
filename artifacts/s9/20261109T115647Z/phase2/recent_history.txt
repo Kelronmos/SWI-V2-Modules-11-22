@@ -1,0 +1,10 @@
+3675832 s9: remaining unit tests + manual (NOT PROVEN)
+0c12ed9 s9: test_evaluator negative matrix + build script (NOT PROVEN)
+c566b42 s9: push real package.py builder (NOT PROVEN)
+2336730 experimental(s9): tests inventory package replay
+d6cdce4 experimental(s9): pure evaluator
+ed735ad experimental(s9): inventory
+739754e experimental(s9): reconciliation
+3c4b7b4 experimental(s9): manifest
+f087599 experimental(s9): evidence manifest reconciliation inventory
+d252218 experimental(s9): constraints diagnostics evidence replay
