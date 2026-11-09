@@ -1,0 +1,113 @@
+....F..FFF..F.FFFF...................................................... [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 34%]
+........................................................................ [ 46%]
+........................................................................ [ 57%]
+........................................................................ [ 69%]
+........................................................................ [ 81%]
+........................................................................ [ 92%]
+..............................................                           [100%]
+=================================== FAILURES ===================================
+_________________ test_sny_005_empty_scope_is_not_unrestricted _________________
+
+    def test_sny_005_empty_scope_is_not_unrestricted():
+        # Snyder requirement: empty declared scopes must not become a wildcard.
+>       with pytest.raises(AuthorityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE AuthorityError
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:79: Failed
+_______________ test_sny_008_authority_envelope_contract_exists ________________
+
+    def test_sny_008_authority_envelope_contract_exists():
+        from swi_v2 import kernel
+>       assert hasattr(kernel, "AuthorityEnvelope")
+E       AssertionError: assert False
+E        +  where False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'AuthorityEnvelope')
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:110: AssertionError
+________________ test_sny_009_expiry_is_bound_to_authorization _________________
+
+    def test_sny_009_expiry_is_bound_to_authorization():
+        params = inspect.signature(
+            require_authorization_for_action
+        ).parameters
+>       assert "t_expiry" in params or "expires_at" in params
+E       assert ('t_expiry' in mappingproxy(OrderedDict({'authorization_present': <Parameter "authorization_present: 'bool'">, 'authorization_scope':...meter "requested_action: 'str'">, 'declared_scopes': <Parameter "declared_scopes: 'Optional[Iterable[str]]' = None">})) or 'expires_at' in mappingproxy(OrderedDict({'authorization_present': <Parameter "authorization_present: 'bool'">, 'authorization_scope':...meter "requested_action: 'str'">, 'declared_scopes': <Parameter "declared_scopes: 'Optional[Iterable[str]]' = None">})))
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:117: AssertionError
+_______________ test_sny_010_corridor_is_bound_to_authorization ________________
+
+    def test_sny_010_corridor_is_bound_to_authorization():
+        params = inspect.signature(
+            require_authorization_for_action
+        ).parameters
+>       assert "corridor_id" in params
+E       assert 'corridor_id' in mappingproxy(OrderedDict({'authorization_present': <Parameter "authorization_present: 'bool'">, 'authorization_scope':...meter "requested_action: 'str'">, 'declared_scopes': <Parameter "declared_scopes: 'Optional[Iterable[str]]' = None">}))
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:124: AssertionError
+_______________ test_sny_013_module12_normalization_implemented ________________
+
+    def test_sny_013_module12_normalization_implemented():
+        result = process(admit_foundation_input(valid_envelope()))
+>       assert result.get("status") != "accepted_placeholder"
+E       AssertionError: assert 'accepted_placeholder' != 'accepted_placeholder'
+E        +  where 'accepted_placeholder' = <built-in method get of dict object at 0x6fe2408cc0>('status')
+E        +    where <built-in method get of dict object at 0x6fe2408cc0> = {'status': 'accepted_placeholder', 'evidence_id': 'snyder-critical-fixture', 'note': 'DESIGN PENDING — not NormalizedEvidence yet'}.get
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:152: AssertionError
+_________________ test_sny_015_durable_decision_receipt_exists _________________
+
+    def test_sny_015_durable_decision_receipt_exists():
+        from swi_v2 import kernel
+>       assert hasattr(kernel, "DecisionReceipt")
+E       AssertionError: assert False
+E        +  where False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'DecisionReceipt')
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:167: AssertionError
+______________ test_sny_016_execution_ledger_precondition_exists _______________
+
+    def test_sny_016_execution_ledger_precondition_exists():
+        from swi_v2 import kernel
+>       assert (
+            hasattr(kernel, "ExecutionLedger")
+            or hasattr(kernel, "verify_ledger_chain")
+        )
+E       AssertionError: assert (False or False)
+E        +  where False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'ExecutionLedger')
+E        +  and   False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'verify_ledger_chain')
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:172: AssertionError
+_____________ test_sny_017_rollback_and_stop_right_binding_exists ______________
+
+    def test_sny_017_rollback_and_stop_right_binding_exists():
+        from swi_v2 import kernel
+>       assert hasattr(kernel, "AuthorityEnvelope")
+E       AssertionError: assert False
+E        +  where False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'AuthorityEnvelope')
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:180: AssertionError
+__________________ test_sny_018_first_class_escalation_exists __________________
+
+    def test_sny_018_first_class_escalation_exists():
+        from swi_v2 import kernel
+>       assert (
+            hasattr(kernel, "ESCALATE")
+            or hasattr(kernel, "EscalationDecision")
+        )
+E       AssertionError: assert (False or False)
+E        +  where False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'ESCALATE')
+E        +  and   False = hasattr(<module 'swi_v2.kernel' from '/data/data/com.termux/files/home/swi-s9-complete-20261109T122308Z/swi_v2/kernel/__init__.py'>, 'EscalationDecision')
+
+snyder_runtime_v1_audit/tests/test_snyder_critical.py:185: AssertionError
+=========================== short test summary info ============================
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_005_empty_scope_is_not_unrestricted
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_008_authority_envelope_contract_exists
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_009_expiry_is_bound_to_authorization
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_010_corridor_is_bound_to_authorization
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_013_module12_normalization_implemented
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_015_durable_decision_receipt_exists
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_016_execution_ledger_precondition_exists
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_017_rollback_and_stop_right_binding_exists
+FAILED snyder_runtime_v1_audit/tests/test_snyder_critical.py::test_sny_018_first_class_escalation_exists
+9 failed, 613 passed in 6.19s

@@ -1,0 +1,23 @@
+{
+  "programme": "Snyder Runtime v1.0 Integrated Critical Audit",
+  "baseline_head": "44a6af93328691b6aff4c5ee35d3790f3c9ac2aa",
+  "head_after": "44a6af93328691b6aff4c5ee35d3790f3c9ac2aa",
+  "baseline_unchanged": true,
+  "started_utc": "2026-11-09T17:48:56.623937+00:00",
+  "finished_utc": "2026-11-09T17:49:05.049029+00:00",
+  "targets": [
+    "snyder_runtime_v1_audit/tests/test_snyder_critical.py",
+    "tests/s9",
+    "tests/law",
+    "tests/pre_r",
+    "tests/cek_alignment_monitor",
+    "test/test_authority_non_escalation.py",
+    "test/test_kernel_isolation.py",
+    "test/test_kernel_enforcement.py"
+  ],
+  "pytest_exit_code": 1,
+  "execution_result": "FAIL",
+  "proven": false,
+  "sealed": false,
+  "production_authorized": false
+}
