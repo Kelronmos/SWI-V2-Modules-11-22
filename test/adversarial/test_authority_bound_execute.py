@@ -79,7 +79,10 @@ def test_wrong_action_authority_does_not_execute(admitted, last_exec):
     )
     gate.bind_authority(auth, action_id="other_action")
     r = gate.execute(_node(admitted))
-    assert r.decision == Decision.EXECUTION_ALLOWED
+    assert r.decision == Decision.UNKNOWN
+    assert FailureReason.AUTHORITY_INVALID in r.reasons
+    assert r.execution_occurred is False
+    assert gate.execution_counter == 0
     gate2 = ExecutionIntegrityGate(admitted, last_exec)
     with pytest.raises(ValueError):
         validate_human_authority(

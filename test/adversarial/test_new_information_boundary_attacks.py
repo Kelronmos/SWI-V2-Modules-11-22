@@ -45,8 +45,31 @@ def _node(admitted, **kw):
     return IncomingNode(**d)
 
 
+
+def _gate_with_default_authority(admitted, last_exec, **kwargs):
+    """
+    Legacy positive-path test fixture.
+
+    Supplies explicit test-only human authority bound to the exact
+    workflow and default_action. This does not grant production authority.
+    """
+    gate = ExecutionIntegrityGate(admitted, last_exec, **kwargs)
+    authority = validate_human_authority(
+        HumanAuthority(
+            "TEST-HUMAN-AUTHORITY",
+            workflow_id=admitted.workflow_id,
+            action_id="default_action",
+            token="test-only-authority-token",
+        ),
+        workflow_id=admitted.workflow_id,
+        action_id="default_action",
+    )
+    gate.bind_authority(authority, action_id="default_action")
+    return gate
+
+
 def test_human_yes_string_is_not_authority(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(description="boundary shift", affects_evidence_boundary=True, information_id="NI-YES"),
@@ -59,7 +82,7 @@ def test_human_yes_string_is_not_authority(admitted, last_exec):
 
 
 def test_authority_different_action_blocked(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-ACT"),
@@ -77,7 +100,7 @@ def test_authority_different_action_blocked(admitted, last_exec):
 
 
 def test_execute_while_unknown_blocked(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     r0 = gate.apply_new_information(
         NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-U"),
@@ -91,7 +114,7 @@ def test_execute_while_unknown_blocked(admitted, last_exec):
 
 
 def test_stale_pass_after_boundary_change_cannot_execute(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     assert gate.execute(_node(admitted)).decision == Decision.EXECUTION_ALLOWED
     gate.apply_new_information(
         NewInformation(description="authority-relevant", affects_evidence_boundary=True, information_id="NI-E"),
@@ -104,7 +127,7 @@ def test_stale_pass_after_boundary_change_cannot_execute(admitted, last_exec):
 
 
 def test_direct_demo_action_while_unknown(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-D"),

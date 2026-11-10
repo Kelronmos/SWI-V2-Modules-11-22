@@ -24,8 +24,10 @@ from swi_v2.execution_integrity import (
     ExecutionIntegrityGate,
     ExecutionRecord,
     FailureReason,
+    HumanAuthority,
     IncomingNode,
     NodeState,
+    validate_human_authority,
 )
 
 
@@ -65,8 +67,31 @@ def _matching_node(admitted: AdmittedRoute, t: float = 10.0000) -> IncomingNode:
     )
 
 
+
+def _gate_with_default_authority(admitted, last_exec, **kwargs):
+    """
+    Legacy positive-path test fixture.
+
+    Supplies explicit test-only human authority bound to the exact
+    workflow and default_action. This does not grant production authority.
+    """
+    gate = ExecutionIntegrityGate(admitted, last_exec, **kwargs)
+    authority = validate_human_authority(
+        HumanAuthority(
+            "TEST-HUMAN-AUTHORITY",
+            workflow_id=admitted.workflow_id,
+            action_id="default_action",
+            token="test-only-authority-token",
+        ),
+        workflow_id=admitted.workflow_id,
+        action_id="default_action",
+    )
+    gate.bind_authority(authority, action_id="default_action")
+    return gate
+
+
 def test_matching_route_reaches_execution_boundary(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, time_tolerance=0.0008)
+    gate = _gate_with_default_authority(admitted, last_exec, time_tolerance=0.0008)
     node = _matching_node(admitted, t=10.0000)
     result = gate.check(node)
     assert result.decision == Decision.EXECUTION_ALLOWED
@@ -77,7 +102,7 @@ def test_matching_route_reaches_execution_boundary(admitted, last_exec):
 
 
 def test_unapproved_node_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.node_id = "N-EVIL"
     result = gate.check(node)
@@ -88,7 +113,7 @@ def test_unapproved_node_halts(admitted, last_exec):
 
 
 def test_node_identity_mismatch_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.node_id = "N-99"
     result = gate.check(node)
@@ -97,7 +122,7 @@ def test_node_identity_mismatch_halts(admitted, last_exec):
 
 
 def test_workflow_mismatch_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.workflow_id = "W-999"
     result = gate.check(node)
@@ -106,7 +131,7 @@ def test_workflow_mismatch_halts(admitted, last_exec):
 
 
 def test_route_change_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     result = gate.check(node)
@@ -116,7 +141,7 @@ def test_route_change_halts(admitted, last_exec):
 
 
 def test_input_change_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.input_hash = "I-NEW"
     result = gate.check(node)
@@ -125,7 +150,7 @@ def test_input_change_halts(admitted, last_exec):
 
 
 def test_policy_change_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.policy_hash = "P-EVIL"
     result = gate.check(node)
@@ -134,7 +159,7 @@ def test_policy_change_halts(admitted, last_exec):
 
 
 def test_admission_change_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.admission_hash = "A-FAKE"
     result = gate.check(node)
@@ -143,7 +168,7 @@ def test_admission_change_halts(admitted, last_exec):
 
 
 def test_not_admitted_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.admission_hash = None
     result = gate.check(node)
@@ -163,14 +188,14 @@ def test_last_execution_mismatch_halts(admitted):
 
 
 def test_time_continuity_failure_halts(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, time_tolerance=0.0008)
+    gate = _gate_with_default_authority(admitted, last_exec, time_tolerance=0.0008)
     result = gate.check(_matching_node(admitted, t=10.0000 + 0.001))
     assert FailureReason.TIME_CONTINUITY_EXCEEDED in result.reasons
     assert gate.execution_counter == 0
 
 
 def test_new_information_cannot_silently_change_admitted_route(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     poisoned = IncomingNode(
         node_id="N-7", workflow_id="W-104", route_hash="R-NEW",
         input_hash="I-NEW", policy_hash="P-22", admission_hash="A-9", current_time=10.0000,
@@ -184,7 +209,7 @@ def test_new_information_cannot_silently_change_admitted_route(admitted, last_ex
 
 
 def test_retry_does_not_grant_authority(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, max_retries=2)
+    gate = _gate_with_default_authority(admitted, last_exec, max_retries=2)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     assert gate.check(node).decision == Decision.HALT
@@ -193,7 +218,7 @@ def test_retry_does_not_grant_authority(admitted, last_exec):
 
 
 def test_persistent_failure_escalates(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, max_retries=2)
+    gate = _gate_with_default_authority(admitted, last_exec, max_retries=2)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     gate.check(node)
@@ -204,7 +229,7 @@ def test_persistent_failure_escalates(admitted, last_exec):
 
 
 def test_evidence_is_replayable_and_hashed(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     result = gate.check(node)
@@ -213,7 +238,7 @@ def test_evidence_is_replayable_and_hashed(admitted, last_exec):
 
 def test_admitted_route_immutable_under_poison(admitted, last_exec):
     original = copy.deepcopy(admitted)
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.route_hash = "R-POISON"
     gate.check(node)
@@ -221,14 +246,14 @@ def test_admitted_route_immutable_under_poison(admitted, last_exec):
 
 
 def test_direct_protected_operation_cannot_bypass_integrity_boundary(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     with pytest.raises(PermissionError):
         gate._demo_action()
     assert gate.execution_counter == 0
 
 
 def test_execution_after_halt_is_blocked(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     result = gate.check(node)
@@ -239,7 +264,7 @@ def test_execution_after_halt_is_blocked(admitted, last_exec):
 
 
 def test_alternate_execution_path_cannot_bypass_integrity_gate(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     poison = IncomingNode(
         node_id="N-7", workflow_id="W-104", route_hash="R-NEW",
         input_hash="I-NEW", policy_hash="P-22", admission_hash="A-9", current_time=10.0000,
@@ -250,7 +275,7 @@ def test_alternate_execution_path_cannot_bypass_integrity_gate(admitted, last_ex
 
 
 def test_failed_integrity_check_never_reaches_protected_operation(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     node = _matching_node(admitted)
     node.policy_hash = "P-EVIL"
     result = gate.check(node)
@@ -259,14 +284,14 @@ def test_failed_integrity_check_never_reaches_protected_operation(admitted, last
 
 
 def test_successful_integrity_check_reaches_protected_operation(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     result = gate.execute(_matching_node(admitted, t=10.0000))
     assert result.decision == Decision.EXECUTION_ALLOWED
     assert gate.execution_counter == 1
 
 
 def test_retry_cannot_execute_without_revalidation(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, max_retries=2)
+    gate = _gate_with_default_authority(admitted, last_exec, max_retries=2)
     node = _matching_node(admitted)
     node.route_hash = "R-NEW"
     gate.check(node)
@@ -277,7 +302,7 @@ def test_retry_cannot_execute_without_revalidation(admitted, last_exec):
 
 def test_forged_permit_is_rejected(admitted, last_exec):
     from swi_v2.execution_integrity import _ExecutionPermit
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     forged = _ExecutionPermit(gate_id=id(gate), nonce=999999)
     with pytest.raises(PermissionError):
         gate._demo_action(forged)
@@ -285,7 +310,7 @@ def test_forged_permit_is_rejected(admitted, last_exec):
 
 
 def test_stale_permit_after_halt_is_rejected(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r1 = gate.check(_matching_node(admitted, t=10.0000))
     assert r1.decision == Decision.EXECUTION_ALLOWED
     assert gate.execution_counter == 1
