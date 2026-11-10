@@ -18,6 +18,8 @@ from swi_v2.execution_integrity import (
     ExecutionIntegrityGate,
     ExecutionRecord,
     IncomingNode,
+    HumanAuthority,
+    validate_human_authority,
 )
 
 
@@ -91,6 +93,17 @@ def test_positive_path_still_executes():
     last = ExecutionRecord("E-103", "W-104", "N-7", "R-abc", "I-1", 10.0)
     gate = ExecutionIntegrityGate(admitted, last)
     node = IncomingNode("N-7", "W-104", "R-abc", "I-1", "P-22", "A-9", 10.0)
-    result = gate.execute(node)
+    authority = validate_human_authority(
+        HumanAuthority(
+            "H-TEST",
+            workflow_id="W-104",
+            action_id="default_action",
+            token="TEST-ONLY",
+        ),
+        workflow_id="W-104",
+        action_id="default_action",
+    )
+    result = gate.execute(node, authority=authority)
     assert result.decision == Decision.EXECUTION_ALLOWED
+    assert result.execution_occurred is True
     assert gate.execution_counter == 1

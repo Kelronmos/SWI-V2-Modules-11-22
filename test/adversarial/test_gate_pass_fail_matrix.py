@@ -24,8 +24,10 @@ from swi_v2.execution_integrity import (
     ExecutionIntegrityGate,
     ExecutionRecord,
     FailureReason,
+    HumanAuthority,
     IncomingNode,
     NodeState,
+    validate_human_authority,
 )
 from swi_v2.kernel.enforcement import halt, require_admitted
 from swi_v2.kernel.errors import StateTransitionError
@@ -70,8 +72,31 @@ def _assert_no_execution(gate, result, code=None):
     assert gate.execution_counter == 0
 
 
+
+def _gate_with_default_authority(admitted, last_exec, **kwargs):
+    """
+    Legacy positive-path test fixture.
+
+    Supplies explicit test-only human authority bound to the exact
+    workflow and default_action. This does not grant production authority.
+    """
+    gate = ExecutionIntegrityGate(admitted, last_exec, **kwargs)
+    authority = validate_human_authority(
+        HumanAuthority(
+            "TEST-HUMAN-AUTHORITY",
+            workflow_id=admitted.workflow_id,
+            action_id="default_action",
+            token="test-only-authority-token",
+        ),
+        workflow_id=admitted.workflow_id,
+        action_id="default_action",
+    )
+    gate.bind_authority(authority, action_id="default_action")
+    return gate
+
+
 def test_gate_execution_pass(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     assert gate.node_state == NodeState.QUARANTINED
     r = gate.execute(_node(admitted))
     assert r.decision == Decision.EXECUTION_ALLOWED
@@ -93,7 +118,7 @@ def test_gate_execution_pass(admitted, last_exec):
     ],
 )
 def test_gate_fail_halts_no_execution(admitted, last_exec, gate_name, field, value, code):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r = gate.check(_node(admitted, **{field: value}))
     _assert_no_execution(gate, r, code)
 
@@ -106,7 +131,7 @@ def test_continuity_fail_no_execution(admitted):
 
 
 def test_new_information_fail_no_execution(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r = gate.check(_node(admitted, route_hash="R-NEW", input_hash="I-NEW"))
     _assert_no_execution(gate, r)
     assert FailureReason.ROUTE_CHANGED in r.reasons
@@ -114,7 +139,7 @@ def test_new_information_fail_no_execution(admitted, last_exec):
 
 
 def test_chain_pass_then_route_fail_no_execution(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r = gate.check(_node(admitted, route_hash="R-POISON"))
     _assert_no_execution(gate, r, FailureReason.ROUTE_CHANGED)
     r2 = gate.execute(_node(admitted, route_hash="R-POISON"))
@@ -123,7 +148,7 @@ def test_chain_pass_then_route_fail_no_execution(admitted, last_exec):
 
 
 def test_halt_then_retry_execute_without_revalidation(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, max_retries=2)
+    gate = _gate_with_default_authority(admitted, last_exec, max_retries=2)
     node = _node(admitted, route_hash="R-NEW")
     gate.check(node)
     r = gate.execute(node, attempt_retry=True)
@@ -132,7 +157,7 @@ def test_halt_then_retry_execute_without_revalidation(admitted, last_exec):
 
 
 def test_persistent_fail_escalates_no_execution(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec, max_retries=2)
+    gate = _gate_with_default_authority(admitted, last_exec, max_retries=2)
     node = _node(admitted, route_hash="R-NEW")
     gate.check(node)
     gate.check(node, attempt_retry=True)
@@ -143,7 +168,7 @@ def test_persistent_fail_escalates_no_execution(admitted, last_exec):
 
 
 def test_fail_then_pass_requires_new_check(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.check(_node(admitted, route_hash="R-NEW"))
     assert gate.execution_counter == 0
     r = gate.execute(_node(admitted))
@@ -154,14 +179,14 @@ def test_fail_then_pass_requires_new_check(admitted, last_exec):
 def test_authorization_forged_permit_no_execution(admitted, last_exec):
     from swi_v2.execution_integrity import _ExecutionPermit
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     with pytest.raises(PermissionError):
         gate._demo_action(_ExecutionPermit(id(gate), 999))
     assert gate.execution_counter == 0
 
 
 def test_authorization_direct_call_no_execution(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     with pytest.raises(PermissionError):
         gate._demo_action()
     assert gate.execution_counter == 0
@@ -169,7 +194,7 @@ def test_authorization_direct_call_no_execution(admitted, last_exec):
 
 def test_mutation_gate_admitted_immutable(admitted, last_exec):
     original = copy.deepcopy(admitted)
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.check(_node(admitted, route_hash="R-POISON"))
     assert admitted.route_hash == original.route_hash
     assert gate.execution_counter == 0
@@ -178,7 +203,7 @@ def test_mutation_gate_admitted_immutable(admitted, last_exec):
 
 
 def test_evidence_gate_on_halt(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r = gate.check(_node(admitted, route_hash="R-NEW"))
     assert r.evidence.event == "EXECUTION_INTEGRITY_FAILURE"
     assert r.evidence.expected["route_hash"] == "R-abc"
@@ -191,7 +216,7 @@ def test_evidence_gate_on_halt(admitted, last_exec):
 
 
 def test_evidence_gate_on_pass(admitted, last_exec):
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r = gate.execute(_node(admitted))
     assert r.evidence.event == "EXECUTION_INTEGRITY_PASS"
     assert len(r.evidence.evidence_hash) == 64
@@ -231,7 +256,7 @@ def test_report_gate_generator_runs():
 def test_new_information_boundary_insufficient_unknown_no_execution(admitted, last_exec):
     from swi_v2.execution_integrity import NewInformation
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     r0 = gate.execute(_node(admitted))
     assert r0.decision == Decision.EXECUTION_ALLOWED
     assert gate.execution_counter == 1
@@ -257,7 +282,7 @@ def test_new_information_boundary_insufficient_unknown_no_execution(admitted, la
 def test_new_information_attempt_execute_without_authority_blocked(admitted, last_exec):
     from swi_v2.execution_integrity import NewInformation
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(
@@ -276,7 +301,7 @@ def test_new_information_attempt_execute_without_authority_blocked(admitted, las
 def test_new_information_invalid_authority_remains_unknown(admitted, last_exec):
     from swi_v2.execution_integrity import HumanAuthority, NewInformation, validate_human_authority
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-3"),
@@ -293,10 +318,10 @@ def test_new_information_invalid_authority_remains_unknown(admitted, last_exec):
     assert gate.execution_counter == 1
 
 
-def test_new_information_valid_authority_then_recheck_may_execute(admitted, last_exec):
+def test_new_information_valid_authority_alone_does_not_clear_boundary(admitted, last_exec):
     from swi_v2.execution_integrity import HumanAuthority, NewInformation, validate_human_authority
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     assert gate.execution_counter == 1
     gate.apply_new_information(
@@ -310,15 +335,15 @@ def test_new_information_valid_authority_then_recheck_may_execute(admitted, last
     )
     assert validated.bound is True
     r = gate.recheck(_node(admitted), authority=validated, action_id="approve_file")
-    assert r.decision == Decision.EXECUTION_ALLOWED
-    assert r.execution_occurred is True
-    assert gate.execution_counter == 2
+    assert r.decision == Decision.UNKNOWN
+    assert r.execution_occurred is False
+    assert gate.execution_counter == 1
 
 
 def test_new_information_revalidation_alone_does_not_restore_execution(admitted, last_exec):
     from swi_v2.execution_integrity import NewInformation
 
-    gate = ExecutionIntegrityGate(admitted, last_exec)
+    gate = _gate_with_default_authority(admitted, last_exec)
     gate.execute(_node(admitted))
     gate.apply_new_information(
         NewInformation(description="x", affects_evidence_boundary=True, information_id="NI-5"),
