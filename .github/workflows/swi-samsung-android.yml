@@ -2,6 +2,9 @@ name: SWI Samsung Android Build
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - feature/two-phase-human-device-verification
 
 permissions:
   contents: read
