@@ -1,0 +1,54 @@
+name: SWI Samsung Android Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWI
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK components
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Compile SWI Samsung APK
+        working-directory: android/samsung/swi-device
+        run: gradle --no-daemon assembleDebug
+
+      - name: Verify APK and calculate SHA-256
+        shell: bash
+        run: |
+          APK=android/samsung/swi-device/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          sha256sum "$APK" | tee swi-samsung-debug-apk.sha256
+          echo "APK_SIZE_BYTES=$(stat -c%s "$APK")" >> "$GITHUB_STEP_SUMMARY"
+          cat swi-samsung-debug-apk.sha256 >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: swi-samsung-debug-apk
+          path: |
+            android/samsung/swi-device/app/build/outputs/apk/debug/app-debug.apk
+            swi-samsung-debug-apk.sha256
+          if-no-files-found: error
+          retention-days: 14
