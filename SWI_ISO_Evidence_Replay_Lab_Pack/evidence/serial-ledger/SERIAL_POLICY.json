@@ -1,0 +1,15 @@
+{
+  "policy_id": "SWI-ISO-SERIAL-POLICY-v1",
+  "monotonic": true,
+  "append_only": true,
+  "allow_rewrite": false,
+  "duplicate_serial": "REJECT",
+  "missing_serial": "REJECT",
+  "reorder": "REJECT",
+  "fork": "REJECT_WITHOUT_EXCEPTION_RECORD",
+  "governance": {
+    "PROVEN": false,
+    "SEALED": false,
+    "PRODUCTION_AUTHORIZED": false
+  }
+}

@@ -1,0 +1,121 @@
+{
+    "classification": "SYNTHETIC_DEMONSTRATION",
+    "implementation_proven": false,
+    "sealed": false,
+    "production_authorized": false,
+    "baseline": {
+        "incident_detected": true,
+        "ledger_valid": true,
+        "events": [
+            {
+                "sequence": 1,
+                "event": "PURPOSE_DEFINED",
+                "actor": "organization",
+                "details": {
+                    "purpose": "student_service",
+                    "declared": true
+                },
+                "previous_hash": "GENESIS",
+                "hash": "eefb52cf75d8371d0f36e56991057009bcfa962a8ae3688b62944d0a9c53c31b"
+            },
+            {
+                "sequence": 2,
+                "event": "DATA_COLLECTED",
+                "actor": "organization",
+                "details": {
+                    "fields": [
+                        "email",
+                        "date_of_birth"
+                    ],
+                    "synthetic": true
+                },
+                "previous_hash": "eefb52cf75d8371d0f36e56991057009bcfa962a8ae3688b62944d0a9c53c31b",
+                "hash": "a86a67457616b158ed1ea35aeda240fb4734d5bc652b5fcad965d4e241b3d2f2"
+            },
+            {
+                "sequence": 3,
+                "event": "ACCESS_GRANTED",
+                "actor": "legacy_system",
+                "details": {
+                    "recipient": "external_vendor",
+                    "admitted": false,
+                    "authorization": false,
+                    "scope_check": false
+                },
+                "previous_hash": "a86a67457616b158ed1ea35aeda240fb4734d5bc652b5fcad965d4e241b3d2f2",
+                "hash": "7277409ab2cf253c484101b23a9090970edec7a2777b06a2ad9de9ac92178849"
+            },
+            {
+                "sequence": 4,
+                "event": "DATA_DISCLOSED",
+                "actor": "legacy_system",
+                "details": {
+                    "recipient": "external_vendor",
+                    "disclosed": true,
+                    "synthetic": true
+                },
+                "previous_hash": "7277409ab2cf253c484101b23a9090970edec7a2777b06a2ad9de9ac92178849",
+                "hash": "743f5540d5aeb1fbf1ce02723d1cbcecbc7794bb647cc9e1be483ac6f27c4cc8"
+            }
+        ]
+    },
+    "investigation": {
+        "root_causes": [
+            "Data collection was not sufficiently minimized.",
+            "Recipient admission was not enforced.",
+            "Explicit authorization was not enforced.",
+            "Recipient scope was not enforced."
+        ],
+        "investigation_complete": true,
+        "basis": "Synthetic event records only."
+    },
+    "corrected_replay": {
+        "decision": "DENIED",
+        "unauthorized_disclosure_prevented": true,
+        "ledger_valid": true,
+        "events": [
+            {
+                "sequence": 1,
+                "event": "PURPOSE_DEFINED",
+                "actor": "organization",
+                "details": {
+                    "purpose": "student_service",
+                    "declared": true
+                },
+                "previous_hash": "GENESIS",
+                "hash": "eefb52cf75d8371d0f36e56991057009bcfa962a8ae3688b62944d0a9c53c31b"
+            },
+            {
+                "sequence": 2,
+                "event": "DATA_COLLECTED",
+                "actor": "organization",
+                "details": {
+                    "fields": [
+                        "email"
+                    ],
+                    "synthetic": true
+                },
+                "previous_hash": "eefb52cf75d8371d0f36e56991057009bcfa962a8ae3688b62944d0a9c53c31b",
+                "hash": "808a6a28cf393523fa6fa246690c480f3f1c6b307c76b94f46579faef08ed860"
+            },
+            {
+                "sequence": 3,
+                "event": "ACCESS_DENIED",
+                "actor": "governed_system",
+                "details": {
+                    "recipient": "external_vendor",
+                    "reason": "ADMISSION_AUTHORIZATION_AND_SCOPE_NOT_SATISFIED"
+                },
+                "previous_hash": "808a6a28cf393523fa6fa246690c480f3f1c6b307c76b94f46579faef08ed860",
+                "hash": "7744b08c116b93555217dfaf93334dbf9ef3efbb54ece68ce78aa8e0283615bd"
+            }
+        ]
+    },
+    "limitations": [
+        "No real-world data was used.",
+        "No real network or external recipient was contacted.",
+        "This is not an implementation audit.",
+        "This does not establish independent verification.",
+        "This does not establish production safety."
+    ]
+}
