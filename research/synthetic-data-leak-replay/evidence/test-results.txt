@@ -1,0 +1,12 @@
+test_baseline_evidence_chain_is_valid (test_replay.DataLeakReplayTests.test_baseline_evidence_chain_is_valid) ... ok
+test_baseline_reproduces_disclosure (test_replay.DataLeakReplayTests.test_baseline_reproduces_disclosure) ... ok
+test_corrected_evidence_chain_is_valid (test_replay.DataLeakReplayTests.test_corrected_evidence_chain_is_valid) ... ok
+test_corrected_workflow_denies_unauthorized_recipient (test_replay.DataLeakReplayTests.test_corrected_workflow_denies_unauthorized_recipient) ... ok
+test_report_preserves_proof_boundaries (test_replay.DataLeakReplayTests.test_report_preserves_proof_boundaries) ... ok
+test_root_causes_are_recorded (test_replay.DataLeakReplayTests.test_root_causes_are_recorded) ... ok
+test_tampering_is_detected (test_replay.DataLeakReplayTests.test_tampering_is_detected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.017s
+
+OK
